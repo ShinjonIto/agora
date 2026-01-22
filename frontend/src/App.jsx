@@ -5,7 +5,7 @@ function App() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("/api/hello/")
+    fetch("/hello/")
       .then((res) => res.json())
       .then((data) => {
         setMessage(data.message);
@@ -13,7 +13,7 @@ function App() {
   }, [])
   return (
     <div>
-      <p className="hello">{message}こんにちは</p>
+      <p className="hello">{message}んにちは</p>
     </div>
   );
 }
