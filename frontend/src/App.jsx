@@ -1,19 +1,39 @@
 import { useEffect, useState } from "react";
-import "./App.css";
+import axios from "axios";
+import UserIcon from "./components/UserIcon";
 
 function App() {
-  const [message, setMessage] = useState("");
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch("/hello/")
-      .then((res) => res.json())
-      .then((data) => {
-        setMessage(data.message);
-      });
-  }, [])
+    axios.get("/users/1/icon/").then((res) => {
+      setUser(res.data);
+    });
+  }, []);
+
+  if (!user) return <p>Loading...</p>;
+
   return (
-    <div>
-      <p className="hello">{message}んにちは</p>
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <img
+        src={user.icon_image}
+        alt="user icon"
+        width={100}
+        height={100}
+        style={{ borderRadius: "50%" }}
+      />
+      <p>{user.user_name}</p>
+      {/* UserIcon表示 */}
+      <UserIcon userId={1} />
+      <P>こんにちは</P>
     </div>
   );
 }
