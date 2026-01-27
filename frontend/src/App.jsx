@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import UserIcon from "./components/UserIcon";
 
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 function App() {
   const [user, setUser] = useState(null);
 
@@ -33,7 +35,6 @@ function App() {
       <p>{user.user_name}</p>
       {/* UserIcon表示 */}
       <UserIcon userId={1} />
-      <P>こんにちは</P>
     </div>
   );
 }
