@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import Comment
 
-# Register your models here.
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('comment_id', 'user', 'post', 'parent_comment', 'like_count', 'created_at', 'is_deleted')
+    search_fields = ('content', 'user__user_name', 'post__title')
+    list_filter = ('is_deleted',)
