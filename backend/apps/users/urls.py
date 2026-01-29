@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import UserIconAPIView
+from .views import *
 
 urlpatterns = [
-    path('<int:user_id>/icon/', UserIconAPIView.as_view()),
+    path('login/', LoginAPIView.as_view()),
+    path("me/", my_profile),
 ]

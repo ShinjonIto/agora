@@ -1,4 +1,4 @@
-import UserIcon from "../components/UserIcon";
+import UserIcon from "../components/UserProfile";
 
 const Home = () => {
     return (
