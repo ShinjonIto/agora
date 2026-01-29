@@ -8,17 +8,17 @@ class User(AbstractUser):
     student_number = models.PositiveIntegerField(unique=True)
     user_name = models.CharField(max_length=30, unique=True)
     permission = models. IntegerField(default=1)    # admin = 0, user = 1
-    icon_image = models.ImageField(upload_to='users/icon_img/', default='users/icon/default_img.png')
+    icon_image = models.ImageField(upload_to='users/icon/', default='users/icon/default_img.png')
     self_introduction = models.CharField(max_length=150, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_stopped = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     
-    # user_name を、Django内部用の username に自動コピーしてから保存
+    # student_number を、Django内部用の username に自動コピーしてから保存
     def save(self, *args, **kwargs):
         if not self.username:
-            self.username = self.user_name
+            self.username = str(self.student_number)
         super().save(*args, **kwargs)  
 
 

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const UserIcon = ({ userId }) => {
+const UserProfile = ({ userId }) => {
     // APIから来たJSONを保存する箱
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
@@ -11,7 +11,7 @@ const UserIcon = ({ userId }) => {
     useEffect(() => {
         // Django APIをたたく
         axios
-        .get("/users/1/icon/")
+        .get("/api/users/me/")
         .then((response) => {
             setUser(response.data);
         })
@@ -38,4 +38,4 @@ const UserIcon = ({ userId }) => {
     );
 };
 
-export default UserIcon;
+export default UserProfile;
