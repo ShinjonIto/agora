@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
 
-const SignupForm = ({ onClose }) => {
+const Signup = ({ onClose }) => {
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
@@ -179,4 +179,4 @@ const SignupForm = ({ onClose }) => {
     );
 };
 
-export default SignupForm;
+export default Signup;
