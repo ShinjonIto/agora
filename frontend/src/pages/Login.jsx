@@ -27,9 +27,10 @@ const Login = () => {
     return (
         <div>
         <h1>Login</h1>
-        <input placeholder="username" onChange={e => setUsername(e.target.value)} />
-        <input type="password" placeholder="password" onChange={e => setPassword(e.target.value)} />
+        <input placeholder="学生番号" onChange={e => setUsername(e.target.value)} />
+        <input type="password" placeholder="パスワード" onChange={e => setPassword(e.target.value)} />
         <button onClick={handleLogin}>Login</button>
+        <button onClick={() => navigate("/signup")}>会員登録はこちら</button>
         </div>
     );
 };

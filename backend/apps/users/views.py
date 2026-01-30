@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.response import Response
 from .models import User
@@ -8,12 +9,13 @@ from rest_framework.authtoken.models import Token            # Tokenテーブル
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
-# def get(self, request):     　getの場合
+# def get(self, request):     　                getの場合
 # def post(self, request, *args, **kwargs):     postの場合
 
 
 # ログイン
 class LoginAPIView(ObtainAuthToken):
+    permission_classes = [AllowAny]
     # postメソッド
     def post(self, request, *args, **kwargs):
         # Reactから送られてきたusername(学生番号格納), passwordをserializersに渡す
@@ -39,6 +41,7 @@ class LoginAPIView(ObtainAuthToken):
 
 # 会員登録
 class SignupAPIView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         serializer = SignupSerializer(data=request.data)
         

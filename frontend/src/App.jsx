@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import SignupForm from "./pages/SignupForm";
+import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 
@@ -26,7 +26,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* 会員登録 */}
-        <Route path="/signup" element={<SignupForm />} />
+        <Route path="/signup" element={<Signup />} />
 
         {/* ログイン */}
         <Route path="/login" element={<Login />} />
