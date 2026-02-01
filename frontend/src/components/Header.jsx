@@ -29,7 +29,9 @@ const Header = ({user}) => {
             <LogoutButton />
 
             {/* あとで検索バー追加 */}
+            <p>検索バー追加</p>
         </header>
+        
     )
 }
 
