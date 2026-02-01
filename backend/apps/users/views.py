@@ -63,3 +63,4 @@ def my_profile(request):
         if user.icon_image else None,
     })
     
+    

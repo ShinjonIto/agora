@@ -5,10 +5,25 @@ from django.core.validators import MinValueValidator
 
 # 記事
 class Post(models.Model):
+    MCH = 0
+    CYC = 1
+    SYS = 2
+
+    DEPARTMENT_CHOICES = [
+        (MCH, "自動車整備"),
+        (CYC, "スポーツバイシクル"),
+        (SYS, "情報システム"),
+    ]
+    
     post_id = models.AutoField(primary_key=True)
     post_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=300, blank=False)
     content = models.TextField(blank=False)
+    department = models.IntegerField(
+        choices=DEPARTMENT_CHOICES,
+        null=True,
+        blank=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     total_views = models.IntegerField(default=0)

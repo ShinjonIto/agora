@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"
+import axiosPublic from "../api/axiosPublic";
+
 
 const Signup = ({ onClose }) => {
     const navigate = useNavigate();
@@ -78,8 +79,7 @@ const Signup = ({ onClose }) => {
         }
 
         try {
-        const response = await axios.post("/api/users/signup/", form);
-        console.log(response.data);
+        await axiosPublic.post("/api/users/signup/", form);
         navigate("/login"); // 登録成功したらログインページへ
         } catch (err) {
         console.error(err);
