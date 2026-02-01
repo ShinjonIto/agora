@@ -15,6 +15,8 @@ class User(AbstractUser):
     is_stopped = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     
+    REQUIRED_FIELDS = ["student_number", "email"]
+    
     # student_number を、Django内部用の username に自動コピーしてから保存
     def save(self, *args, **kwargs):
         if not self.username:

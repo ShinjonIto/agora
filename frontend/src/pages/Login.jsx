@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axiosPublic from "../api/axiosPublic";
 
 const Login = () => {
     const [username, setUsername] = useState("");
@@ -10,10 +10,10 @@ const Login = () => {
     const handleLogin = async () => {
         try {
         // Djangoにusername(学生番号)とpasswordを送信
-        const res = await axios.post("/api/users/login/", {
-            username,
-            password,
-        });
+        const res = await axiosPublic.post("/api/users/login/", {
+        username,
+        password,
+});
 
         // トークンをブラウザに保存
         localStorage.setItem("token", res.data.token);
