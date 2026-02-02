@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
+import PostList from "../components/PostList";
 import axiosPrivate from "../api/axiosPrivate";
 
 const Home = () => {
@@ -28,6 +29,9 @@ const Home = () => {
         <h1>Home</h1>
 
         <Header user={user} />
+
+        {/* 記事一覧 */}
+        <PostList />
         </div>
     );
 };
