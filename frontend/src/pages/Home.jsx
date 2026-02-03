@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import PostList from "../components/PostList";
 import axiosPrivate from "../api/axiosPrivate";
+import Sidebar from "../components/sidebar";
 
 const Home = () => {
     const [user, setUser] = useState(null);
@@ -30,8 +31,11 @@ const Home = () => {
 
         <Header user={user} />
 
+        <Sidebar />
+
         {/* 記事一覧 */}
         <PostList />
+
         </div>
     );
 };
