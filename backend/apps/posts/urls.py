@@ -1,6 +1,12 @@
 from django.urls import path
 from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path("", PostList.as_view()),
+    path("", PostListAPIView.as_view()),
+    path("posts/<int:post_id>/like/", PostLikeToggleAPIView.as_view()),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

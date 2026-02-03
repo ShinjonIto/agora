@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/Header/Header";
 import PostList from "../components/PostList";
 import axiosPrivate from "../api/axiosPrivate";
+import Sidebar from "../components/sidebar";
 
 
 const Home = () => {
@@ -27,10 +28,12 @@ const Home = () => {
 
     return (
         <div>
-            <Header user={user} />
+        <Header user={user} />
 
-            {/* 記事一覧 */}
-            <PostList />
+        <Sidebar />
+
+        {/* 記事一覧 */}
+        <PostList />
         </div>
     );
 };
