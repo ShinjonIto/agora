@@ -9,9 +9,12 @@ const CreatePostButton = () => {
     };
 
     return (
-        <button onClick={handleClick}>
-            記事を作成
-        </button>
+        // <button >
+        //     記事を作成
+        // </button>
+        <img src="" onClick={handleClick} alt="" />
+
+
     )
 }
 
