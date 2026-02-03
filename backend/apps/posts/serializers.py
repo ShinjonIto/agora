@@ -3,6 +3,13 @@ from rest_framework import serializers
 from .models import *
 
 
+# コミュニティ名
+class DepartmentSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
+
+
+
 # 記事の画像・順番
 class PostImageSerializer(serializers.ModelSerializer):
     post_img = serializers.SerializerMethodField()
@@ -15,7 +22,7 @@ class PostImageSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         if obj.post_img and request:
             return request.build_absolute_uri(obj.post_img.url)
-        return None
+        return request.build_absolute_uri(settings.MEDIA_URL + "users/icon_img/default.png")
 
 
 # 記事
@@ -56,7 +63,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ["post_id", "title", "content", "department_name", 
                     "author_icon", "author_name", "images", "like_count", 
-                    "liked", "comment_count", "created_at",
+                    "liked", "total_views", "comment_count", "created_at",
         ]
         
     # 投稿者アイコンの絶対URLを返す
