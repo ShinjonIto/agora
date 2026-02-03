@@ -1,35 +1,15 @@
-import React, { useState, useEffect } from "react";
-import Header from "../components/Header/Header";
+import MainLayout from "../layouts/MainLayout";
 import PostList from "../components/PostList";
-import axiosPrivate from "../api/axiosPrivate";
-import Sidebar from "../components/sidebar";
+import Sidebar from "../components/Sidebar";
 
 
 const Home = () => {
-    const [user, setUser] = useState(null);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchMe = async () => {
-            try {
-                const response = await axiosPrivate.get("/api/users/me/");
-                setUser(response.data);
-            } catch (err) {
-                console.error(err);
-                setError("ユーザー情報の取得に失敗しました");
-            }
-        };
-
-        fetchMe();
-    }, []);
-
-    if (error) return <p>{error}</p>;
-    if (!user) return <p>Loading...</p>;
-
+    
     return (
         <div>
-        <Header user={user} />
+        <MainLayout />
 
+        {/* サイドバー */}
         <Sidebar />
 
         {/* 記事一覧 */}
