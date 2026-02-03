@@ -1,0 +1,25 @@
+:root {
+    --main-color: #FFF7E4;
+    --base-color: #B6D586;
+    --accent-color: #9FC3D1;
+    --accent-sub-color: #FF7272;
+    --main-black: #000000;
+    --main-white: #ffffff;
+    --main-text: #544F4A;
+
+    --font-zen-maru: "zen-maru-gothic", sans-serif;
+    --font-new-astro: "new-astro", sans-serif;
+    --font-new-astro-soft: "new-astro-soft", sans-serif;
+
+    /* ウェイト（必要ならここで統一管理） */
+    --font-weight-regular: 400;
+    --font-weight-bold: 700;
+
+    /* 役割別フォント（ここを差し替えるとUI全体が切り替わる） */
+    --font-body: var(--font-zen-maru);
+    --font-heading: var(--font-new-astro-soft);
+
+    /* 役割別ウェイト */
+    --font-body-weight: var(--font-weight-regular);
+    --font-heading-weight: var(--font-weight-bold);
+}

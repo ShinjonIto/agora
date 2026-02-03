@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from "react";
-import Header from "../components/Header";
+import Header from "../components/Header/Header";
 import PostList from "../components/PostList";
 import axiosPrivate from "../api/axiosPrivate";
 import Sidebar from "../components/sidebar";
+
 
 const Home = () => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-    const fetchMe = async () => {
-        try {
-        const response = await axiosPrivate.get("/api/users/me/");
-        setUser(response.data);
-        } catch (err) {
-        console.error(err);
-        setError("ユーザー情報の取得に失敗しました");
-        }
-    };
+        const fetchMe = async () => {
+            try {
+                const response = await axiosPrivate.get("/api/users/me/");
+                setUser(response.data);
+            } catch (err) {
+                console.error(err);
+                setError("ユーザー情報の取得に失敗しました");
+            }
+        };
 
-    fetchMe();
+        fetchMe();
     }, []);
 
     if (error) return <p>{error}</p>;
@@ -27,15 +28,12 @@ const Home = () => {
 
     return (
         <div>
-        <h1>Home</h1>
-
         <Header user={user} />
 
         <Sidebar />
 
         {/* 記事一覧 */}
         <PostList />
-
         </div>
     );
 };
