@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import UserProfile from "../UserProfile";
 import CreatePostButton from "../CreatePostButton";
-import LogoutButton from "../LogoutButton";
 import "./Header.css";
 
 import HeaderOka from "../../assets/images/header/header_oka.svg?react";

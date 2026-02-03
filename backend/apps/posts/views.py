@@ -8,10 +8,26 @@ from rest_framework.permissions import IsAuthenticated
 
 
 
+class DepartmentAPIView(APIView):
+    def get(self, request):
+        data = [
+            {"id" : key, "name" : value}
+            
+            for key, value in Post.DEPARTMENT_CHOICES
+        ]
+        serializer = DepartmentSerializer(data, many=True)
+        return Response(serializer.data)
+
+
 # home すべての作成
 class PostListAPIView(APIView):
     def get(self, request):
+        dept = request.query_params.get("department")
+        
         posts = Post.objects.filter(is_deleted = False).order_by("-created_at")
+        
+        if dept is not None:
+            posts = posts.filter(department=dept)
         
         # many = True   複数のデータであることを明示
         serializer = PostSerializer(posts, many=True, context={"request": request})

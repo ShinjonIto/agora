@@ -18,6 +18,10 @@ function App() {
 
         {/* ログイン　トークンなければloginへ　あればhomeへ */}
         <Route path="/" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
+
+        {/* 学科別 */}
+        <Route path="/department/:dept" element={ <ProtectedRoute> <Home /> </ProtectedRoute> } />
+
       </Routes>
     </BrowserRouter>
   );
