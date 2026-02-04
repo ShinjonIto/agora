@@ -1,4 +1,5 @@
 :root {
+    /* カラー */
     --main-color: #FFF7E4;
     --base-color: #B6D586;
     --accent-color: #9FC3D1;
@@ -7,6 +8,7 @@
     --main-white: #ffffff;
     --main-text: #544F4A;
 
+    /* フォント */
     --font-zen-maru: "zen-maru-gothic", sans-serif;
     --font-new-astro: "new-astro", sans-serif;
     --font-new-astro-soft: "new-astro-soft", sans-serif;
@@ -22,4 +24,12 @@
     /* 役割別ウェイト */
     --font-body-weight: var(--font-weight-regular);
     --font-heading-weight: var(--font-weight-bold);
+
+    /* サイズ */
+
+    --icon-md: clamp(16px, 1.2vw, 20px);
+    --icon-lg: clamp(50px, 1.6vw, 60px);
+
+
+
 }

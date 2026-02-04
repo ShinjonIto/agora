@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
+import MainLayout from "./layouts/MainLayout";
 
 
 
@@ -20,7 +21,7 @@ function App() {
         <Route path="/" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
 
         {/* 学科別 */}
-        <Route path="/department/:dept" element={ <ProtectedRoute> <Home /> </ProtectedRoute> } />
+        <Route path="/department/:dept" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
 
       </Routes>
     </BrowserRouter>

@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import Bell from "../../assets/images/icon/bell.svg?react";
+// ｃｓｓ
+import "./CreatePostButton.css";
+// 画像
+import Create from "@/assets/images/icon/create.svg?react";
 const CreatePostButton = () => {
     const navigate = useNavigate();
 
@@ -13,7 +16,7 @@ const CreatePostButton = () => {
         //     記事を作成
         // </button>
 
-        <Bell onClick={handleClick} className="Bell" width={10} />
+        <Create onClick={handleClick} className="create icon" />
 
 
     )
