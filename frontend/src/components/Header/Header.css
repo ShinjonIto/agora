@@ -6,6 +6,10 @@ header h1 {
     color: var(--accent-color);
 }
 
+hgroup p {
+    opacity: 0.7;
+}
+
 .header-oka {
     transform: translateY(1px);
     color: var(--base-color);

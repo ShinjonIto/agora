@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosPrivate from "../api/axiosPrivate";
 import Header from "../components/Header/Header";
+import CreatePostButton from "../components/CreatePostButton";
 
 
 const MainLayout = () => {
@@ -25,7 +26,10 @@ const MainLayout = () => {
     if (!user) return <p>Loading...</p>;
 
     return (
-        <Header user={user} />
+        <div>
+            <Header user={user} />
+            <CreatePostButton />
+        </div>
     )
 }
 
