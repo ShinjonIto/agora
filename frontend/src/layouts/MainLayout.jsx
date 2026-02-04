@@ -4,7 +4,7 @@ import Header from "../components/Header/Header";
 import CreatePostButton from "../components/CreatePostButton";
 
 
-const MainLayout = () => {
+const MainLayout = ({ children }) => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
 
@@ -29,6 +29,11 @@ const MainLayout = () => {
         <div>
             <Header user={user} />
             <CreatePostButton />
+
+            {/* 各ページの中身 */}
+            <main>
+                { children }
+            </main>
         </div>
     )
 }

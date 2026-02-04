@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosPrivate from "../api/axiosPrivate";
 import Loading from "./Loading";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const deptMap = {
   mch: 0, // 自動車学科
@@ -12,6 +12,7 @@ const deptMap = {
 
 
 const PostList = () => {
+    const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -115,6 +116,7 @@ const PostList = () => {
 
 
 
+
     return (
         <div>
             {/* 並び替え */}
@@ -135,7 +137,8 @@ const PostList = () => {
             {sortedPosts.map((post) => (
                 <div
                 key={post.post_id}
-                style={{ border: '1px solid black' }}>
+                style={{ border: '1px solid black' }}
+                onClick={() => navigate(`/posts/${post.post_id}`)}>
                     {/* アイコン */}
                     <img
                     src={post.author_icon}

@@ -33,6 +33,21 @@ class PostListAPIView(APIView):
         serializer = PostSerializer(posts, many=True, context={"request": request})
         return Response(serializer.data)
     
+    
+
+# 記事詳細
+class PostDetailAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, post_id):
+        post = Post.objects.filter(post_id=post_id, is_deleted=False).first()
+
+        if not post:
+            return Response({"error": "記事が存在しません"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = PostDetailSerializer(post, context={"request": request})
+        return Response(serializer.data)
+
+
 
 
 # いいねボタン

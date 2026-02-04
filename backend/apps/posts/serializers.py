@@ -1,6 +1,8 @@
 # Jsonに変換する Reactが読める形に変換
 from rest_framework import serializers
 from .models import *
+from apps.comments.models import Comment
+
 
 
 # コミュニティ名
@@ -24,6 +26,7 @@ class PostImageSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(obj.post_img.url)
         return request.build_absolute_uri(settings.MEDIA_URL + "users/icon_img/default.png")
 
+        
 
 # 記事
 class PostSerializer(serializers.ModelSerializer):
@@ -84,3 +87,24 @@ class PostSerializer(serializers.ModelSerializer):
             # PostLikeテーブルにこのユーザーと記事の組み合わせが存在するか
             return obj.postlike_set.filter(user=user).exists()
         return False
+
+
+
+from apps.comments.serializers import CommentSerializer
+
+# 記事詳細
+class PostDetailSerializer(PostSerializer):
+    comments = serializers.SerializerMethodField()
+
+    class Meta(PostSerializer.Meta):
+        fields = PostSerializer.Meta.fields + [
+            "comments"
+        ]
+
+    def get_comments(self, obj):
+        request = self.context.get("request")
+
+        comments = Comment.objects.filter(post=obj, parent_comment__isnull=True, is_deleted=False
+        ).order_by("created_at")
+
+        return CommentSerializer(comments, many=True, context={"request": request}).data
