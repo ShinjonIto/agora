@@ -7,12 +7,14 @@ header h1 {
 }
 
 .header-oka {
+    transform: translateY(1px);
     color: var(--base-color);
     width: 100%;
     height: auto;
-    opacity: 0.9;
 }
 
 .flex {
     display: flex;
+    align-items: center;
+    justify-content: space-around;
 }

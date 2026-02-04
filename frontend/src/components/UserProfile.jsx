@@ -6,13 +6,13 @@ const UserProfile = ({ user }) => {
     return (
         <div>
             <img
-            src={user.icon_image}
-            alt="user icon"
-            width={80}
-            height={80}
-            style={{ borderRadius: "50%" }}
+                src={user.icon_image}
+                alt="user icon"
+                width={80}
+                height={80}
+                style={{ borderRadius: "50%" }}
             />
-            <p>{user.user_name}</p>
+            {/* <p>{user.user_name}</p> */}
         </div>
     );
 };
