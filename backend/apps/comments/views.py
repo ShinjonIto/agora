@@ -22,3 +22,39 @@ class CommentAPIView(APIView):
 
         serializer = CommentSerializer(comments, many=True, context={"request": request})
         return Response(serializer.data)
+    
+
+
+# コメントいいねボタン
+class CommentLikeAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, comment_id):
+        # コメント取得
+        comment = Comment.objects.filter(comment_id=comment_id, is_deleted=False).first()
+        
+        # コメントなかったら
+        if not comment:
+            return Response({"error": "コメントが存在しません"}, status=status.HTTP_404_NOT_FOUND)
+        
+        user = request.user
+
+        # いいねしてるか取得
+        like = CommentLike.objects.filter(comment=comment, user=user).first()
+
+        if like:
+            # いいね取り消し
+            like.delete()
+            liked = False
+        else:
+            # いいね追加
+            CommentLike.objects.create(comment=comment, user=user)
+            liked = True
+
+        # いいね数取得
+        like_count = CommentLike.objects.filter(comment=comment).count()
+
+        return Response({
+            "liked": liked,
+            "like_count": like_count
+        })
