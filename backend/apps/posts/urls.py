@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("", PostListAPIView.as_view()),
     path("<int:post_id>/like/", PostLikeToggleAPIView.as_view()),
+    path("<int:post_id>/", PostDetailAPIView.as_view()),
 ]
 
 if settings.DEBUG:

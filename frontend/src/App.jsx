@@ -3,7 +3,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
-import MainLayout from "./layouts/MainLayout";
+import PostDetail from "./pages/PostDetail";
+
 
 
 
@@ -23,6 +24,8 @@ function App() {
         {/* 学科別 */}
         <Route path="/department/:dept" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
 
+        {/* 記事詳細 */}
+        <Route path="/posts/:postId" element={<PostDetail />} />
       </Routes>
     </BrowserRouter>
   );

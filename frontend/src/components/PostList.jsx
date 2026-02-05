@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import axiosPrivate from "../api/axiosPrivate";
 import Loading from "./Loading";
-import { useParams } from "react-router-dom";
 import "./PostList.css";
+import { useNavigate, useParams } from "react-router-dom";
 
 // 画像
 import Heart from "@/assets/images/icon/heart.svg?react";
 import Comment from "@/assets/images/icon/comment.svg?react";
 import Share from "@/assets/images/icon/share.svg?react";
 import View from "@/assets/images/icon/view.svg?react";
+
 
 
 const deptMap = {
@@ -20,6 +21,7 @@ const deptMap = {
 
 
 const PostList = () => {
+    const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -123,16 +125,41 @@ const PostList = () => {
 
 
 
+
     return (
         <div>
             {/* 並び替え */}
 
 
             <div>
-                <h2>記事一覧</h2>
 
-                {/* 複数ある場合の表示方法 for文と同じ */}
-                <div className="PostListBody">
+
+            {/* 複数ある場合の表示方法 for文と同じ */}
+            <div className="PostListBody">
+            <h2>記事一覧</h2>
+
+            {/* 複数ある場合の表示方法 for文と同じ */}
+            {sortedPosts.map((post) => (
+                <div
+                key={post.post_id}
+                style={{ border: '1px solid black' }}
+                onClick={() => navigate(`/posts/${post.post_id}`)}>
+                    {/* アイコン */}
+                    <img
+                    src={post.author_icon}
+                    alt={`${post.author_name}のアイコン`}
+                    style={{ width: '40px', height: '40px', borderRadius: '50%' }}
+                    />
+                    {/* 名前 */}
+                    <p>投稿者：{post.author_name}</p>
+                    {/* タイトル */}
+                    <h3>title : {post.title}</h3>
+                    {/* 学科名 */}
+                    <p>{post.department_name}</p>
+                    {/* 内容 */}
+                    <p>content : {post.content}</p>
+                    {/* 記事画像 */}
+
                     <div>
                         <label>並び替え：</label>
                         <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
