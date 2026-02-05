@@ -127,106 +127,75 @@ const PostList = () => {
 
 
     return (
-        <div>
-            {/* 並び替え */}
-
-
-            <div>
-
-
-            {/* 複数ある場合の表示方法 for文と同じ */}
-            <div className="PostListBody">
+        <div className="PostListBody">
             <h2>記事一覧</h2>
 
-            {/* 複数ある場合の表示方法 for文と同じ */}
-            {sortedPosts.map((post) => (
-                <div
+            {/* 並び替え */}
+            <div>
+            <label>並び替え：</label>
+            <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
+                <option value="new">新着順</option>
+                <option value="like">いいね順</option>
+                <option value="view">閲覧数順</option>
+                <option value="comment">注目順</option>
+            </select>
+            </div>
+
+            {/* 投稿一覧 */}
+            <div className="PostListScroll">
+                {sortedPosts.map((post) => (
+                    <div
                 key={post.post_id}
-                style={{ border: '1px solid black' }}
-                onClick={() => navigate(`/posts/${post.post_id}`)}>
-                    {/* アイコン */}
-                    <img
+                className="Post"
+                onClick={() => navigate(`/posts/${post.post_id}`)}
+                >
+                <img
                     src={post.author_icon}
                     alt={`${post.author_name}のアイコン`}
-                    style={{ width: '40px', height: '40px', borderRadius: '50%' }}
-                    />
-                    {/* 名前 */}
-                    <p>投稿者：{post.author_name}</p>
-                    {/* タイトル */}
-                    <h3>title : {post.title}</h3>
-                    {/* 学科名 */}
-                    <p>{post.department_name}</p>
-                    {/* 内容 */}
-                    <p>content : {post.content}</p>
-                    {/* 記事画像 */}
+                    style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+                />
 
-                    <div>
-                        <label>並び替え：</label>
-                        <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
-                            <option value="new">新着順</option>
-                            <option value="like">いいね順</option>
-                            <option value="view">閲覧数順</option>
-                            <option value="comment">注目順</option>
-                        </select>
-                    </div>
-                    <div className="PostListScroll">
-                        {sortedPosts.map((post) => (
-                            <div
-                                key={post.post_id}
-                                className="Post">
-                                {/* アイコン */}
-                                <img
-                                    src={post.author_icon}
-                                    alt={`${post.author_name}のアイコン`}
-                                    style={{ width: '40px', height: '40px', borderRadius: '50%' }}
-                                />
-                                {/* 名前 */}
-                                <p>投稿者：{post.author_name}</p>
-                                {/* タイトル */}
-                                <h3>title : {post.title}</h3>
-                                {/* 学科名 */}
-                                <p>{post.department_name}</p>
-                                {/* 内容 */}
-                                <p>content : {post.content}</p>
-                                {/* 記事画像 */}
-                                <div>
-                                    {post.images
-                                        .sort((a, b) => a.sort_order - b.sort_order) // sort_order順に並び替え
-                                        .map((img) => (
-                                            <img
-                                                key={img.post_img_id}
-                                                src={img.post_img}        // DjangoのURL
-                                                alt={`記事${post.post_id}の画像`}
-                                                style={{ maxWidth: "200px", marginRight: "10px" }}
-                                            />
-                                        ))}
-                                </div>
+                <p>投稿者：{post.author_name}</p>
+                <h3>{post.title}</h3>
+                <p>{post.department_name}</p>
+                <p>{post.content}</p>
 
-                                {/* 投稿日時 */}
-                                <small>
-                                    {formatPostDate(post.created_at)}
-                                </small>
-                                {/* いいねボタン・いいね数 */}
-                                <div className="comment_flex">
-                                    <button
-                                        onClick={() => handleLike(post.post_id)}  // クリックでtoggle
-                                        style={{ color: post.liked ? "red" : "gray" }}  // いいね済みは赤
-                                    >
-                                        <Heart /> {post.like_count}
-                                    </button>
-                                    {/* 閲覧数 */}
-                                    <p><View />{post.total_views}</p>
-                                    {/* コメント数 */}
-                                    <p><Comment />{post.comment_count}</p>
-                                    <p><Share />共有</p>
-                                </div>
-                            </div>
-
-                        ))}
-                    </div>
+                {/* 記事画像 */}
+                <div>
+                    {post.images
+                    .sort((a, b) => a.sort_order - b.sort_order)
+                    .map((img) => (
+                        <img
+                        key={img.post_img_id}
+                        src={img.post_img}
+                        alt=""
+                        style={{ maxWidth: "200px", marginRight: "10px" }}
+                        />
+                    ))}
                 </div>
-            </div >
-        </div >
+
+                <small>{formatPostDate(post.created_at)}</small>
+
+                {/* アクション */}
+                <div className="comment_flex">
+                    <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleLike(post.post_id);
+                    }}
+                    style={{ color: post.liked ? "red" : "gray" }}
+                    >
+                    <Heart /> {post.like_count}
+                    </button>
+
+                    <p><View /> {post.total_views}</p>
+                    <p><Comment /> {post.comment_count}</p>
+                    <p><Share /> 共有</p>
+                </div>
+                </div>
+            ))}
+            </div>
+    </div>
     );
 };
 
