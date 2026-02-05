@@ -1,0 +1,16 @@
+.Post {
+    background-color: var(--main-white);
+    aspect-ratio: 1/2;
+}
+
+.PostListBody {
+    padding: 100px;
+    background-color: var(--main-sub-color);
+    border-radius: 20px 20px 0 0;
+
+    width: 100%;
+}
+
+.comment_flex {
+    display: flex;
+}

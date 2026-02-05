@@ -1,13 +1,14 @@
 :root {
     /* カラー */
     --main-color: #FFF7E4;
+    --main-sub-color: #F4ECCF;
     --base-color: #B6D586;
     --accent-color: #9FC3D1;
     --accent-sub-color: #FF7272;
     --main-black: #000000;
     --main-white: #ffffff;
     --main-text: #544F4A;
-
+    --main-shadow: #9CC095;
     /* フォント */
     --font-zen-maru: "zen-maru-gothic", sans-serif;
     --font-new-astro: "new-astro", sans-serif;
@@ -27,8 +28,10 @@
 
     /* サイズ */
 
-    --icon-md: clamp(16px, 1.2vw, 20px);
-    --icon-lg: clamp(50px, 1.6vw, 60px);
+    --icon-m: clamp(16px, 1.2vw, 20px);
+    --icon-l: clamp(50px, 1.6vw, 60px);
+
+    --radius: 5px;
 
 
 
