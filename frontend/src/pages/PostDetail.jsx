@@ -1,8 +1,10 @@
 import { useParams } from "react-router-dom";
-import MainLayout from "../layouts/MainLayout";
 import { useEffect, useState } from "react";
 import axiosPrivate from "@/api/axiosPrivate";
-import OnePost from "../components/OnePost";
+import MainLayout from "../layouts/MainLayout";         // メインレイアウト
+import OnePost from "../components/OnePost";            // 記事
+import CommentItem from "../components/CommentItem";    // コメント
+
 
 const PostDetail = () => {
     const { postId } = useParams();
@@ -35,27 +37,20 @@ const PostDetail = () => {
 
     return (
         <MainLayout>
+            {/* 記事 */}
             <OnePost post={post} />
             
+            {/* コメント */}
             <h3>コメント</h3>
             {comments.length === 0 ? (
                 <p>コメントはまだありません</p>
             ) : (
                 comments.map(comment => (
-                    <div key={comment.comment_id}>
-                        <p>{comment.comment_author_name}</p>
-                        {comment.comment_author_icon && (
-                            <img
-                                src={comment.comment_author_icon}
-                                alt={`${comment.comment_author_name}のアイコン`}
-                                style={{ width: "30px", borderRadius: "50%" }}
-                            />
-                        )}
-                        <p>{comment.content}</p>
-                        <small>いいね: {comment.like_count}</small>
-                        <br />
-                        <small>{new Date(comment.created_at).toLocaleString()}</small>
-                    </div>
+                    <CommentItem
+                        key={comment.comment_id}
+                        comment={comment}
+                        setComments={setComments} 
+                    />
                 ))
             )}
         </MainLayout>

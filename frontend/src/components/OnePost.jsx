@@ -31,13 +31,12 @@ const OnePost = ({ post }) => {
                         key={img.post_img_id}
                         src={img.post_img}
                         alt={`記事${post.post_id}の画像`}
-                        style={{ maxWidth: "200px", marginRight: "10px" }}
                     />
                 ))}
             </div>
 
             {/* いいね・閲覧数 */}
-            <p>いいね: {post.like_count}</p>
+            <p>記事のいいね: {post.like_count}</p>
             <p>閲覧数: {post.total_views}</p>
             <p>コメント数: {post.comment_count}</p>
         </div>

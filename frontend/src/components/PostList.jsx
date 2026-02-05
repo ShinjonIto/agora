@@ -112,7 +112,7 @@ const PostList = () => {
 
         if (diffDays === 0) {
             // 今日なら時間だけ表示
-            return postDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            return "今日 " + postDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         } else if (diffDays === 1) {
             return "昨日";
         } else if (diffDays === 2) {
@@ -145,53 +145,53 @@ const PostList = () => {
             <div className="PostListScroll">
                 {sortedPosts.map((post) => (
                     <div
-                key={post.post_id}
-                className="Post"
-                onClick={() => navigate(`/posts/${post.post_id}`)}
-                >
-                <img
-                    src={post.author_icon}
-                    alt={`${post.author_name}のアイコン`}
-                    style={{ width: "40px", height: "40px", borderRadius: "50%" }}
-                />
-
-                <p>投稿者：{post.author_name}</p>
-                <h3>{post.title}</h3>
-                <p>{post.department_name}</p>
-                <p>{post.content}</p>
-
-                {/* 記事画像 */}
-                <div>
-                    {post.images
-                    .sort((a, b) => a.sort_order - b.sort_order)
-                    .map((img) => (
-                        <img
-                        key={img.post_img_id}
-                        src={img.post_img}
-                        alt=""
-                        style={{ maxWidth: "200px", marginRight: "10px" }}
-                        />
-                    ))}
-                </div>
-
-                <small>{formatPostDate(post.created_at)}</small>
-
-                {/* アクション */}
-                <div className="comment_flex">
-                    <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        handleLike(post.post_id);
-                    }}
-                    style={{ color: post.liked ? "red" : "gray" }}
+                    key={post.post_id}
+                    className="Post"
+                    onClick={() => navigate(`/posts/${post.post_id}`)}
                     >
-                    <Heart /> {post.like_count}
-                    </button>
+                    <img
+                        src={post.author_icon}
+                        alt={`${post.author_name}のアイコン`}
+                        style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+                    />
 
-                    <p><View /> {post.total_views}</p>
-                    <p><Comment /> {post.comment_count}</p>
-                    <p><Share /> 共有</p>
-                </div>
+                    <p>投稿者：{post.author_name}</p>
+                    <h3>{post.title}</h3>
+                    <p>{post.department_name}</p>
+                    <p>{post.content}</p>
+
+                    {/* 記事画像 */}
+                    <div>
+                        {post.images
+                        .sort((a, b) => a.sort_order - b.sort_order)
+                        .map((img) => (
+                            <img
+                            key={img.post_img_id}
+                            src={img.post_img}
+                            alt=""
+                            style={{ maxWidth: "200px", marginRight: "10px" }}
+                            />
+                        ))}
+                    </div>
+
+                    <small>{formatPostDate(post.created_at)}</small>
+
+                    {/* アクション */}
+                    <div className="comment_flex">
+                        <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleLike(post.post_id);
+                        }}
+                        style={{ color: post.liked ? "red" : "gray" }}
+                        >
+                        <Heart /> {post.like_count}
+                        </button>
+
+                        <p><View /> {post.total_views}</p>
+                        <p><Comment /> {post.comment_count}</p>
+                        <p><Share /> 共有</p>
+                    </div>
                 </div>
             ))}
             </div>
