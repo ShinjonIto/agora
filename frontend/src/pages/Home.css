@@ -1,0 +1,21 @@
+.homeLayout {
+    display: flex;
+    gap: 24px;
+    /* サイドバーと記事の間 */
+    padding: 24px;
+}
+
+/* サイドバー */
+.sidebar {
+    width: 240px;
+    /* 固定幅 */
+    flex-shrink: 0;
+}
+
+/* 記事一覧 */
+.postList {
+    flex: 1;
+    /* 残り全部 */
+    width: 100%;
+    min-width: 0;
+}

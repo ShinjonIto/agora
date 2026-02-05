@@ -1,16 +1,55 @@
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import Home from "@/assets/images/icon/home.svg?react";
+import Zyouhou from "@/assets/images/icon/zyouhou.svg?react";
+import Car from "@/assets/images/icon/car.svg?react";
+import Bike from "@/assets/images/icon/bike.svg?react";
+import "./Sidebar.css";
 
 const Sidebar = () => {
-    const navigate = useNavigate();
-
     return (
-        <aside>
-            <button onClick={() => navigate("/")}>ホーム</button>
-            <button onClick={() => navigate("/department/mch")}>自動車学科</button>
-            <button onClick={() => navigate("/department/cyc")}>バイシクル学科</button>
-            <button onClick={() => navigate("/department/sys")}>情報システム学科</button>         
+        <aside className="sidebar">
+            <NavLink
+                to="/"
+                end
+                className={({ isActive }) =>
+                    `aside_button ${isActive ? "active" : ""}`
+                }
+            >
+                <Home className="aside_icon" />
+                <span>ホーム</span>
+            </NavLink>
+
+            <NavLink
+                to="/department/mch"
+                className={({ isActive }) =>
+                    `aside_button ${isActive ? "active" : ""}`
+                }
+            >
+                <Car className="aside_icon" />
+                <span>自動車学科</span>
+            </NavLink>
+
+            <NavLink
+                to="/department/cyc"
+                className={({ isActive }) =>
+                    `aside_button ${isActive ? "active" : ""}`
+                }
+            >
+                <Bike className="aside_icon" />
+                <span>バイシクル学科</span>
+            </NavLink>
+
+            <NavLink
+                to="/department/sys"
+                className={({ isActive }) =>
+                    `aside_button ${isActive ? "active" : ""}`
+                }
+            >
+                <Zyouhou className="aside_icon" />
+                <span>情報システム学科</span>
+            </NavLink>
         </aside>
-    )
-}
+    );
+};
 
 export default Sidebar;

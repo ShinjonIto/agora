@@ -2,11 +2,19 @@ import { useEffect, useState } from "react";
 import axiosPrivate from "../api/axiosPrivate";
 import Loading from "./Loading";
 import { useParams } from "react-router-dom";
+import "./PostList.css";
+
+// 画像
+import Heart from "@/assets/images/icon/heart.svg?react";
+import Comment from "@/assets/images/icon/comment.svg?react";
+import Share from "@/assets/images/icon/share.svg?react";
+import View from "@/assets/images/icon/view.svg?react";
+
 
 const deptMap = {
-  mch: 0, // 自動車学科
-  cyc: 1, // バイシクル学科
-  sys: 2, // 情報システム学科
+    mch: 0, // 自動車学科
+    cyc: 1, // バイシクル学科
+    sys: 2, // 情報システム学科
 };
 
 
@@ -15,26 +23,26 @@ const PostList = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { dept } = useParams(); 
+    const { dept } = useParams();
     const [sortType, setSortType] = useState("new"); // 初期は新着順
 
     // useEffect … 画面表示時・状態変化時に処理を実行
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-            setLoading(true);
-            const res = await axiosPrivate.get("/api/posts/", {
-                params: dept ? { department: deptMap[dept] } : {}
-            });
-            setPosts(res.data);
+                setLoading(true);
+                const res = await axiosPrivate.get("/api/posts/", {
+                    params: dept ? { department: deptMap[dept] } : {}
+                });
+                setPosts(res.data);
             } catch (err) {
-            setError("記事の取得に失敗しました");
+                setError("記事の取得に失敗しました");
             } finally {
-            setLoading(false);
+                setLoading(false);
             }
         };
 
-    fetchPosts();
+        fetchPosts();
     }, [dept]);
 
     if (loading) return <Loading message="記事を読み込み中..." />;
@@ -56,7 +64,7 @@ const PostList = () => {
     });
 
 
-     // いいねボタン処理
+    // いいねボタン処理
     const handleLike = async (postId) => {
         try {
             // Djangoにpost_idを送り、liked・like_countを取得
@@ -70,14 +78,14 @@ const PostList = () => {
                 // 押した投稿だけ更新　「…」はコピー
                 if (post.post_id === postId) {
                     return {
-                    ...post,
-                    liked: newLiked,
-                    like_count: newLikeCount,
+                        ...post,
+                        liked: newLiked,
+                        like_count: newLikeCount,
                     };
                 }
                 // 関係ない投稿はそのまま
                 return post;
-                });
+            });
 
             // stateを更新
             setPosts(newPosts);
@@ -118,71 +126,80 @@ const PostList = () => {
     return (
         <div>
             {/* 並び替え */}
-            <div>
-            <label>並び替え：</label>
-            <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
-                <option value="new">新着順</option>
-                <option value="like">いいね順</option>
-                <option value="view">閲覧数順</option>
-                <option value="comment">注目順</option>
-            </select>
-            </div>
+
 
             <div>
-            <h2>記事一覧</h2>
+                <h2>記事一覧</h2>
 
-            {/* 複数ある場合の表示方法 for文と同じ */}
-            {sortedPosts.map((post) => (
-                <div
-                key={post.post_id}
-                style={{ border: '1px solid black' }}>
-                    {/* アイコン */}
-                    <img
-                    src={post.author_icon}
-                    alt={`${post.author_name}のアイコン`}
-                    style={{ width: '40px', height: '40px', borderRadius: '50%' }}
-                    />
-                    {/* 名前 */}
-                    <p>投稿者：{post.author_name}</p>
-                    {/* タイトル */}
-                    <h3>title : {post.title}</h3>
-                    {/* 学科名 */}
-                    <p>{post.department_name}</p>
-                    {/* 内容 */}
-                    <p>content : {post.content}</p>
-                    {/* 記事画像 */}
+                {/* 複数ある場合の表示方法 for文と同じ */}
+                <div className="PostListBody">
                     <div>
-                        {post.images
-                            .sort((a, b) => a.sort_order - b.sort_order) // sort_order順に並び替え
-                            .map((img) => (
+                        <label>並び替え：</label>
+                        <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
+                            <option value="new">新着順</option>
+                            <option value="like">いいね順</option>
+                            <option value="view">閲覧数順</option>
+                            <option value="comment">注目順</option>
+                        </select>
+                    </div>
+                    <div className="PostListScroll">
+                        {sortedPosts.map((post) => (
+                            <div
+                                key={post.post_id}
+                                className="Post">
+                                {/* アイコン */}
                                 <img
-                                key={img.post_img_id}
-                                src={img.post_img}        // DjangoのURL
-                                alt={`記事${post.post_id}の画像`}
-                                style={{ maxWidth: "200px", marginRight: "10px" }}
+                                    src={post.author_icon}
+                                    alt={`${post.author_name}のアイコン`}
+                                    style={{ width: '40px', height: '40px', borderRadius: '50%' }}
                                 />
+                                {/* 名前 */}
+                                <p>投稿者：{post.author_name}</p>
+                                {/* タイトル */}
+                                <h3>title : {post.title}</h3>
+                                {/* 学科名 */}
+                                <p>{post.department_name}</p>
+                                {/* 内容 */}
+                                <p>content : {post.content}</p>
+                                {/* 記事画像 */}
+                                <div>
+                                    {post.images
+                                        .sort((a, b) => a.sort_order - b.sort_order) // sort_order順に並び替え
+                                        .map((img) => (
+                                            <img
+                                                key={img.post_img_id}
+                                                src={img.post_img}        // DjangoのURL
+                                                alt={`記事${post.post_id}の画像`}
+                                                style={{ maxWidth: "200px", marginRight: "10px" }}
+                                            />
+                                        ))}
+                                </div>
+
+                                {/* 投稿日時 */}
+                                <small>
+                                    {formatPostDate(post.created_at)}
+                                </small>
+                                {/* いいねボタン・いいね数 */}
+                                <div className="comment_flex">
+                                    <button
+                                        onClick={() => handleLike(post.post_id)}  // クリックでtoggle
+                                        style={{ color: post.liked ? "red" : "gray" }}  // いいね済みは赤
+                                    >
+                                        <Heart /> {post.like_count}
+                                    </button>
+                                    {/* 閲覧数 */}
+                                    <p><View />{post.total_views}</p>
+                                    {/* コメント数 */}
+                                    <p><Comment />{post.comment_count}</p>
+                                    <p><Share />共有</p>
+                                </div>
+                            </div>
+
                         ))}
                     </div>
-                    
-                    {/* 投稿日時 */}
-                    <small>
-                        {formatPostDate(post.created_at)}
-                    </small>
-                    {/* いいねボタン・いいね数 */}
-                    <button
-                        onClick={() => handleLike(post.post_id)}  // クリックでtoggle
-                        style={{ color: post.liked ? "red" : "gray" }}  // いいね済みは赤
-                    >
-                        💛 {post.like_count}
-                    </button>
-                    {/* 閲覧数 */}
-                    <p>閲覧数：{post.total_views}</p>
-                    {/* コメント数 */}
-                    <p>{post.comment_count}件のコメント</p>
                 </div>
-            ))}
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 

@@ -8,8 +8,8 @@
     z-index: 100;
     /* 前面に */
 
-    width: var(--icon-lg);
-    height: var(--icon-lg);
+    width: var(--icon-l);
+    height: var(--icon-l);
     color: var(--main-white);
     background-color: var(--main-text);
     padding: 5px;
