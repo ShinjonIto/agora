@@ -9,7 +9,6 @@ const OnePost = ({ post }) => {
                 <img
                     src={post.author_icon}
                     alt={`${post.author_name}のアイコン`}
-                    style={{ width: "40px", borderRadius: "50%" }}
                 />
             )}
             {/* 投稿者 */}

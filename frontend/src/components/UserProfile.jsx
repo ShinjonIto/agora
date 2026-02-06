@@ -1,3 +1,5 @@
+import "./UserProfile.css"
+
 
 const UserProfile = ({ user }) => {
     // userがまだない場合描画しない
@@ -6,11 +8,9 @@ const UserProfile = ({ user }) => {
     return (
         <div>
             <img
+                className="Profile_img"
                 src={user.icon_image}
                 alt="user icon"
-                width={80}
-                height={80}
-                style={{ borderRadius: "50%" }}
             />
             {/* <p>{user.user_name}</p> */}
         </div>

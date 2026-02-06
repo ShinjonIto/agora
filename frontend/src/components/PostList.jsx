@@ -127,75 +127,75 @@ const PostList = () => {
 
 
     return (
-        <div className="PostListBody">
+        <div>
             <h2>記事一覧</h2>
 
             {/* 並び替え */}
             <div>
-            <label>並び替え：</label>
-            <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
-                <option value="new">新着順</option>
-                <option value="like">いいね順</option>
-                <option value="view">閲覧数順</option>
-                <option value="comment">注目順</option>
-            </select>
+                <label>並び替え：</label>
+                <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
+                    <option value="new">新着順</option>
+                    <option value="like">いいね順</option>
+                    <option value="view">閲覧数順</option>
+                    <option value="comment">注目順</option>
+                </select>
             </div>
 
             {/* 投稿一覧 */}
             <div className="PostListScroll">
                 {sortedPosts.map((post) => (
                     <div
-                    key={post.post_id}
-                    className="Post"
-                    onClick={() => navigate(`/posts/${post.post_id}`)}
+                        key={post.post_id}
+                        className="Post"
+                        onClick={() => navigate(`/posts/${post.post_id}`)}
                     >
-                    <img
-                        src={post.author_icon}
-                        alt={`${post.author_name}のアイコン`}
-                        style={{ width: "40px", height: "40px", borderRadius: "50%" }}
-                    />
+                        <img
+                            src={post.author_icon}
+                            alt={`${post.author_name}のアイコン`}
+                            style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+                        />
 
-                    <p>投稿者：{post.author_name}</p>
-                    <h3>{post.title}</h3>
-                    <p>{post.department_name}</p>
-                    <p>{post.content}</p>
+                        <p>投稿者：{post.author_name}</p>
+                        <h3>{post.title}</h3>
+                        <p>{post.department_name}</p>
+                        <p>{post.content}</p>
 
-                    {/* 記事画像 */}
-                    <div>
-                        {post.images
-                        .sort((a, b) => a.sort_order - b.sort_order)
-                        .map((img) => (
-                            <img
-                            key={img.post_img_id}
-                            src={img.post_img}
-                            alt=""
-                            style={{ maxWidth: "200px", marginRight: "10px" }}
-                            />
-                        ))}
+                        {/* 記事画像 */}
+                        <div>
+                            {post.images
+                                .sort((a, b) => a.sort_order - b.sort_order)
+                                .map((img) => (
+                                    <img
+                                        key={img.post_img_id}
+                                        src={img.post_img}
+                                        alt=""
+                                        style={{ maxWidth: "200px", marginRight: "10px" }}
+                                    />
+                                ))}
+                        </div>
+
+                        <small>{formatPostDate(post.created_at)}</small>
+
+                        {/* アクション */}
+                        <div className="comment_flex">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleLike(post.post_id);
+                                }}
+                                style={{ color: post.liked ? "red" : "gray" }}
+                            >
+                                <Heart /> {post.like_count}
+                            </button>
+
+                            <p><View /> {post.total_views}</p>
+                            <p><Comment /> {post.comment_count}</p>
+                            <p><Share /> 共有</p>
+                        </div>
                     </div>
-
-                    <small>{formatPostDate(post.created_at)}</small>
-
-                    {/* アクション */}
-                    <div className="comment_flex">
-                        <button
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            handleLike(post.post_id);
-                        }}
-                        style={{ color: post.liked ? "red" : "gray" }}
-                        >
-                        <Heart /> {post.like_count}
-                        </button>
-
-                        <p><View /> {post.total_views}</p>
-                        <p><Comment /> {post.comment_count}</p>
-                        <p><Share /> 共有</p>
-                    </div>
-                </div>
-            ))}
+                ))}
             </div>
-    </div>
+        </div>
     );
 };
 

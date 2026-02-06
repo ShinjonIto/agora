@@ -12,7 +12,6 @@ hgroup p {
 
 .header-oka {
     transform: translateY(1px);
-    opacity: 0.2;
     color: var(--base-color);
     width: 100%;
     height: auto;
