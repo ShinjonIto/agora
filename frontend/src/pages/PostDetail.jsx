@@ -4,6 +4,7 @@ import axiosPrivate from "@/api/axiosPrivate";
 import MainLayout from "../layouts/MainLayout";         // メインレイアウト
 import OnePost from "../components/OnePost";            // 記事
 import CommentItem from "../components/CommentItem";    // コメント
+import CommentForm from "../components/CommentForm";    // コメントフォーム
 
 
 const PostDetail = () => {
@@ -39,7 +40,7 @@ const PostDetail = () => {
         <MainLayout>
             {/* 記事 */}
             <OnePost post={post} />
-            
+
             {/* コメント */}
             <h3>コメント</h3>
             {comments.length === 0 ? (
@@ -50,9 +51,13 @@ const PostDetail = () => {
                         key={comment.comment_id}
                         comment={comment}
                         setComments={setComments} 
+                        postId={postId}
                     />
                 ))
             )}
+
+            {/* コメントフォーム */}
+            <CommentForm postId={postId} setComments={setComments} />
         </MainLayout>
     );
 };

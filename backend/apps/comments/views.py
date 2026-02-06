@@ -58,3 +58,35 @@ class CommentLikeAPIView(APIView):
             "liked": liked,
             "like_count": like_count
         })
+        
+        
+        
+class CommentCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    # post送信
+    def post(self, request, post_id):
+        # 記事を取得
+        post = Post.objects.filter(post_id=post_id, is_deleted=False).first()
+        
+        if not post:
+            return Response({"error": "記事が存在しません"}, status=status.HTTP_404_NOT_FOUND)
+        
+        content = request.data.get("content")
+        parent_comment_id = request.data.get("parent_comment")   # 子コメント用
+        
+        if not content:
+            return Response({"error" : "コメントを入力してください"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 親コメントある場合取得
+        parent_comment = None
+        if parent_comment_id:
+            parent_comment = Comment.objects.filter(comment_id=parent_comment_id, is_deleted=False).first()
+            
+        # コメント作成
+        comment = Comment.objects.create(
+            post=post, user=request.user, content=content, parent_comment=parent_comment
+        )
+        
+        serializer = CommentSerializer(comment, context={"request" : request})
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

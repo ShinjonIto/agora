@@ -19,7 +19,7 @@ const CommentList = ({ postId }) => {
             <CommentItem
             key={comment.comment_id}
             comment={comment}
-            setComments={setComments}   // ← これが命
+            setComments={setComments}
             />
         ))}
         </div>
