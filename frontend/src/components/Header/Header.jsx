@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import UserProfile from "../UserProfile";
+import LogoutButton from "../LogoutButton";
 
 import "./Header.css";
 
@@ -36,7 +37,7 @@ const Header = ({ user }) => {
 
 
                 {/* ログアウトボタン */}
-                {/* <LogoutButton /> */}
+                <LogoutButton />
 
                 {/* ユーザーアイコン */}
                 <UserProfile user={user} />

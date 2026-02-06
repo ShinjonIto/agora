@@ -7,20 +7,20 @@ import "./Home.css";
 const Home = () => {
 
     return (
-        <div>
-            <MainLayout />
-
+        <MainLayout>
 
             <div className="homeLayout">
                 {/* サイドバー */}
                 <Sidebar className="sidebar" />
 
                 {/* 記事一覧 */}
-                <div className="PostList">
-                    <PostList />
+                <div className="postList">
+                    <div className="PostListBody">
+                        <PostList />
+                    </div>
                 </div>
             </div>
-        </div>
+        </MainLayout>
     );
 };
 

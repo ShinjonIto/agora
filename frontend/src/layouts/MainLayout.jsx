@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axiosPrivate from "../api/axiosPrivate";
 import Header from "../components/Header/Header";
 import CreatePostButton from "../components/CreatePostButton";
+import "./MainLayout.css"
 
 
 const MainLayout = ({ children }) => {
@@ -26,14 +27,17 @@ const MainLayout = ({ children }) => {
     if (!user) return <p>Loading...</p>;
 
     return (
-        <div>
-            <Header user={user} />
-            <CreatePostButton />
+        <div className="layout">
+            <div className="header">
+                <Header user={user} />
+            </div>
+
 
             {/* 各ページの中身 */}
-            <main>
-                { children }
+            <main className="main">
+                {children}
             </main>
+            <CreatePostButton />
         </div>
     )
 }

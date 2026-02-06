@@ -1,16 +1,26 @@
 .Post {
     background-color: var(--main-white);
-    aspect-ratio: 1/2;
+    aspect-ratio: 2/1;
+    margin: 10px;
+
 }
 
-.PostListBody {
-    padding: 100px;
-    background-color: var(--main-sub-color);
-    border-radius: 20px 20px 0 0;
-
-    width: 100%;
+.post p {
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .comment_flex {
     display: flex;
+}
+
+.PostListScroll {
+    flex: 1;
+    min-height: 0;
+    /* これも超重要 */
+    overflow-y: auto;
+    /* スクロール */
+    overflow-x: hidden;
+    /* 横は隠す */
+
 }

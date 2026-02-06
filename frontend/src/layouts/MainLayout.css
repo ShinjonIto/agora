@@ -1,0 +1,17 @@
+.layout {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout .header {
+    height: auto;
+}
+
+.layout .main {
+    padding: 0 50px;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
