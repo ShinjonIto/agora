@@ -20,7 +20,7 @@ class CommentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Comment
-        fields = ["comment_id", "comment_author_name", "comment_author_icon",
+        fields = ["comment_id", "post_id", "comment_author_name", "comment_author_icon",
                     "parent_comment", "children", "content", "like_count", "liked", "created_at"]
 
     # いいね数
