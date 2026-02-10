@@ -5,6 +5,10 @@ import CommentForm from "./CommentForm";   // 返信フォーム
 // depth : 0=親, 1=子
 const CommentItem = ({ comment, depth = 0, setComments, postId }) => {
     const [showReply, setShowReply] = useState(false);
+    const [showMenu, setShowMenu] = useState(false);
+    const [reporting, setReporting] = useState(false);
+    const [reason, setReason] = useState("");
+
 
     // コメントいいね
     const handleCommentLike = async (commentId) => {
@@ -34,6 +38,24 @@ const CommentItem = ({ comment, depth = 0, setComments, postId }) => {
             console.error(err);
         }
     };
+
+
+    // 通報ボタン
+    const submitReport = async () => {
+        if (!reason.trim()) 
+            return alert("理由を入力してください");
+
+        try {
+            await axiosPrivate.post(`/api/reports/comments/${comment.comment_id}/`,{ reason });
+
+            alert("通報しました。");
+            setReporting(false);
+            setShowMenu(false);
+        } catch (err) {
+            alert("通報に失敗しました。")
+        }
+    };
+
 
     // 日時表示
     const formatPostDate = (dateString) => {
@@ -65,6 +87,8 @@ const CommentItem = ({ comment, depth = 0, setComments, postId }) => {
         }
         return postDate.toLocaleDateString();
     };
+
+
 
     return (
         <div style={{ marginLeft: depth * 20, marginTop: 12 }}>
@@ -106,6 +130,48 @@ const CommentItem = ({ comment, depth = 0, setComments, postId }) => {
                     )}
                 </div>
             )}
+
+            {/* 三点リーダー */}
+            <button onClick={() => setShowMenu(!showMenu)}>⋮</button>
+            {showMenu && (
+                <div>
+                    <button onClick={() => setReporting(true)}>通報</button>
+                </div>
+            )}
+
+            {/* コメント通報モーダル */}
+            {reporting && (
+                <div style={{
+                    position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
+                    backgroundColor: "rgba(0,0,0,0.5)", zIndex: 9999,
+                    display: "flex", justifyContent: "center", alignItems: "center"
+                    }} className="modal-overlay" onClick={() => setReporting(false)}>
+                    <div
+                        className="modal-content"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <h3>コメントを通報する</h3>
+
+                        <textarea
+                            className="report-textarea"
+                            placeholder="不適切な内容、スパムなど"
+                            value={reason}
+                            onChange={(e) => setReason(e.target.value)}
+                        />
+
+                        <div className="modal-buttons">
+                            <button onClick={() => setReporting(false)}>
+                                キャンセル
+                            </button>
+                            <button onClick={submitReport}>
+                                送信する
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {/* 通報モーダルここまで */}
+
 
             {/* 投稿日時 */}
             <small>{formatPostDate(comment.created_at)}</small>
