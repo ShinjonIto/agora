@@ -170,7 +170,7 @@ const PostList = () => {
     };
 
     return (
-        <div>
+        <div className="postList">
             {/* 通報モーダル */}
             {reportingPostId && (
                 <div style={{
@@ -196,11 +196,14 @@ const PostList = () => {
                             <button className="SubmitBtn" onClick={handleReportSubmit}>
                                 送信する
                             </button>
+                          </div>
                         </div>
                     </div>
                 </div>
             )}
             {/* 通報モーダルここまで */}
+          </div>
+
 
             <h2>記事一覧</h2>
             <div>
@@ -212,9 +215,10 @@ const PostList = () => {
                 </select>
             </div>
 
+            {/* 投稿一覧 */}     
             <div className="PostListScroll">
                 {sortedPosts.map((post) => (
-                    <div key={post.post_id} className="Post" onClick={() => !openMenuId && navigate(`/posts/${post.post_id}`)}>
+                    <div key={post.post_id} className="post" onClick={() => !openMenuId && navigate(`/posts/${post.post_id}`)}>
                         
                         {/* 三点リーダー部分 */}
                         <div>

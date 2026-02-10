@@ -1,0 +1,117 @@
+.authPages {
+    overflow-y: scroll;
+    min-height: 600px;
+}
+
+.authPages form {
+    height: 100%;
+    display: flex;
+    gap: 100px;
+    flex-flow: column;
+
+    align-items: center;
+}
+
+.authPages .authInput {
+    border-bottom: 5px solid var(--accent-color);
+    width: 100%;
+    padding: 30px 30px;
+    border-radius: var(--radius) var(--radius) 0 0;
+    background-color: var(--login-base-color);
+}
+
+.authPages .authInput.isValid {
+    border-bottom: 3px solid var(--accent-color);
+    ;
+}
+
+.authPages .authInput.isInvalid {
+    border-bottom: 3px solid var(--accent-sub-color);
+}
+
+.authPages .errorText {
+    color: var(--accent-sub-color);
+    /* エラー用の赤 */
+    font-size: 0.85rem;
+    margin-top: 6px;
+}
+
+.authPages .authInput {
+    box-sizing: border-box;
+
+    /* ふだんから透明の枠を持たせておく（ズレ防止） */
+    border: 3px solid transparent;
+
+    /* 既存の下線は維持 */
+    border-bottom: 3px solid var(--accent-color);
+}
+
+/* フォーカス中は全体を囲む */
+.authPages .authInput:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* invalid のときはフォーカス枠もエラー色 */
+.authPages .authInput.isInvalid:focus {
+    border-color: var(--accent-sub-color);
+}
+
+/* valid のときはフォーカス枠もアクセント色（同じでOKならそのまま） */
+.authPages .authInput.isValid:focus {
+    border-color: var(--accent-color);
+}
+
+
+
+
+
+
+
+/* Chrome / Edge autofill 対策（全部の状態を押さえる） */
+.authPages input:-webkit-autofill,
+.authPages input:-webkit-autofill:hover,
+.authPages input:-webkit-autofill:focus,
+.authPages input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--login-base-color) inset !important;
+    box-shadow: 0 0 0 1000px var(--login-base-color) inset !important;
+
+    -webkit-text-fill-color: var(--main-text) !important;
+    /* ←文字色も固定 */
+    caret-color: var(--main-text) !important;
+    /* ←カーソル色も */
+    transition: background-color 9999s ease-in-out 0s;
+    /* ←色戻り対策 */
+}
+
+.authPages form div {
+    width: 80%;
+    margin: 0 auto;
+    /* padding: 0 0 5px 0; */
+}
+
+
+.ok_button {
+    background-color: var(--accent-color);
+    color: var(--main-white);
+}
+
+.no_button {
+    background-color: rgb(181, 181, 181);
+    color: var(--main-white);
+}
+
+.button {
+    border-radius: 5px;
+    padding: 10px 50px;
+}
+
+.no_button {
+    background-color: rgb(181, 181, 181);
+    color: var(--main-white);
+    cursor: not-allowed;
+}
+
+button:disabled {
+    opacity: 0.6;
+}
