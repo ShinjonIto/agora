@@ -1,3 +1,7 @@
+HTML {
+    font-size: clamp(20px, 1vw, 40px);
+}
+
 body {
     font-family: var(--font-body);
     font-weight: var(--font-body-weight);

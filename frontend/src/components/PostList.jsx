@@ -170,6 +170,9 @@ const PostList = () => {
     };
 
     return (
+
+        <div className="postList">
+            <h2>記事一覧</h2>
         <div>
             {/* 通報モーダル */}
             {reportingPostId && (
@@ -202,6 +205,7 @@ const PostList = () => {
             )}
             {/* 通報モーダルここまで */}
 
+
             <h2>記事一覧</h2>
             <div>
                 <label>並び替え：</label>
@@ -212,6 +216,19 @@ const PostList = () => {
                 </select>
             </div>
 
+            {/* 投稿一覧 */}
+            <div className="postListScroll">
+                {sortedPosts.map((post) => (
+                    <div
+                        key={post.post_id}
+                        className="post"
+                        onClick={() => navigate(`/posts/${post.post_id}`)}
+                    >
+                        <img
+                            src={post.author_icon}
+                            alt={`${post.author_name}のアイコン`}
+                            style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+                        />
             <div className="PostListScroll">
                 {sortedPosts.map((post) => (
                     <div key={post.post_id} className="Post" onClick={() => !openMenuId && navigate(`/posts/${post.post_id}`)}>
