@@ -14,7 +14,7 @@ const Home = () => {
                 <Sidebar className="sidebar" />
 
                 {/* 記事一覧 */}
-                <div className="postList">
+                <div className="main_contents">
                     <div className="PostListBody">
                         <PostList />
                     </div>

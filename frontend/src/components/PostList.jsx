@@ -127,7 +127,7 @@ const PostList = () => {
 
 
     return (
-        <div>
+        <div className="postList">
             <h2>記事一覧</h2>
 
             {/* 並び替え */}
@@ -142,11 +142,11 @@ const PostList = () => {
             </div>
 
             {/* 投稿一覧 */}
-            <div className="PostListScroll">
+            <div className="postListScroll">
                 {sortedPosts.map((post) => (
                     <div
                         key={post.post_id}
-                        className="Post"
+                        className="post"
                         onClick={() => navigate(`/posts/${post.post_id}`)}
                     >
                         <img
