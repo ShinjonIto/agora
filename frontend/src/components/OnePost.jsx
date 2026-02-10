@@ -1,4 +1,5 @@
 import React from "react";
+import ReactMarkdown from 'react-markdown';
 
 const OnePost = ({ post }) => {
     if (!post) return null;
@@ -20,8 +21,10 @@ const OnePost = ({ post }) => {
             {/* 学科 */}
             <p>{post.department_name}</p>
 
-            {/* 内容 */}
-            <p>内容：{post.content}</p>
+            {/* マークダウン方式でちゃんと表示されるように */}
+            <div className="markdown-body">
+                内容：<ReactMarkdown>{post.content}</ReactMarkdown>
+            </div>
 
             {/* 記事画像 */}
             <div>
