@@ -1,0 +1,16 @@
+body {
+    font-family: var(--font-body);
+    font-weight: var(--font-body-weight);
+    background-color: var(--base-color);
+}
+
+h1 {
+    font-family: var(--font-heading);
+    font-weight: var(--font-heading-weight);
+}
+
+
+p,
+.icon {
+    color: var(--main-text);
+}

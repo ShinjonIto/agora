@@ -1,0 +1,17 @@
+.create {
+    position: fixed;
+    /* ← これが一番重要 */
+    right: 24px;
+    /* 右から */
+    bottom: 24px;
+    /* 下から */
+    z-index: 100;
+    /* 前面に */
+
+    width: var(--icon-l);
+    height: var(--icon-l);
+    color: var(--main-white);
+    background-color: var(--main-text);
+    padding: 5px;
+    border-radius: 100%;
+}

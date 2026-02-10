@@ -1,0 +1,32 @@
+.homeLayout {
+    display: flex;
+    height: 100%;
+    gap: 50px;
+}
+
+.sidebar {
+    width: 240px;
+    flex-shrink: 0;
+}
+
+.postList {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    /* これ */
+    justify-content: center;
+    /* 横は中央のまま */
+    height: 100%;
+}
+
+.PostListBody {
+    margin-top: auto;
+    height: 100%;
+    width: 80%;
+    margin: 0 auto;
+    background-color: var(--main-sub-color);
+    border-radius: 100px 100px 0 0;
+    padding: 50px;
+}
