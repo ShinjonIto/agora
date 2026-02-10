@@ -171,6 +171,7 @@ const PostList = () => {
 
     return (
         <div className="postList">
+            <div>
             {/* 通報モーダル */}
             {reportingPostId && (
                 <div style={{
@@ -196,14 +197,12 @@ const PostList = () => {
                             <button className="SubmitBtn" onClick={handleReportSubmit}>
                                 送信する
                             </button>
-                          </div>
                         </div>
                     </div>
                 </div>
             )}
             {/* 通報モーダルここまで */}
-          </div>
-
+            </div>
 
             <h2>記事一覧</h2>
             <div>
