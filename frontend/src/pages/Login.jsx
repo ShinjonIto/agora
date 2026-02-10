@@ -21,6 +21,8 @@ const Login = () => {
 
             // トークンをブラウザに保存
             localStorage.setItem("token", res.data.token);
+            // ユーザーIDも保存
+            localStorage.setItem("userId", res.data.user_id);
 
             navigate("/");         // ログイン成功したらHomeへ
         } catch (err) {
