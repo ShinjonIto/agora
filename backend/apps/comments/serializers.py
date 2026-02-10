@@ -49,3 +49,5 @@ class CommentSerializer(serializers.ModelSerializer):
         children = Comment.objects.filter(parent_comment=obj, is_deleted=False).order_by("created_at")
         
         return CommentSerializer(children, many=True, context={"request": request}).data
+    
+    

@@ -1,12 +1,11 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import path from "path";
 
-console.log("VITE CONFIG LOADED ✅");
-
-// https://vite.dev/config/
 export default defineConfig({
+  base: "/",  
+
   plugins: [
     react(),
     svgr(),
@@ -14,15 +13,14 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src")
+      "@": path.resolve(__dirname, "src"),
     },
   },
 
+  // dev 用（build では無視される）
   server: {
     proxy: {
-      "/hello": "http://127.0.0.1:8000",
-      "/users": "http://127.0.0.1:8000",
-      "/posts": "http://127.0.0.1:8000",
-    }
-  }
-})
+      "/api": "http://127.0.0.1:8000",
+    },
+  },
+});
