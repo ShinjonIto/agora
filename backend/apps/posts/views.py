@@ -161,3 +161,17 @@ class PostDeleteAPIView(APIView):
             
         else:
             return Response({"error": "記事が見つからないか、権限がありません"}, status=status.HTTP_404_NOT_FOUND)
+
+
+# 自分の記事一覧
+class MyPostAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        user = request.user
+        myposts = Post.objects.filter(post_user=user, is_deleted=False).order_by("-created_at")
+        serializer = PostSerializer(myposts, many=True, context={'request': request})
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+            
+            

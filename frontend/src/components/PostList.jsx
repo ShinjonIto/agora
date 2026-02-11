@@ -5,12 +5,8 @@ import ErrorMessage from "./ErrorMessage";
 import "./PostList.css";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
+import PostCard from "./PostCard";
 
-// 画像
-import Heart from "@/assets/images/icon/heart.svg?react";
-import Comment from "@/assets/images/icon/comment.svg?react";
-import Share from "@/assets/images/icon/share.svg?react";
-import View from "@/assets/images/icon/view.svg?react";
 
 const deptMap = { mch: 0, cyc: 1, sys: 2 };
 
@@ -217,70 +213,19 @@ const PostList = () => {
             {/* 投稿一覧 */}     
             <div className="PostListScroll">
                 {sortedPosts.map((post) => (
-                    <div key={post.post_id} className="post" onClick={() => !openMenuId && navigate(`/posts/${post.post_id}`)}>
-                        
-                        {/* 三点リーダー部分 */}
-                        <div>
-                            <button onClick={(e) => toggleMenu(e, post.post_id)}>⋮</button>
-                            {openMenuId === post.post_id && (
-                                <div onClick={(e) => e.stopPropagation()}>
-                                    {/* 自分の記事だったら編集・削除 */}
-                                    {String(post.post_user) === String(currentUserId) ? (
-                                        <div>
-                                            <button onClick={(e) => {
-                                                e.stopPropagation();
-                                                // 編集画面へ
-                                                navigate(`/posts/edit/${post.post_id}`)}}>
-                                                編集
-                                            </button>
-                                            <button onClick={(e) => {
-                                                e.stopPropagation(); 
-                                                // 削除関数
-                                                handleDelete(post.post_id); }}>
-                                                削除
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        // 他人のだったらフォロー・通報
-                                        <div>
-                                            <button onClick={(e) => {e.stopPropagation(); 
-                                                handleFollow(post.post_user); }}>
-                                                {post.is_followed ? "フォローを外す" : "フォロー"}
-                                            </button>
-                                            {post.is_reported ? (
-                                                <p>通報済み</p>
-                                                ) : (
-                                                <button onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    openReportModal(post.post_id);
-                                                }}>
-                                                    投稿を通報
-                                                </button>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-
-                        <img src={post.author_icon} alt="icon" style={{ width: "40px", height: "40px", borderRadius: "50%" }} />
-                        <p>{post.author_name}</p>
-                        <h3>{post.title}</h3>
-                        <p>{post.department_name}</p>
-
-                        <div className="markdown-body">
-                            <ReactMarkdown>{post.content}</ReactMarkdown>
-                        </div>
-
-                        <div className="comment_flex">
-                            <button onClick={(e) => { e.stopPropagation(); handleLike(post.post_id); }} style={{ color: post.liked ? "red" : "gray" }}>
-                                <Heart /> {post.like_count}
-                            </button>
-                            <p><Comment /> {post.comment_count}</p>
-                            <p><View /> {post.total_views}</p>
-                            <p onClick={(e) => e.stopPropagation()}><Share /></p>
-                        </div>
-                    </div>
+                    <PostCard 
+                        key={post.post_id}
+                        post={post}
+                        currentUserId={currentUserId}
+                        openMenuId={openMenuId}
+                        toggleMenu={toggleMenu}
+                        navigate={navigate}
+                        handleDelete={handleDelete}
+                        handleFollow={handleFollow}
+                        openReportModal={openReportModal}
+                        handleLike={handleLike}
+                        formatPostDate={formatPostDate}
+                    />
                 ))}
             </div>
         </div>
