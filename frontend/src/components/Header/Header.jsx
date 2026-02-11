@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react"; 
+import { useNavigate, Link } from "react-router-dom"; 
 import UserProfile from "../UserProfile";
 import LogoutButton from "../LogoutButton";
 
@@ -12,11 +12,29 @@ import HeaderOka from "@/assets/images/header/header_oka.svg?react";
 
 const Header = ({ user }) => {
     const navigate = useNavigate();
+    const [showMenu, setShowMenu] = useState(false); // モーダルの開閉状態
+
+    // ユーザーID
+    const currentUserId = localStorage.getItem("userId");
 
     // ロゴクリックしたらホーム画面へ
     const handleLogoClick = () => {
         navigate("/")
     };
+
+
+    // メニュー表示切替
+    const toggleMenu = (e) => {
+        e.stopPropagation();
+        setShowMenu(!showMenu);
+    };
+
+    // 外側クリックしたらモーダルを閉じる
+    useEffect(() => {
+        const closeMenu = () => setShowMenu(false);
+        window.addEventListener("click", closeMenu);
+    }, []);
+
 
     return (
         <header>
@@ -39,8 +57,23 @@ const Header = ({ user }) => {
                 {/* ログアウトボタン */}
                 <LogoutButton />
 
-                {/* ユーザーアイコン */}
-                <UserProfile user={user} />
+                {/* ユーザーアイコン：クリックでモーダル表示 */}
+                <div onClick={toggleMenu} style={{ position: "relative", cursor: "pointer" }}>
+                    <UserProfile user={user} />
+
+                    {/* アイコン押した時のモーダル */}
+                    {showMenu && (
+                        <div className="HeaderModal" onClick={(e) => e.stopPropagation()}>
+                            <Link 
+                                to={`/mypage/${currentUserId}`} 
+                                className="HeaderModalLink"
+                                onClick={() => setShowMenu(false)}
+                            >
+                                マイページ
+                            </Link>
+                        </div>
+                    )}
+                </div>
             </div>
 
 
