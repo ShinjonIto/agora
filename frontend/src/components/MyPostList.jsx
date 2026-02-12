@@ -5,16 +5,28 @@ import ErrorMessage from "./ErrorMessage";
 import "./PostList.css";
 import { useNavigate } from "react-router-dom";
 import MyCommentItem from "./MyCommentItem"; 
-import ReactMarkdown from 'react-markdown';
+import PostCard from "./PostCard";
+import ReportModal from "./ReportModal"; 
 
 const MyPostList = ({ fetchType }) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [posts, setPosts] = useState([]);
+    
+    // ユーザーID
+    const currentUserId = localStorage.getItem("userId");
 
+    // 通報
+    const [reportTarget, setReportTarget] = useState(null); 
+
+    // 日付
     const formatPostDate = (dateString) => {
         const postDate = new Date(dateString);
+        const now = new Date();
+        const diffDays = Math.floor((now - postDate) / (1000 * 60 * 60 * 24));
+        if (diffDays === 0) return "今日 " + postDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        if (diffDays === 1) return "昨日";
         return postDate.toLocaleDateString();
     };
 
@@ -25,8 +37,6 @@ const MyPostList = ({ fetchType }) => {
                 setError(null);
                 const url = `/api/posts/${fetchType}/`; 
                 const res = await axiosPrivate.get(url);
-                console.log
-                console.log(res.data)
                 setPosts(res.data);
             } catch (err) {
                 setError("データの取得に失敗しました");
@@ -37,6 +47,39 @@ const MyPostList = ({ fetchType }) => {
         fetchPosts();
     }, [fetchType]);
 
+
+    // 通報モーダルを開く
+    const openReportModal = (postId) => {
+        setReportTarget({ id: postId, type: "post" });
+    };
+
+    // 通報成功時の処理
+    const handleReportSuccess = (id) => {
+        setPosts(posts.map(post => post.post_id === id ? { ...post, is_reported: true } : post));
+    };
+
+
+    // 削除処理（PostCardから呼ばれる）
+    const handleDelete = async (postId) => {
+        if (!window.confirm("この記事を削除してもよろしいですか？")) return;
+        try {
+            await axiosPrivate.delete(`/api/posts/${postId}/delete/`);
+            setPosts(posts.filter(p => p.post_id !== postId));
+            alert("削除しました");
+        } catch (err) {
+            alert("削除に失敗しました");
+        }
+    };
+
+    // いいね処理（PostCardから呼ばれる）
+    const handleLike = async (postId) => {
+        try {
+            const res = await axiosPrivate.post(`/api/posts/${postId}/like/`);
+            setPosts(posts.map(post =>
+                post.post_id === postId ? { ...post, liked: res.data.liked, like_count: res.data.like_count } : post
+            ));
+        } catch (err) { console.error(err); }
+    };
 
     // コメント削除
     const handleCommentDelete = async (commentId) => {
@@ -52,26 +95,39 @@ const MyPostList = ({ fetchType }) => {
         }
     };
 
+
     if (loading) return <Loading message="読み込み中..." />;
     if (error) return <ErrorMessage message={error} />;
 
-
-
     return (
         <div className="MyPost">
+
+        {/* 通報 */}
+        {reportTarget && (
+                <ReportModal 
+                    type={reportTarget.type} 
+                    targetId={reportTarget.id} 
+                    onClose={() => setReportTarget(null)} 
+                    onSuccess={handleReportSuccess}
+                />
+        )}
+
             <h2>{fetchType === "myposts" ? "自分の投稿" : fetchType === "mylikes" ? "いいねした投稿" : "コメントした投稿"}</h2>
             <div className="PostListScroll">
                 {posts.length > 0 ? (
                     posts.map((post) => (
-                        <div key={post.post_id} className="PostItem" style={{ borderBottom: "1px white solid"}}>
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "5px" }}>
-                                <img src={post.author_icon} alt="" style={{ width: "30px", height: "30px", borderRadius: "50%" }} />
-                                <span>{post.author_name}</span>
-                            </div>
-
-                            <h3 onClick={() => navigate(`/posts/${post.post_id}`)}>
-                                {post.title}
-                            </h3>
+                        <div key={post.post_id} style={{ borderBottom: "1px white solid"}}>
+                            {/* PostCardを再利用（全ての情報を渡す） */}
+                            <PostCard 
+                                post={post}
+                                currentUserId={currentUserId}
+                                navigate={navigate}
+                                handleDelete={handleDelete}
+                                handleLike={handleLike}
+                                formatPostDate={formatPostDate}
+                                isReported={post.is_reported}
+                                openReportModal={openReportModal}
+                            />
 
                             {/* コメント表示エリア */}
                             {fetchType === "mycomments" && post.my_comments && post.my_comments.map((c) => (
@@ -81,16 +137,9 @@ const MyPostList = ({ fetchType }) => {
                                     navigate={navigate}
                                     handleCommentDelete={handleCommentDelete}
                                     formatPostDate={formatPostDate}
+                                    currentUserId={currentUserId} 
                                 />
                             ))}
-
-                            {fetchType !== "mycomments" && (
-                                <div className="markdown-body">
-                                    <ReactMarkdown>
-                                        {post.content.length > 150 ? `${post.content.substring(0, 150)}...` : post.content}
-                                    </ReactMarkdown>
-                                </div>
-                            )}
                         </div>
                     ))
                 ) : (

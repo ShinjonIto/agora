@@ -29,9 +29,17 @@ const PostDetail = () => {
                 setError("記事またはコメントの取得に失敗しました");
             }
         };
-
         fetchPostAndComments();
     }, [postId]);
+
+
+    // コメント件数を増やす関数
+    const handleCommentSuccess = () => {
+        setPost(prev => ({
+            ...prev,
+            comment_count: (prev.comment_count || 0) + 1
+        }));
+    };
 
     if (error) return <p>{error}</p>;
     if (!post) return <p>Loading...</p>;
@@ -57,7 +65,7 @@ const PostDetail = () => {
             )}
 
             {/* コメントフォーム */}
-            <CommentForm postId={postId} setComments={setComments} />
+            <CommentForm postId={postId} setComments={setComments} onSuccess={handleCommentSuccess} />
         </MainLayout>
     );
 };

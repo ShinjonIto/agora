@@ -7,6 +7,8 @@ from apps.posts.models import Post
 from apps.comments.models import Comment
 from apps.reports.models import *
 
+
+# 記事通報
 class ReportPostAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -30,6 +32,7 @@ class ReportPostAPIView(APIView):
 
 
 
+# コメント通報
 class ReportCommentAPIView(APIView):
     permission_classes = [IsAuthenticated]
     

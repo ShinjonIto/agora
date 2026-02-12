@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useCallback } from "react";
-import SimpleMDE from "react-simplemde-editor";
-import "easymde/dist/easymde.min.css";
+import React, { useState, useMemo, useCallback, useRef } from "react";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css"; 
 import axiosPrivate from "../api/axiosPrivate";
 
 const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
@@ -10,51 +10,57 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
     const [department, setDepartment] = useState(initialData?.department || null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const quillRef = useRef(null); 
 
-    // useCallbackで関数を固定し、エディタの再描画を防ぐ
-    const uploadImage = useCallback(async (file, onSuccess, onError) => {
-        const formData = new FormData();
-        formData.append("image", file);
+    // 画像アップロード処理
+    const imageHandler = () => {
+        const input = document.createElement("input");
+        input.setAttribute("type", "file");
+        input.setAttribute("accept", "image/*");
+        input.click();
 
-        try {
-            // Django側の ImageUploadAPIView を叩く
-            const res = await axiosPrivate.post("/api/posts/upload_image/", formData);
-            // サーバーから返ってきたURLをエディタに挿入
-            onSuccess(res.data.url);
-        } catch (err) {
-            console.error("Upload Error:", err);
-            onError("画像のアップロードに失敗しました");
-        }
-    }, []);
+        input.onchange = async () => {
+            const file = input.files[0];
+            if (!file) return;
 
-    // useMemoの依存配列を空[]にすることで、入力中にエディタが初期化されるのを防ぐ
-    const mdeOptions = useMemo(() => ({
-        autofocus: false,
-        spellChecker: false,
-        sideBySideFullscreen: false,
-        placeholder: "画像はドラッグ＆ドロップで好きな場所に貼れます...",
-        uploadImage: true,
-        imageUploadFunction: uploadImage,
-        imageAccept: "image/png, image/jpeg, image/gif",
-        status: ["lines", "words"],
-        renderingConfig: {
-            singleLineBreaks: false,
-            codeSyntaxHighlighting: true,
+            const formData = new FormData();
+            formData.append("image", file);
+
+            try {
+                const res = await axiosPrivate.post("/api/posts/upload_image/", formData);
+                const url = res.data.url;
+                const quill = quillRef.current.getEditor();
+                const range = quill.getSelection();
+                quill.insertEmbed(range ? range.index : quill.getLength(), "image", url);
+            } catch (err) {
+                alert("画像のアップロードに失敗しました");
+            }
+        };
+    };
+
+    // ツールバーの設定（太字、見出し、リスト、画像など）
+    const modules = useMemo(() => ({
+        toolbar: {
+            container: [
+                ['bold', 'italic', 'underline'], // 太字など
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['blockquote', 'code-block'],
+                ['link', 'image'], // 画像
+                ['clean']
+            ],
+            handlers: {
+                image: imageHandler,
+            },
         },
-        // ツールバーにプレビューボタン等を表示
-        toolbar: [
-            "bold", "italic", "heading", "|",
-            "quote", "unordered-list", "ordered-list", "|",
-            "link", "image", "|",
-            "side-by-side", "fullscreen", "preview", "|", "guide"
-        ],
-    }), [uploadImage]);
+    }), []);
+
+
 
     // 公開ボタン
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!title.trim() || !content.trim()) {
+        if (!title.trim() || !content || content === "<p><br></p>") {
             setError("タイトルと本文を入力してください");
             return;
         }
@@ -122,8 +128,17 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
                     />
                 </div>
 
-                {/* 本文エディタ：ここに画像をドロップ！ */}
-                <SimpleMDE value={content} onChange={setContent} options={mdeOptions} />
+                {/* 本文 */}
+                <div style={{ backgroundColor: "white", color: "black" }}>
+                    <ReactQuill 
+                        ref={quillRef}
+                        theme="snow"
+                        value={content} 
+                        onChange={setContent} 
+                        modules={modules}
+                        placeholder="本文を入力してください..."
+                    />
+                </div>
 
                 {error && <p>{error}</p>}
 
@@ -132,7 +147,7 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
                 </button>
             </form>
         </div>
-    );
+    );  
 };
 
 export default PostForm;
