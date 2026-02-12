@@ -23,6 +23,8 @@ const PostCard = ({
 
 
     return (
+
+      
         <div className="post" onClick={() => navigate(`/posts/${post.post_id}`)}>
             <div>
                 

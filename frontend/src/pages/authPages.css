@@ -1,26 +1,46 @@
 .authPages {
-    overflow-y: scroll;
-    min-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* min-height: 100%; */
+    width: 100%;
+    height: 100%;
+    padding: var(--login-padding);
+}
+
+.authPages * {
+    width: 100%;
 }
 
 .authPages form {
-    height: 100%;
+    /* height: 100%; */
+    flex: 1;
+    width: 100%;
     display: flex;
-    gap: 100px;
+    gap: 30px;
     flex-flow: column;
     align-items: center;
 }
 
+.authPages a {
+    text-align: center;
+}
+
+
 .authPages .authInput {
     border-bottom: 5px solid var(--accent-color);
     width: 100%;
-    padding: 30px 30px;
+    padding: 0 10px;
     border-radius: var(--radius) var(--radius) 0 0;
     background-color: var(--login-base-color);
 }
 
+.authPages .authInput,
+.button {
+    height: 45px;
+}
+
 .authPages .authInput.isValid {
-    border-bottom: 3px solid var(--accent-color);
+    border-bottom: (--accent-color);
     ;
 }
 
@@ -38,9 +58,6 @@
 .authPages .authInput {
     box-sizing: border-box;
 
-    /* ふだんから透明の枠を持たせておく（ズレ防止） */
-    border: 3px solid transparent;
-
     /* 既存の下線は維持 */
     border-bottom: 3px solid var(--accent-color);
 }
@@ -48,12 +65,16 @@
 /* フォーカス中は全体を囲む */
 .authPages .authInput:focus {
     outline: none;
+    background-color: color-mix(in srgb, var(--accent-color) 18%, white);
     border-color: var(--accent-color);
+    transition: 0.2s ease;
+    border-bottom: 3px solid transparent;
 }
 
 /* invalid のときはフォーカス枠もエラー色 */
 .authPages .authInput.isInvalid:focus {
-    border-color: var(--accent-sub-color);
+    background-color: var(--accent-sub-color);
+
 }
 
 /* valid のときはフォーカス枠もアクセント色（同じでOKならそのまま） */
@@ -83,11 +104,7 @@
     /* ←色戻り対策 */
 }
 
-.authPages form div {
-    width: 80%;
-    margin: 0 auto;
-    /* padding: 0 0 5px 0; */
-}
+
 
 
 .ok_button {
@@ -100,15 +117,19 @@
     color: var(--main-white);
 }
 
+button:disabled {
+    pointer-events: none;
+}
+
 .button {
     border-radius: 5px;
-    padding: 10px 50px;
+    cursor: pointer;
 }
 
 .no_button {
     background-color: rgb(181, 181, 181);
     color: var(--main-white);
-    cursor: not-allowed;
+    cursor: default;
 }
 
 button:disabled {

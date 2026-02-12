@@ -89,72 +89,49 @@ const Signup = () => {
                 ✕
             </Link>
 
-            <h2>会員登録</h2>
-
             {/* 全体エラー */}
             {submitErrors && <p>{submitErrors}</p>}
 
 
             <form onSubmit={handleSubmit} >
-                <div>
-                    <FormInput
-                        name="user_name"
-                        placeholder="ユーザー名"
-                        value={form.user_name}
-                        error={errors.user_name}
-                        onChange={handleChange}
-                    />
-                </div>
 
-                <div>
-                    <FormInput
-                        name="student_number"
-                        placeholder="学生番号"
-                        value={form.student_number}
-                        error={errors.student_number}
-                        onChange={handleChange}
-                    />
+                <FormInput
+                    name="user_name"
+                    value={form.user_name}
+                    error={errors.user_name}
+                    onChange={handleChange}
+                />
 
-                </div>
+                <FormInput
+                    name="student_number"
+                    value={form.student_number}
+                    error={errors.student_number}
+                    onChange={handleChange}
+                />
 
-                <div>
-                    <FormInput
-                        type="email"
-                        name="email"
-                        placeholder="メールアドレス"
-                        error={errors.email}
-                        value={form.email}
-                        onChange={handleChange}
+                <FormInput
+                    name="email"
+                    value={form.email}
+                    error={errors.email}
+                    onChange={handleChange}
+                />
 
-                    />
+                <FormInput
+                    name="password"
+                    value={form.password}
+                    error={errors.password}
+                    onChange={handleChange}
+                    required
+                />
 
-                </div>
+                <FormInput
+                    name="confirm_password"
+                    value={form.confirm_password}
+                    error={errors.confirm_password}
+                    onChange={handleChange}
+                    required
+                />
 
-                <div>
-                    <FormInput
-                        type="password"
-                        name="password"
-                        placeholder="パスワード"
-                        error={errors.password}
-                        value={form.password}
-                        onChange={handleChange}
-                        required
-                    />
-
-                </div>
-
-                <div>
-                    <FormInput
-                        type="password"
-                        name="confirm_password"
-                        placeholder="パスワード再入力"
-                        error={errors.confirm_password}
-                        value={form.confirm_password}
-                        onChange={handleChange}
-                        required
-                    />
-
-                </div>
 
                 <button
                     type="submit"

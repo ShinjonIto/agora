@@ -67,35 +67,26 @@ const Login = () => {
 
     return (
         <div className="authPages">
-            <h1>Login</h1>
+
 
             {submitErrors && <p className="errorText">{submitErrors}</p>}
 
             <form onSubmit={handleSubmit}>
-                <div>
-                    <FormInput
-                        name="student_number"
-                        placeholder="学生番号"
-                        value={form.student_number}
-                        error={errors.student_number}
-                        onChange={handleChange}
-                        inputMode="numeric"
-                        autoComplete="username"
-                    />
-                </div>
+                <FormInput
+                    name="student_number"
+                    value={form.student_number}
+                    error={errors.student_number}
+                    onChange={handleChange}
+                />
 
-                <div>
-                    <FormInput
-                        type="password"
-                        name="password"
-                        placeholder="パスワード"
-                        value={form.password}
-                        error={errors.password}
-                        onChange={handleChange}
-                        autoComplete="current-password"
-                        required
-                    />
-                </div>
+                <FormInput
+                    name="password"
+                    value={form.password}
+                    error={errors.password}
+                    onChange={handleChange}
+                    required
+                />
+
 
                 <button
                     type="submit"

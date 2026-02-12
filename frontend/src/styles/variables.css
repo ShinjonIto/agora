@@ -35,7 +35,6 @@
     --icon-l: clamp(50px, 1.6vw, 60px);
 
     --radius: 10px;
-
-
-
+    --oka: 40px;
+    --login-padding: 5%;
 }

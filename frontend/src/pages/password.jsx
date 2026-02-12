@@ -41,7 +41,12 @@ const Password = () => {
 
             <form onSubmit={(e) => { e.preventDefault(); }}>
 
-                <input placeholder="学生番号" onChange={e => setUsername(e.target.value)} />
+                <FormInput
+                    name="student_number"
+                    value={form.student_number}
+                    error={errors.student_number}
+                    onChange={handleChange}
+                />
                 <button>変更</button>
 
             </form>

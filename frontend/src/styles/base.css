@@ -2,6 +2,10 @@ HTML {
     font-size: clamp(14px, 1vw, 30px);
 }
 
+* {
+    letter-spacing: 0.3rem;
+}
+
 body {
     font-family: var(--font-body);
     font-weight: var(--font-body-weight);
@@ -9,7 +13,9 @@ body {
     color: var(--main-text);
 }
 
-h1 {
+
+h1,
+h2 {
     font-family: var(--font-heading);
     font-weight: var(--font-heading-weight);
 }
