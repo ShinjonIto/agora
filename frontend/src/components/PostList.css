@@ -3,20 +3,12 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
-    /* ← 超重要 */
+    height: 100%;
 }
 
-.post {
-    background-color: var(--main-white);
-    aspect-ratio: 2/1;
-    padding: 50px;
-    margin: 10px;
-}
 
-.post p {
-    overflow-wrap: anywhere;
-    word-break: break-word;
-}
+
+
 
 .comment_flex {
     display: flex;
@@ -24,10 +16,11 @@
 
 .postListScroll {
     flex: 1;
+    height: 100%;
     min-height: 0;
-    padding: 0 50px;
     /* これも超重要 */
 
-    overflow-y: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
     /* スクロール */
 }

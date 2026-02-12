@@ -1,6 +1,6 @@
 .authPages {
     overflow-y: scroll;
-    min-height: 600px;
+    min-height: 100%;
 }
 
 .authPages form {
@@ -8,7 +8,6 @@
     display: flex;
     gap: 100px;
     flex-flow: column;
-
     align-items: center;
 }
 

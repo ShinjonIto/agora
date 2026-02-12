@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"; 
-import { useNavigate, Link } from "react-router-dom"; 
+import React, { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import UserProfile from "../UserProfile";
 import LogoutButton from "../LogoutButton";
 
@@ -55,22 +55,24 @@ const Header = ({ user }) => {
 
 
                 {/* ログアウトボタン */}
-                <LogoutButton />
+
 
                 {/* ユーザーアイコン：クリックでモーダル表示 */}
-                <div onClick={toggleMenu} style={{ position: "relative", cursor: "pointer" }}>
+                <div className="icon" onClick={toggleMenu} >
                     <UserProfile user={user} />
 
                     {/* アイコン押した時のモーダル */}
                     {showMenu && (
                         <div className="HeaderModal" onClick={(e) => e.stopPropagation()}>
-                            <Link 
-                                to={`/mypage/${currentUserId}`} 
+                            <Link
+                                to={`/mypage/${currentUserId}`}
                                 className="HeaderModalLink"
                                 onClick={() => setShowMenu(false)}
                             >
                                 マイページ
                             </Link>
+                            <LogoutButton />
+                            <Link >このサイトについて</Link>
                         </div>
                     )}
                 </div>
@@ -79,7 +81,7 @@ const Header = ({ user }) => {
 
 
 
-            <HeaderOka className="header-oka" />
+            <HeaderOka className="header-oka" preserveAspectRatio="none" />
         </header>
 
     )

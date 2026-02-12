@@ -1,15 +1,17 @@
 .authShell {
     height: 100vh;
     width: 100vw;
-    display: grid;
+    display: flex;
     position: relative;
-    place-items: center;
+    justify-content: center;
+    align-items: center;
     background: var(--login-base-color);
     /* background-color: red; */
 }
 
 .authShell .authCard {
-    width: min(800px, 92vw);
+
+    height: 80%;
     padding: 40px;
     border-radius: 16px;
     background: var(--login-accent-color);

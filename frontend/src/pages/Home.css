@@ -1,7 +1,8 @@
 .homeLayout {
     display: flex;
     height: 100%;
-    gap: 50px;
+    width: 100%;
+    min-height: 0;
 }
 
 .sidebar {
@@ -12,26 +13,21 @@
 .main_contents {
     flex: 1;
     min-height: 0;
-
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    /* 横は中央のまま */
-    height: 100%;
 }
 
 .PostListBody {
+
     flex: 1;
-    /* ← 追加 */
-    display: flex;
-    /* ← 追加 */
-    flex-direction: column;
-    /* ← 追加 */
+
     min-height: 0;
     width: 80%;
-    min-width: 600px;
     margin: 0 auto;
+
     background-color: var(--main-sub-color);
     border-radius: 100px 100px 0 0;
-    padding: 100px;
+    padding: 50px 15px 15px 15px;
     overflow: hidden;
 }
