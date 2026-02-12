@@ -52,11 +52,26 @@ const CommentForm = ({ postId, parentCommentId = null, setComments, onSuccess })
         },
     }), [imageHandler]);
 
+
+    // 空で投稿できないように
+    const isQuillEmpty = (html) => {
+        const text = html
+            .replace(/<(.|\n)*?>/g, "") // HTMLタグ除去
+            .replace(/&nbsp;/g, "")     // nbsp除去
+            .trim();                    // 空白削除
+        return text.length === 0;
+    };
+
+
     // コメント投稿
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!content || content === "<p><br></p>") return;
+        if (isQuillEmpty(content)) {
+            setError("コメントを入力してください");
+            return;
+        }
+
 
         try {
             setLoading(true);

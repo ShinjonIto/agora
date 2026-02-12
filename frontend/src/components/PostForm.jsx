@@ -54,13 +54,22 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
         },
     }), []);
 
+    // 空で投稿できないように
+    const isQuillEmpty = (html) => {
+        const text = html
+            .replace(/<(.|\n)*?>/g, "") // HTMLタグ除去
+            .replace(/&nbsp;/g, "")     // nbsp除去
+            .trim();                    // 空白削除
+        return text.length === 0;
+    };
+
 
 
     // 公開ボタン
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!title.trim() || !content || content === "<p><br></p>") {
+        if (!title.trim() || isQuillEmpty(content)) {
             setError("タイトルと本文を入力してください");
             return;
         }
