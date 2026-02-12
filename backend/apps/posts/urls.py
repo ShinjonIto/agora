@@ -12,6 +12,8 @@ urlpatterns = [
     path("<int:post_id>/update/", PostUpdateAPIView.as_view()),
     path("<int:post_id>/delete/", PostDeleteAPIView.as_view()),
     path("myposts/", MyPostAPIView.as_view()),
+    path("mylikes/", MyLikeAPIView.as_view()),
+    path("mycomments/", MyCommentPostAPIView.as_view()),
 ]
 
 if settings.DEBUG:

@@ -1,15 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosPrivate from "@/api/axiosPrivate";
-import MainLayout from "../layouts/MainLayout";         // メインレイアウト
+import MainLayout from "../layouts/MainLayout";
 import Sidebar from "../components/Sidebar";
-import MyPost from "../components/MyPost"; 
-
+import MyPostList from "../components/MyPostList"; 
 
 const MyPage = () => {
-    // 現在選択されているタブを管理 ("posts", "likes", "comments")
-    const [activeTab, setActiveTab] = useState("posts");
-
+    const [activeTab, setActiveTab] = useState("myposts"); // 初期値をAPIのパス
 
     return (
         <MainLayout>
@@ -19,17 +16,13 @@ const MyPage = () => {
                 <main>
                     {/* タブボタン */}
                     <div style={{ display: "flex", gap: "20px", marginBottom: "20px", borderBottom: "1px solid #ddd" }}>
-                        <button onClick={() => setActiveTab("posts")}>投稿</button>
-                        <button onClick={() => setActiveTab("likes")}>いいね</button>
-                        <button onClick={() => setActiveTab("comments")}>コメント</button>
+                        <button onClick={() => setActiveTab("myposts")}>投稿</button>
+                        <button onClick={() => setActiveTab("mylikes")}>いいね</button>
+                        <button onClick={() => setActiveTab("mycomments")}>コメント</button>
                     </div>
 
-                    {/* タブの内容出し分け */}
-                    <div>
-                        {activeTab === "posts" && <MyPost />}
-                        {activeTab === "likes" && <div>いいねした記事一覧（未作成）</div>}
-                        {activeTab === "comments" && <div>コメントした記事一覧（未作成）</div>}
-                    </div>
+                    {/* fetchTypeを渡して、これ1つでいいねした記事・自分の記事を表示する */}
+                    <MyPostList fetchType={activeTab} />
                 </main>
             </div>
         </MainLayout>
