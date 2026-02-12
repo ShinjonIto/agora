@@ -1,81 +1,85 @@
-import ReactMarkdown from 'react-markdown';
-
-// 画像
 import Heart from "@/assets/images/icon/heart.svg?react";
-import Comment from "@/assets/images/icon/comment.svg?react";
-import Share from "@/assets/images/icon/share.svg?react";
+import CommentIcon from "@/assets/images/icon/comment.svg?react";
 import View from "@/assets/images/icon/view.svg?react";
-
-// CSS
+import Share from "@/assets/images/icon/share.svg?react";
 import "./PostCard.css";
+import MenuButton from "./MenuButton";
+import UserProfile from "./UserProfile";
+import "quill/dist/quill.snow.css"; 
 
 const PostCard = ({
     post,
     currentUserId,
-    openMenuId,
-    toggleMenu,
+    isReported, 
     navigate,
     handleDelete,
     handleFollow,
     openReportModal,
     handleLike,
     formatPostDate,
-    reportedPostIds
 }) => {
+    // 自分の投稿か判定
+    const isMyPost = currentUserId && post.post_user && String(post.post_user) === String(currentUserId);
+
+
     return (
-        <div className="post" onClick={() => !openMenuId && navigate(`/posts/${post.post_id}`)}>
-            <div className='dai_flex'>
-                {/* 三点リーダー部分  ⋯ */}
-                <div style={{ position: "relative" }}>
-                    <button onClick={(e) => toggleMenu(e, post.post_id)}>⋯</button>
-                    {openMenuId === post.post_id && (
-                        <div onClick={(e) => e.stopPropagation()} style={{ position: "absolute", background: "white", border: "1px solid #ccc", padding: "5px", zIndex: 10 }}>
-                            {String(post.post_user) === String(currentUserId) ? (
-                                <div>
-                                    <button onClick={(e) => { e.stopPropagation(); navigate(`/posts/edit/${post.post_id}`); }}>編集</button>
-                                    <button onClick={(e) => { e.stopPropagation(); handleDelete(post.post_id); }}>削除</button>
-                                </div>
-                            ) : (
-                                <div>
-                                    <button onClick={(e) => { e.stopPropagation(); handleFollow(post.post_user); }}>
-                                        {post.is_followed ? "フォローを外す" : "フォロー"}
-                                    </button>
-                                    {reportedPostIds.includes(post.post_id) ? (
-                                        <button disabled style={{ color: "gray" }}>通報済み</button>
-                                    ) : (
-                                        <button onClick={(e) => { e.stopPropagation(); openReportModal(post.post_id); }}>投稿を通報</button>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    )}
+
+      
+        <div className="post" onClick={() => navigate(`/posts/${post.post_id}`)}>
+            <div>
+                
+                <div>
+                    {/* 記事作成者のアイコン */}
+                    <UserProfile user={{ icon_image: post.author_icon }} />
+                    {/* 名前 */}
+                    <p>{post.author_name}</p>
+                    {/* 日付 */}
+                    <p>{formatPostDate(post.created_at)}</p>
                 </div>
 
-                <div className='syo_flex'>
-                    <img src={post.author_icon} alt="icon" style={{ width: "40px", height: "40px", borderRadius: "50%" }} />
-                    <p>{post.author_name}</p>
-                    <p style={{ fontSize: "0.8rem", color: "gray" }}>{formatPostDate(post.created_at)}</p>
+                <div onClick={(e) => e.stopPropagation()}> 
+                    {/* 三点リーダー */}
+                    <MenuButton 
+                        type="post"
+                        targetId={post.post_id}
+                        ownerId={post.post_user}
+                        currentUserId={currentUserId}
+                        handlers={{
+                            onEdit: (id) => navigate(`/posts/edit/${id}`),
+                            onDelete: handleDelete,
+                            onReport: openReportModal,
+                            onFollow: handleFollow,
+                            isFollowed: post.is_followed,
+                            isReported: isReported
+                        }}
+                    />
                 </div>
             </div>
 
+            
             <div className='honbun'>
                 <div className="titleBlock">
+                    {/* タイトル */}
                     <h3>{post.title}</h3>
-                    {post.department_name && <p className="dept">{post.department_name}</p>}
+                    {/* 学科 */}
+                    {post.department_name && <span className="dept">{post.department_name}</span>}
                 </div>
 
-                <div className="markdown-body">
-                    <ReactMarkdown>{post.content}</ReactMarkdown>
-                </div>
+                {/* 本文 */}
+                <div
+                    className="ql-editor"
+                    dangerouslySetInnerHTML={{ __html: post.content }}
+                    />
+
             </div>
 
-            <div className="comment_flex">
-                <button onClick={(e) => { e.stopPropagation(); handleLike(post.post_id); }} style={{ color: post.liked ? "red" : "gray" }}>
-                    <Heart /> {post.like_count}
+            <div className="comment_flex" style={{ display: "flex", gap: "15px", marginTop: "10px" }}>
+                <button onClick={(e) => { e.stopPropagation(); handleLike(post.post_id); }} style={{ color: post.liked ? "red" : "gray", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px" }}>
+                    <Heart style={{ width: "18px" }} /> {post.like_count}
                 </button>
-                <button><Comment /> {post.comment_count}</button>
-                <button><View /> {post.total_views}</button>
-                <button onClick={(e) => e.stopPropagation()}><Share /></button>
+                <div style={{ display: "flex", alignItems: "center", gap: "5px", color: "gray" }}><CommentIcon style={{ width: "18px" }} /> {post.comment_count}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "5px", color: "gray" }}><View style={{ width: "18px" }} /> {post.total_views}</div>
+                <button onClick={(e) => e.stopPropagation()} style={{ background: "none", border: "none", cursor: "pointer" }}><Share style={{ width: "18px" }} /></button>
             </div>
         </div>
     );

@@ -1,5 +1,9 @@
 import React from "react";
-import ReactMarkdown from 'react-markdown';
+import UserProfile from "./UserProfile";
+import "quill/dist/quill.snow.css";
+
+
+
 
 const OnePost = ({ post }) => {
     if (!post) return null;
@@ -7,10 +11,8 @@ const OnePost = ({ post }) => {
     return (
         <div>
             {post.author_icon && (
-                <img
-                    src={post.author_icon}
-                    alt={`${post.author_name}のアイコン`}
-                />
+                // アイコン
+                <UserProfile user={{ icon_image: post.author_icon }} />
             )}
             {/* 投稿者 */}
             <p>投稿者: {post.author_name}</p>
@@ -21,10 +23,13 @@ const OnePost = ({ post }) => {
             {/* 学科 */}
             <p>{post.department_name}</p>
 
-            {/* マークダウン方式でちゃんと表示されるように */}
-            <div className="markdown-body">
-                内容：<ReactMarkdown>{post.content}</ReactMarkdown>
-            </div>
+            {/* 本文 */}
+            <div
+                className="ql-editor"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+                />
+
+
 
             {/* 記事画像 */}
             <div>
@@ -40,7 +45,7 @@ const OnePost = ({ post }) => {
             {/* いいね・閲覧数 */}
             <p>記事のいいね: {post.like_count}</p>
             <p>閲覧数: {post.total_views}</p>
-            <p>コメント数: {post.comment_count}</p>
+            <p> {post.comment_count}件のコメント</p>
         </div>
     );
 };

@@ -11,6 +11,7 @@ const UserProfile = ({ user }) => {
                 className="Profile_img"
                 src={user.icon_image}
                 alt="user icon"
+                style={{width: "50px", borderRadius: "50%"}}
             />
             {/* <p>{user.user_name}</p> */}
         </div>
