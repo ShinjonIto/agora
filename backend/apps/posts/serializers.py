@@ -1,9 +1,11 @@
+from django.conf import settings
 # Jsonに変換する Reactが読める形に変換
 from rest_framework import serializers
 from .models import *
 from apps.comments.models import Comment
 from apps.follows.models import Follow
 from apps.reports.models import Report
+
 
 
 # コミュニティ名
@@ -23,9 +25,16 @@ class PostImageSerializer(serializers.ModelSerializer):
         
     def get_post_img(self, obj):
         request = self.context.get("request")
-        if obj.post_img and request:
-            return request.build_absolute_uri(obj.post_img.url)
-        return request.build_absolute_uri(settings.MEDIA_URL + "users/icon_img/default.png")
+
+        if obj.post_img:
+            if request:
+                return request.build_absolute_uri(obj.post_img.url)
+            return obj.post_img.url
+        
+        default_path = f"{settings.MEDIA_URL}users/icon_img/default.png"
+        if request:
+            return request.build_absolute_uri(default_path)
+        return default_path
 
         
 
@@ -143,3 +152,25 @@ class PostCreateSerializer(serializers.ModelSerializer):
         model = Post
         # 保存時に必要なデータだけ
         fields = ["post_id", "title", "content", "department"]
+        
+        
+from apps.comments.models import Comment
+class MyCommentedPostSerializer(PostSerializer):
+    my_comments = serializers.SerializerMethodField()
+
+    class Meta(PostSerializer.Meta):
+        fields = PostSerializer.Meta.fields + ["my_comments"]
+
+    def get_my_comments(self, obj):
+        request = self.context.get("request")
+        if not request or not request.user:
+            return []
+        
+        user = self.context.get("request").user
+        # その記事に対する自分の最新コメントを取得
+        comments = Comment.objects.filter(post=obj, user=user, is_deleted=False).order_by("-created_at")
+        
+        return [
+            {"comment_id": c.comment_id, "content": c.content, "created_at": c.created_at} 
+            for c in comments
+        ]

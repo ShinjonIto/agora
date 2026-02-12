@@ -175,3 +175,26 @@ class MyPostAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
             
             
+# 自分がいいねした記事一覧
+class MyLikeAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        user = request.user
+        # いいねした順
+        mylikepost = Post.objects.filter(postlike__user=user, is_deleted=False).order_by("-postlike__created_at")
+        serializer = PostSerializer(mylikepost, many=True, context={'request' : request})
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+# 自分のコメント
+class MyCommentPostAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        user = request.user
+        comment_posts = Post.objects.filter(comment__user=user, is_deleted=False).distinct().order_by("-created_at")
+        serializer = MyCommentedPostSerializer(comment_posts, many=True, context={'request' : request})
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
