@@ -1,20 +1,15 @@
 HTML {
-    font-size: clamp(20px, 1vw, 40px);
+    font-size: clamp(14px, 1vw, 30px);
 }
 
 body {
     font-family: var(--font-body);
     font-weight: var(--font-body-weight);
     background-color: var(--base-color);
+    color: var(--main-text);
 }
 
 h1 {
     font-family: var(--font-heading);
     font-weight: var(--font-heading-weight);
-}
-
-
-p,
-.icon {
-    color: var(--main-text);
 }

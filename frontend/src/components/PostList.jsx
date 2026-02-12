@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosPrivate from "../api/axiosPrivate";
 import Loading from "./Loading";
-import ErrorMessage from "./ErrorMessage"; 
+import ErrorMessage from "./ErrorMessage";
 import "./PostList.css";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
@@ -72,7 +72,7 @@ const PostList = () => {
     const handleLike = async (postId) => {
         try {
             const res = await axiosPrivate.post(`/api/posts/${postId}/like/`);
-            setPosts(posts.map(post => 
+            setPosts(posts.map(post =>
                 post.post_id === postId ? { ...post, liked: res.data.liked, like_count: res.data.like_count } : post
             ));
         } catch (err) { console.error(err); }
@@ -102,9 +102,9 @@ const PostList = () => {
             setPosts(posts.filter(post => post.post_id !== postId));
 
             alert("削除しました");
-            } catch (err) {
-                console.error(err);
-                alert("削除に失敗しました");
+        } catch (err) {
+            console.error(err);
+            alert("削除に失敗しました");
         }
     };
 
@@ -113,7 +113,7 @@ const PostList = () => {
     const handleFollow = async (postUser) => {
         try {
             const res = await axiosPrivate.post(`/api/follows/${postUser}/`);
-            
+
             // 新しいフォロー状態 (true/false) を受け取る
             const newIsFollowed = res.data.followed;
 
@@ -142,13 +142,13 @@ const PostList = () => {
 
     // 通報を実行する処理
     const handleReportSubmit = async () => {
-        if (!reportReason) 
+        if (!reportReason)
             return alert("理由を入力してください");
 
         try {
             // APIに理由を添えて送信
             await axiosPrivate.post(`/api/reports/posts/${reportingPostId}/`, {
-            reason: reportReason
+                reason: reportReason
             });
 
             setPosts(posts.map(post =>
@@ -168,39 +168,39 @@ const PostList = () => {
     return (
         <div className="postList">
             <div>
-            {/* 通報モーダル */}
-            {reportingPostId && (
-                <div style={{
-                    position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
-                    backgroundColor: "rgba(0,0,0,0.5)", zIndex: 9999,
-                    display: "flex", justifyContent: "center", alignItems: "center"
+                {/* 通報モーダル */}
+                {reportingPostId && (
+                    <div style={{
+                        position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
+                        backgroundColor: "rgba(0,0,0,0.5)", zIndex: 9999,
+                        display: "flex", justifyContent: "center", alignItems: "center"
                     }} className="ModalOverlay" onClick={() => setReportingPostId(null)}>
-                    <div className="ModalContent" onClick={(e) => e.stopPropagation()}>
-                        <h3>投稿を通報する</h3>
-                        <p className="ModalSubtitle">通報の理由を選択または入力してください</p>
-                        
-                        <textarea 
-                            className="ReportTextArea"
-                            placeholder="不適切なコンテンツ、スパムなど..."
-                            value={reportReason}
-                            onChange={(e) => setReportReason(e.target.value)}
-                        />
+                        <div className="ModalContent" onClick={(e) => e.stopPropagation()}>
+                            <h3>投稿を通報する</h3>
+                            <p className="ModalSubtitle">通報の理由を選択または入力してください</p>
 
-                        <div className="ModalButtons">
-                            <button className="CancelBtn" onClick={() => setReportingPostId(null)}>
-                                キャンセル
-                            </button>
-                            <button className="SubmitBtn" onClick={handleReportSubmit}>
-                                送信する
-                            </button>
+                            <textarea
+                                className="ReportTextArea"
+                                placeholder="不適切なコンテンツ、スパムなど..."
+                                value={reportReason}
+                                onChange={(e) => setReportReason(e.target.value)}
+                            />
+
+                            <div className="ModalButtons">
+                                <button className="CancelBtn" onClick={() => setReportingPostId(null)}>
+                                    キャンセル
+                                </button>
+                                <button className="SubmitBtn" onClick={handleReportSubmit}>
+                                    送信する
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
-            {/* 通報モーダルここまで */}
+                )}
+                {/* 通報モーダルここまで */}
             </div>
 
-            <h2>記事一覧</h2>
+
             <div>
                 <label>並び替え：</label>
                 <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
@@ -210,10 +210,11 @@ const PostList = () => {
                 </select>
             </div>
 
-            {/* 投稿一覧 */}     
-            <div className="PostListScroll">
+            {/* 投稿一覧 */}
+            <div className="postListScroll">
                 {sortedPosts.map((post) => (
-                    <PostCard 
+                    <PostCard
+                        className="post"
                         key={post.post_id}
                         post={post}
                         currentUserId={currentUserId}
