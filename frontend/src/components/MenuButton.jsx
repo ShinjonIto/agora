@@ -1,11 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 
-/**
- * 三点リーダーのメニュー
- * post / comment 両対応
- */
-const MenuBotton = ({
-    type,           // "post" | "comment"
+// メニュー内のボタン共通スタイル
+const btnStyle = {
+    display: "block",
+    width: "100%",
+    padding: "10px 12px",
+    border: "none",
+    background: "none",
+    textAlign: "left",
+    cursor: "pointer",
+    fontSize: "14px",
+    color: "#333", // 背景が白なので文字は暗く
+};
+
+const MenuButton = ({
+    type,
     targetId,
     ownerId,
     currentUserId,
@@ -19,52 +28,43 @@ const MenuBotton = ({
         setIsMenuOpen,
     },
 }) => {
-    // メニューの開閉状態
     const [isOpen, setIsOpen] = useState(false);
-
-    // 外側クリック判定用
     const menuRef = useRef(null);
+    const isMine = currentUserId && String(ownerId) === String(currentUserId);
 
-    // 自分の投稿・コメントかどうか
-    const isMine =
-        currentUserId && String(ownerId) === String(currentUserId);
-
-    /**
-     * メニュー外をクリックしたら閉じる
-     * post の場合のみ、親コンポーネントにも閉じたことを伝える
-     */
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (menuRef.current && !menuRef.current.contains(e.target)) {
                 setIsOpen(false);
-
-                if (type === "post" && setIsMenuOpen) {
-                    setIsMenuOpen(false);
-                }
+                if (type === "post" && setIsMenuOpen) setIsMenuOpen(false);
             }
         };
-
         document.addEventListener("mousedown", handleClickOutside);
-        return () =>
-            document.removeEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [type, setIsMenuOpen]);
 
     return (
         <div style={{ position: "relative" }} ref={menuRef}>
-            {/* 三点リーダーボタン */}
             <button
                 onClick={(e) => {
-                    // 親要素のクリック（ページ遷移）を止める
                     e.stopPropagation();
-
-                    setIsOpen(!isOpen);
-
-                    // post の場合のみ親に状態を渡す
+                    setIsOpen(prev => {
+                    const next = !prev;
                     if (type === "post" && setIsMenuOpen) {
-                        setIsMenuOpen(!isOpen);
+                        setIsMenuOpen(next);
                     }
+                    return next;
+                });
                 }}
-                style={{ background: "none", border: "none", cursor: "pointer" }}
+                // 見えないから派手にした
+                style={{ background: "red",  
+                    color: "yellow", 
+                    border: "3px solid blue", 
+                    fontSize: "30px",
+                    width: "40px",
+                    height: "40px",
+                    zIndex: 9999, 
+                    position: "relative" }}
             >
                 ⋮
             </button>
@@ -78,49 +78,38 @@ const MenuBotton = ({
                         background: "white",
                         border: "1px solid #ccc",
                         zIndex: 100,
-                        minWidth: "100px",
+                        minWidth: "120px",
                         borderRadius: "4px",
                         boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+                        overflow: "hidden" // 角の丸みをボタンにも適用
                     }}
-                    // メニュー内クリックでも閉じないようにする
                     onClick={(e) => e.stopPropagation()}
                 >
-                    {/* 自分の投稿・コメントの場合 */}
                     {isMine ? (
                         <div>
-                            <button
-                                onClick={() => {
-                                    onEdit?.(targetId);
-                                    setIsOpen(false);
-                                }}
-                            >
-                                編集
-                            </button>
-                            <button
-                                onClick={() => {
-                                    onDelete?.(targetId);
-                                    setIsOpen(false);
-                                }}
-                            >
-                                削除
-                            </button>
+                            <button style={btnStyle} onClick={() => { onEdit?.(targetId); setIsOpen(false); }}>編集</button>
+                            <button style={{ ...btnStyle, color: "red" }} onClick={() => { onDelete?.(targetId); setIsOpen(false); }}>削除</button>
                         </div>
                     ) : (
                         <div>
-                            {/* post のときだけフォロー表示 */}
-                            {type === "post" && onFollow && (
-                                <button onClick={() => onFollow(ownerId)}>
-                                    {isFollowed
-                                        ? "フォロー解除"
-                                        : "フォロー"}
+                            {/* フォローボタン (type条件を外したのでコメントでも出る) */}
+                            {onFollow && (
+                                <button style={btnStyle} onClick={() => { onFollow(ownerId); }}>
+                                    {isFollowed ? "フォロー解除" : "フォロー"}
                                 </button>
                             )}
 
                             {/* 通報ボタン */}
                             {isReported ? (
-                                <button disabled>通報済み</button>
+                                <button 
+                                    disabled 
+                                    style={{ ...btnStyle, color: "gray", cursor: "not-allowed" }}
+                                >
+                                    通報済み
+                                </button>
                             ) : (
                                 <button
+                                    style={btnStyle}
                                     onClick={() => {
                                         onReport?.(targetId);
                                         setIsOpen(false);
@@ -137,4 +126,4 @@ const MenuBotton = ({
     );
 };
 
-export default MenuBotton;
+export default MenuButton;

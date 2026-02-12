@@ -172,6 +172,7 @@ class MyCommentedPostSerializer(PostSerializer):
         comments = Comment.objects.filter(post=obj, user=user, is_deleted=False).order_by("-created_at")
         
         return [
-            {"comment_id": c.comment_id, "content": c.content, "created_at": c.created_at} 
+            {"comment_id": c.comment_id, "content": c.content, "post_user": c.user.id,
+            "created_at": c.created_at} 
             for c in comments
         ]

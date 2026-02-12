@@ -25,14 +25,14 @@ class ReportCreateSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, data):
-        user = self.context["request"].user
+        reporter = self.context["request"].user
         report_type = self.context.get("report_type")
 
         # 投稿の二重通報防止
         if report_type == Report.POST:
             post = self.context.get("target_post")
             if Report.objects.filter(
-                reporter=user,
+                reporter=reporter,
                 report_type=Report.POST,
                 target_post=post
             ).exists():
@@ -42,9 +42,19 @@ class ReportCreateSerializer(serializers.ModelSerializer):
         if report_type == Report.COMMENT:
             comment = self.context["target_comment"]
             if Report.objects.filter(
-                reporter=user,
+                reporter=reporter,
                 report_type=Report.COMMENT,
                 target_comment=comment
+            ).exists():
+                raise serializers.ValidationError("すでに通報しています")
+            
+        # ユーザーの二重通報防止
+        if report_type == Report.ACCOUNT:
+            account = self.context["target_user"]
+            if Report.objects.filter(
+                reporter=reporter,
+                report_type=Report.ACCOUNT,
+                target_user=account
             ).exists():
                 raise serializers.ValidationError("すでに通報しています")
         return data
@@ -58,5 +68,8 @@ class ReportCreateSerializer(serializers.ModelSerializer):
 
         if self.context["report_type"] == Report.COMMENT:
             validated_data["target_comment"] = self.context["target_comment"]
+            
+        if self.context["report_type"] == Report.ACCOUNT:
+            validated_data["target_user"] = self.context["target_user"]
 
         return super().create(validated_data)

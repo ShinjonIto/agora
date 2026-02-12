@@ -13,7 +13,7 @@ const ReportModal = ({ type, targetId, onClose, onSuccess }) => {
         
         try {
             setLoading(true);
-            // typeによってURLを切り替え (例: /api/reports/posts/1/)
+            // typeによってURLを切り替え
             const url = `/api/reports/${type}s/${targetId}/`;
             await axiosPrivate.post(url, { reason });
             

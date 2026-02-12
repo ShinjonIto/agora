@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosPrivate from "@/api/axiosPrivate";
 import MainLayout from "../layouts/MainLayout";         // メインレイアウト
@@ -8,10 +8,14 @@ import CommentForm from "../components/CommentForm";    // コメントフォー
 
 
 const PostDetail = () => {
+    const navigate = useNavigate();
     const { postId } = useParams();
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState([]);
     const [error, setError] = useState(null);
+
+    // ユーザーID
+    const currentUserId = Number(localStorage.getItem("user_id"));
 
     useEffect(() => {
         const fetchPostAndComments = async () => {
@@ -60,6 +64,8 @@ const PostDetail = () => {
                         comment={comment}
                         setComments={setComments} 
                         postId={postId}
+                        currentUserId={currentUserId}
+                        navigate={navigate}
                     />
                 ))
             )}
