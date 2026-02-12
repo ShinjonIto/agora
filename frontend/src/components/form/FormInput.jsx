@@ -1,14 +1,26 @@
+import { FIELD_CONFIG } from "../../utils/validation";
+import "./FormInput.css"
 const FormInput = ({
     name,
-    type = "text",
-    placeholder,
     value,
     onChange,
     error,
-    inputMode,
-    autoComplete,
     required = true,
+
+    title: titleProp,
+    placeholder: placeholderProp,
+    type: typeProp,
+    inputMode: inputModeProp,
+    autoComplete: autoCompleteProp,
 }) => {
+    const meta = FIELD_CONFIG[name] ?? {};
+
+    const title = titleProp ?? meta.title ?? "";
+    const placeholder = placeholderProp ?? meta.placeholder ?? "";
+    const type = typeProp ?? meta.type ?? "text";
+    const inputMode = inputModeProp ?? meta.inputMode;
+    const autoComplete = autoCompleteProp ?? meta.autoComplete;
+
     const filled = String(value ?? "").trim() !== "";
     const isInvalid = filled && !!error;
     const isValid = filled && !error;
@@ -17,6 +29,7 @@ const FormInput = ({
 
     return (
         <div>
+            {title && <h3>{title}</h3>}
             <input
                 className={className}
                 name={name}
@@ -28,7 +41,7 @@ const FormInput = ({
                 autoComplete={autoComplete}
                 required={required}
             />
-            {error && <p className="errorText" >{error}</p>}
+            {error && <p className="errorText">{error}</p>}
         </div>
     );
 };

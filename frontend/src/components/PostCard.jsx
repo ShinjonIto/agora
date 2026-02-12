@@ -25,7 +25,7 @@ const PostCard = ({
     return (
         <div className="post" onClick={() => !openMenuId && navigate(`/posts/${post.post_id}`)}>
             <div className='dai_flex'>
-                {/* 三点リーダー部分 */}
+                {/* 三点リーダー部分  ⋯ */}
                 <div style={{ position: "relative" }}>
                     <button onClick={(e) => toggleMenu(e, post.post_id)}>⋯</button>
                     {openMenuId === post.post_id && (

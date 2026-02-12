@@ -1,4 +1,38 @@
 // src/utils/validation.js
+export const FIELD_CONFIG = {
+    user_name: {
+        title: "ユーザー名",
+        placeholder: "松本花子",
+        type: "text",
+        autoComplete: "username",
+    },
+    student_number: {
+        title: "学生番号",
+        placeholder: "123456789",
+        type: "text",
+        inputMode: "numeric",
+        autoComplete: "off",
+    },
+    email: {
+        title: "メールアドレス",
+        placeholder: "hanako.matsumoto@example.com",
+        type: "email",
+        autoComplete: "email",
+    },
+    password: {
+        title: "パスワード",
+        placeholder: "abc123",
+        type: "password",
+        autoComplete: "new-password",
+    },
+    confirm_password: {
+        title: "パスワード再入力",
+        placeholder: "もう一度入力してください",
+        type: "password",
+        autoComplete: "new-password",
+    },
+};
+
 export const validateField = (name, value, form) => {
     const v = String(value ?? "");
 
@@ -7,7 +41,7 @@ export const validateField = (name, value, form) => {
             return v.trim() ? "" : "ユーザー名を入力してください";
 
         case "student_number":
-            return /^\d{9,}$/.test(v) ? "" : "学生番号は数字9文字以上です";
+            return /^\d{9,}$/.test(v) ? "" : "学生番号は数字8文字以上です";
 
         case "email":
             return /^\S+@\S+\.\S+$/.test(v)
