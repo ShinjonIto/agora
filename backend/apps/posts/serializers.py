@@ -154,6 +154,7 @@ class PostCreateSerializer(serializers.ModelSerializer):
         fields = ["post_id", "title", "content", "department"]
         
         
+# 自分がコメントした
 from apps.comments.models import Comment
 class MyCommentedPostSerializer(PostSerializer):
     my_comments = serializers.SerializerMethodField()
