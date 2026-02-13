@@ -28,9 +28,7 @@ select {
 button,
 a {
     all: unset;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+
     cursor: pointer;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -39,6 +37,36 @@ a {
 button:disabled {
     cursor: not-allowed;
     opacity: 0.6;
+}
+
+saelect {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    border: none;
+    background: transparent;
+    font: inherit;
+    color: inherit;
+    padding: 0;
+
+    outline: none;
+
+    all: unset;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(159, 195, 209, 0.3);
+}
+
+select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(159, 195, 209, 0.3);
 }
 
 
