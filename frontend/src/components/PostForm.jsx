@@ -1,7 +1,9 @@
 import React, { useState, useMemo, useCallback, useRef } from "react";
 import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css"; 
+import "react-quill-new/dist/quill.snow.css";
 import axiosPrivate from "../api/axiosPrivate";
+import "./PostForm.css";
+
 
 const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
     // 編集時は initialData の値を初期値にセットする
@@ -10,7 +12,7 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
     const [department, setDepartment] = useState(initialData?.department || null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const quillRef = useRef(null); 
+    const quillRef = useRef(null);
 
     // 画像アップロード処理
     const imageHandler = () => {
@@ -43,7 +45,7 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
         toolbar: {
             container: [
                 ['bold', 'italic', 'underline'], // 太字など
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                 ['blockquote', 'code-block'],
                 ['link', 'image'], // 画像
                 ['clean']
@@ -112,7 +114,7 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
 
 
     return (
-        <div>
+        <div className="postForm">
             <form onSubmit={handleSubmit}>
                 <h2>記事作成</h2>
 
@@ -139,11 +141,12 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
 
                 {/* 本文 */}
                 <div style={{ backgroundColor: "white", color: "black" }}>
-                    <ReactQuill 
+                    <ReactQuill
+                        className="honbun"
                         ref={quillRef}
                         theme="snow"
-                        value={content} 
-                        onChange={setContent} 
+                        value={content}
+                        onChange={setContent}
                         modules={modules}
                         placeholder="本文を入力してください..."
                     />
@@ -151,12 +154,12 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
 
                 {error && <p>{error}</p>}
 
-                <button type="submit" disabled={loading} >
+                <button className="link_button" type="submit" disabled={loading} >
                     {loading ? "投稿中..." : "記事を公開する"}
                 </button>
             </form>
         </div>
-    );  
+    );
 };
 
 export default PostForm;

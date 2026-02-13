@@ -45,7 +45,7 @@ const PostDetail = () => {
     if (!post) return <p>Loading...</p>;
 
     return (
-        <MainLayout>
+        <div>
             {/* 記事 */}
             <OnePost post={post} />
 
@@ -58,7 +58,7 @@ const PostDetail = () => {
                     <CommentItem
                         key={comment.comment_id}
                         comment={comment}
-                        setComments={setComments} 
+                        setComments={setComments}
                         postId={postId}
                     />
                 ))
@@ -66,7 +66,7 @@ const PostDetail = () => {
 
             {/* コメントフォーム */}
             <CommentForm postId={postId} setComments={setComments} onSuccess={handleCommentSuccess} />
-        </MainLayout>
+        </div>
     );
 };
 

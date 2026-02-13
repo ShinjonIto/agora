@@ -1,0 +1,26 @@
+/* .postForm {
+    background-color: rgb(255, 255, 255);
+} */
+
+.postForm form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* エディタ全体の枠（ツールバーの下の白い箱） */
+.postForm .ql-container {
+    height: 320px;
+    /* 好きな高さに */
+}
+
+/* 入力エリア（文字が入るところ） */
+.postForm .ql-editor {
+    height: 320px;
+    /* containerと合わせる */
+    overflow-y: auto;
+    /* 中だけスクロール */
+    font-size: 16px;
+    /* 文字サイズもここ */
+    line-height: 1.7;
+}

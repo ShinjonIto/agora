@@ -16,7 +16,7 @@ const PostList = () => {
     const [error, setError] = useState(null);
     const { dept } = useParams();
     const [sortType, setSortType] = useState("new");
-    const [reportTarget, setReportTarget] = useState(null); 
+    const [reportTarget, setReportTarget] = useState(null);
 
     const currentUserId = localStorage.getItem("userId");
 
@@ -101,20 +101,22 @@ const PostList = () => {
         } catch (err) { console.error(err); }
     };
 
+    if (loading) return <Loading />;
+    // if (error) return <ErrorMessage message={error} />;
 
 
     return (
         <div className="postList">
             {reportTarget && (
-                <ReportModal 
-                    type={reportTarget.type} 
-                    targetId={reportTarget.id} 
-                    onClose={() => setReportTarget(null)} 
+                <ReportModal
+                    type={reportTarget.type}
+                    targetId={reportTarget.id}
+                    onClose={() => setReportTarget(null)}
                     onSuccess={handleReportSuccess}
                 />
             )}
 
-            <div>
+            <div className="label">
                 <label>並び替え：</label>
                 <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
                     <option value="new">新着順</option>
@@ -123,12 +125,12 @@ const PostList = () => {
                 </select>
             </div>
 
-            <div className="postListScroll">
+            <div>
                 {sortedPosts.map((post) => (
                     <PostCard
                         key={post.post_id}
                         post={post}
-                        isReported={post.is_reported} 
+                        isReported={post.is_reported}
                         currentUserId={currentUserId}
                         navigate={navigate}
                         handleDelete={handleDelete}

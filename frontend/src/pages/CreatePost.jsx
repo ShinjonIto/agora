@@ -12,9 +12,8 @@ const CreatePost = () => {
     };
 
     return (
-        <MainLayout>
-            <PostForm onSuccess={handleSuccess} />
-        </MainLayout>
+
+        <PostForm onSuccess={handleSuccess} />
     );
 };
 
