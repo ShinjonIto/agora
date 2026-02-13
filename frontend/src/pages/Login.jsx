@@ -96,8 +96,10 @@ const Login = () => {
                     ログイン
                 </button>
 
-                <Link to="/password">パスワードを忘れた場合はこちら</Link>
-                <Link to="/signup">新規会員登録</Link>
+                <div className="links">
+                    <Link to="/signup" className="link_button">新規会員登録</Link>
+                    <Link to="/password" className="link">パスワードを忘れた場合はこちら</Link>
+                </div>
             </form>
         </div>
     );

@@ -40,9 +40,9 @@ const PostCard = ({
                 navigate(`/posts/${post.post_id}`);
             }}
         >
-            <div>
+            <div className="dai_flex">
                 {/* 投稿者情報 */}
-                <div>
+                <div className="syo_flex">
                     <UserProfile user={{ icon_image: post.author_icon }} />
                     <p>{post.author_name}</p>
                     <p>{formatPostDate(post.created_at)}</p>

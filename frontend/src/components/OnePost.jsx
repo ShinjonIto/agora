@@ -27,7 +27,7 @@ const OnePost = ({ post }) => {
             <div
                 className="ql-editor"
                 dangerouslySetInnerHTML={{ __html: post.content }}
-                />
+            />
 
 
 
