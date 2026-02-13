@@ -1,3 +1,4 @@
-h3 {
-    margin: 5px;
+.form h3 {
+    margin: 0 0 5px 0;
+    color: var(--accent-color);
 }

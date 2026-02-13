@@ -1,24 +1,49 @@
 .authPages {
-    overflow-y: auto;
-    overflow-x: hidden;
+    /* overflow-y: auto; */
     /* min-height: 100%; */
+    overflow: visible;
     width: 100%;
     height: 100%;
     padding: var(--login-padding);
 }
 
-.authPages * {
+
+.authPages .batu {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+
+}
+
+.authPages .batu a {
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-radius: 100%;
+}
+
+.authPages .batu:hover {
+
+    color: var(--accent-color);
+}
+
+.authPages form,
+.authPages .form,
+.authPages .authInput,
+.authPages .button,
+.authPages .links,
+.authPages .link,
+.authPages .link_button {
     width: 100%;
 }
 
 .authPages form {
     /* height: 100%; */
     flex: 1;
-    width: 100%;
     display: flex;
     gap: 30px;
     flex-flow: column;
     align-items: center;
+
 }
 
 .authPages a {
@@ -29,38 +54,38 @@
 .authPages .authInput {
     border-bottom: 5px solid var(--accent-color);
     width: 100%;
-    padding: 0 10px;
     border-radius: var(--radius) var(--radius) 0 0;
     background-color: var(--login-base-color);
+    padding: 0 10px;
+}
+
+.authPages .authInput::placeholder {
+    opacity: 0.5;
 }
 
 .authPages .authInput,
-.button {
+.button,
+.link_button,
+.authPages .link {
     height: 45px;
 }
 
 .authPages .authInput.isValid {
-    border-bottom: (--accent-color);
-    ;
+    border-bottom: 3px solid var(--accent-color);
 }
 
 .authPages .authInput.isInvalid {
-    border-bottom: 3px solid var(--accent-sub-color);
+    border-bottom: 3px solid var(--accent-color);
 }
 
-.authPages .errorText {
+.authPages .error {
     color: var(--accent-sub-color);
     /* エラー用の赤 */
     font-size: 0.85rem;
     margin-top: 6px;
 }
 
-.authPages .authInput {
-    box-sizing: border-box;
 
-    /* 既存の下線は維持 */
-    border-bottom: 3px solid var(--accent-color);
-}
 
 /* フォーカス中は全体を囲む */
 .authPages .authInput:focus {
@@ -73,7 +98,7 @@
 
 /* invalid のときはフォーカス枠もエラー色 */
 .authPages .authInput.isInvalid:focus {
-    background-color: var(--accent-sub-color);
+    border-color: var(--accent-sub-color);
 
 }
 
@@ -107,31 +132,57 @@
 
 
 
-.ok_button {
+.authPages .ok_button {
     background-color: var(--accent-color);
     color: var(--main-white);
 }
 
-.no_button {
+.authPages .no_button {
     background-color: rgb(181, 181, 181);
     color: var(--main-white);
 }
 
-button:disabled {
+.authPages button:disabled {
     pointer-events: none;
 }
 
-.button {
+.authPages .button {
     border-radius: 5px;
     cursor: pointer;
 }
 
-.no_button {
+.authPages .no_button {
     background-color: rgb(181, 181, 181);
     color: var(--main-white);
     cursor: default;
 }
 
-button:disabled {
+.authPages button:disabled {
     opacity: 0.6;
 }
+
+.link_button {
+    color: rgb(55, 55, 169);
+    transition: 0.5s;
+    border: 1px solid rgb(55, 55, 169);
+    border-radius: var(--radius);
+}
+
+
+.authPages .links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px 0;
+    gap: var(--login-padding);
+    /* background-color: red; */
+}
+
+.link {
+    color: rgb(55, 55, 169);
+    text-align: right;
+}
+
+
+
+/* .authPages a:hover */

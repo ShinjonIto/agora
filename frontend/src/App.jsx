@@ -9,6 +9,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 import MyPage from "./pages/MyPage";
+import PostList from "./components/PostList";
 
 
 
@@ -20,7 +21,6 @@ function App() {
 
 
         {/* {ログイン前} */}
-        {/* ログイン */}
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           {/* 会員登録 */}
@@ -28,23 +28,35 @@ function App() {
           <Route path="/password" element={<Password />} />
         </Route>
 
-        {/* ログイン　トークンなければloginへ　あればhomeへ */}
-        <Route path="/" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
 
-        {/* 学科別 */}
-        <Route path="/department/:dept" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
 
-        {/* 記事詳細 */}
-        <Route path="/posts/:postId" element={<ProtectedRoute> <PostDetail /> </ProtectedRoute> } />
+        {/* ログイン後の処理 */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        >
+          {/* 一覧（全部） */}
+          <Route index element={<PostList />} />
 
-        {/* 記事作成 */}
-        <Route path="/posts/create" element={<CreatePost />} />
+          {/* 学科別一覧 */}
+          <Route path="department/:dept" element={<PostList />} />
 
-        {/* 記事編集 */}
-        <Route path="/posts/edit/:post_id" element={<EditPost />} /> 
+          {/* 記事詳細 */}
+          <Route path="posts/:postId" element={<PostDetail />} />
 
-        {/* マイページ */}
-        <Route path="/mypage/:id" element={<MyPage />} /> 
+          {/* 記事作成 */}
+          <Route path="posts/create" element={<CreatePost />} />
+
+          {/* 記事編集 */}
+          <Route path="posts/edit/:post_id" element={<EditPost />} />
+
+          {/* マイページ */}
+          <Route path="mypage/:id" element={<MyPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

@@ -31,3 +31,24 @@
     padding: 50px 15px 15px 15px;
     overflow: hidden;
 }
+
+.postListScroll {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    /* これも超重要 */
+
+    overflow-y: hidden;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+    transform: translateX(8px);
+
+
+    padding: 0 15%;
+    /* スクロール */
+}
+
+.postListScroll:hover {
+    overflow-y: scroll;
+}

@@ -1,11 +1,13 @@
 import LoadingIcon from "@/assets/images/icon/Loading.svg?react";
-
-const Loading = ({ message = "Loading..." }) => {
+import "./Loading.css"
+const Loading = ({ message }) => {
     return (
         <div className="loading">
-            <LoadingIcon width={25} />
+            <LoadingIcon width={30} />
             <p>{message}</p>
+
         </div>
+
     );
 };
 
