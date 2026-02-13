@@ -1,10 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosPrivate from "@/api/axiosPrivate";
-import MainLayout from "../layouts/MainLayout";         // メインレイアウト
-import OnePost from "../components/OnePost";            // 記事
+import PostCard from "@/components/PostCard";
 import CommentItem from "../components/CommentItem";    // コメント
 import CommentForm from "../components/CommentForm";    // コメントフォーム
+import { usePostActions } from "@/hooks/usePostActions";
+
+
 
 
 const PostDetail = () => {
@@ -15,7 +17,12 @@ const PostDetail = () => {
     const [error, setError] = useState(null);
 
     // ユーザーID
-    const currentUserId = Number(localStorage.getItem("user_id"));
+    const currentUserId = Number(localStorage.getItem("userId"));
+
+    // フックを呼び出す
+    const {handleDelete, handleLike, handleFollow, formatPostDate,reportTarget, 
+        setReportTarget, handleReportSuccess } = 
+        usePostActions(setPost, navigate);
 
     useEffect(() => {
         const fetchPostAndComments = async () => {
@@ -37,6 +44,8 @@ const PostDetail = () => {
     }, [postId]);
 
 
+
+
     // コメント件数を増やす関数
     const handleCommentSuccess = () => {
         setPost(prev => ({
@@ -51,7 +60,19 @@ const PostDetail = () => {
     return (
         <div>
             {/* 記事 */}
-            <OnePost post={post} />
+            <PostCard 
+                post={post}
+                currentUserId={currentUserId}
+                isReported={post.is_reported}
+                navigate={navigate}
+                handleDelete={handleDelete}
+                handleLike={handleLike}
+                handleFollow={handleFollow}
+                formatPostDate={formatPostDate}
+                openReportModal={(id) => setReportTarget({ type: "post", id })}
+            />
+
+            
 
             {/* コメント */}
             <h3>コメント</h3>
