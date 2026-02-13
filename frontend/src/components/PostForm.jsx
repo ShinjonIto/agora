@@ -142,7 +142,6 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
                 {/* 本文 */}
                 <div style={{ backgroundColor: "white", color: "black" }}>
                     <ReactQuill
-                        className="honbun"
                         ref={quillRef}
                         theme="snow"
                         value={content}

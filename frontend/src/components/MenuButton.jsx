@@ -49,6 +49,7 @@ const MenuButton = ({
                     e.stopPropagation();
                     setIsOpen(prev => {
                         const next = !prev;
+
                         if (type === "post" && setIsMenuOpen) setIsMenuOpen(next);
                         return next;
                     });
@@ -83,7 +84,9 @@ const MenuButton = ({
                                 </button>
                             )}
                             {isReported ? (
+
                                 <button disabled style={{ ...btnStyle, color: "gray", cursor: "not-allowed" }}>通報済み</button>
+
                             ) : (
                                 <button style={btnStyle} onClick={() => { onReport?.(targetId); closeMenu(); }}>通報する</button>
                             )}
