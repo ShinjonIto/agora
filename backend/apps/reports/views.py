@@ -5,6 +5,7 @@ from rest_framework import status
 from .serializers import ReportCreateSerializer
 from apps.posts.models import Post
 from apps.comments.models import Comment
+from apps.users.models import User
 from apps.reports.models import *
 
 
@@ -37,7 +38,7 @@ class ReportCommentAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request, comment_id):
-        comment = Post.objects.filter(comment_id=comment_id).first()
+        comment = Comment.objects.filter(comment_id=comment_id).first()
         if not comment:
             return Response({"error": "コメントが見つかりません。"}, status=404)
 
@@ -46,7 +47,30 @@ class ReportCommentAPIView(APIView):
             context={
                 "request": request,
                 "report_type": Report.COMMENT,
-                "target_post": comment,
+                "target_comment": comment,
+            },
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({"message": "通報しました"}, status=status.HTTP_201_CREATED)
+    
+    
+# アカウント通報
+class ReportAccountAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, user_id):
+        account = User.objects.filter(user_id=user_id).first()
+        if not account:
+            return Response({"error": "コメントが見つかりません。"}, status=404)
+
+        serializer = ReportCreateSerializer(
+            data=request.data,
+            context={
+                "request": request,
+                "report_type": Report.ACCOUNT,
+                "target_user": account,
             },
         )
         serializer.is_valid(raise_exception=True)

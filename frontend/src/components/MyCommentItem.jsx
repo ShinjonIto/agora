@@ -7,6 +7,22 @@ import MenuButton from "./MenuButton";
 const MyCommentItem = ({ comment, currentUserId, navigate, handleCommentDelete, formatPostDate }) => {
     const [localLikeCount, setLocalLikeCount] = useState(comment.like_count || 0);
     const [reportTarget, setReportTarget] = useState(null); 
+    const [isReported, setIsReported] = useState(false); 
+    const [isFollowed, setIsFollowed] = useState(comment.is_followed || false);
+
+
+    // フォロー処理
+    const handleFollow = async (userId) => {
+        try {
+            // APIパスはプロジェクトに合わせて調整してください
+            const res = await axiosPrivate.post(`/api/users/${userId}/follow/`);
+            setIsFollowed(res.data.is_followed); // サーバーからのレスポンスで更新
+        } catch (err) {
+            console.error("Follow error:", err);
+            alert("フォロー処理に失敗しました");
+        }
+    };
+
 
     // コメントいいね処理
     const handleCommentLike = async () => {
@@ -37,7 +53,10 @@ const MyCommentItem = ({ comment, currentUserId, navigate, handleCommentDelete, 
                     handlers={{
                         onEdit: (id) => navigate(`/comments/edit/${id}`),
                         onDelete: handleCommentDelete,
-                        onReport: (id) => setReportTarget({ id, type: "comment" })
+                        onReport: (id) => setReportTarget({ id, type: "comment" }),
+                        isReported: isReported, // 通報状態を渡す
+                        onFollow: handleFollow,  
+                        isFollowed: isFollowed, 
                     }}
                 />
             </div>
@@ -50,13 +69,16 @@ const MyCommentItem = ({ comment, currentUserId, navigate, handleCommentDelete, 
                 <small style={{ color: "gray" }}>{formatPostDate(comment.created_at)}</small>
             </div>
 
-            {/* 共通通報モーダル */}
+             {/* 通報モーダル */}
             {reportTarget && (
                 <ReportModal 
                     type={reportTarget.type} 
                     targetId={reportTarget.id} 
                     onClose={() => setReportTarget(null)} 
-                    onSuccess={() => console.log("通報完了")} 
+                    onSuccess={() => {
+                        setIsReported(true); // 通報完了したらボタンを更新
+                        console.log("通報完了");
+                    }} 
                 />
             )}
         </div>
