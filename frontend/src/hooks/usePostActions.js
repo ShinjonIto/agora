@@ -36,7 +36,7 @@ export const usePostActions = (setPost, navigate) => {
     // フォロー処理
     const handleFollow = async (userId) => {
         try {
-            await axiosPrivate.post(`/api/users/${userId}/follow/`);
+            await axiosPrivate.post(`/api/follows/${userId}/`);
             setPost(prev => {
                 if (Array.isArray(prev)) {
                     return prev.map(p => p.post_user === userId ? { ...p, is_followed: !p.is_followed } : p);

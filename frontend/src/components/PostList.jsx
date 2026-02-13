@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosPrivate from "../api/axiosPrivate";
 import Loading from "./Loading";
-import ErrorMessage from "./ErrorMessage";
 import "./PostList.css";
 import { useNavigate, useParams } from "react-router-dom";
 import PostCard from "./PostCard";
@@ -14,10 +13,8 @@ const PostList = () => {
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const { dept } = useParams();
     const [sortType, setSortType] = useState("new");
-    const [reportTarget, setReportTarget] = useState(null);
 
     const currentUserId = localStorage.getItem("userId");
 
@@ -32,15 +29,6 @@ const PostList = () => {
         handleReportSuccess 
     } = usePostActions(setPosts); 
 
-    // 通報モーダルを開く関数
-    const openReportModal = (postId) => {
-        setReportTarget({ id: postId, type: "post" });
-    };
-
-    // 通報
-    const handleReportSuccess = (id) => {
-        setPosts(posts.map(post => post.post_id === id ? { ...post, is_reported: true } : post));
-    };
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -72,7 +60,6 @@ const PostList = () => {
 
 
     if (loading) return <Loading />;
-    // if (error) return <ErrorMessage message={error} />;
 
 
     return (
