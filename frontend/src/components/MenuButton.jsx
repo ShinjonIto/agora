@@ -49,22 +49,22 @@ const MenuButton = ({
                 onClick={(e) => {
                     e.stopPropagation();
                     setIsOpen(prev => {
-                    const next = !prev;
-                    if (type === "post" && setIsMenuOpen) {
-                        setIsMenuOpen(next);
-                    }
-                    return next;
-                });
+                        const next = !prev;
+                        if (type === "post" && setIsMenuOpen) {
+                            setIsMenuOpen(next);
+                        }
+                        return next;
+                    });
                 }}
-                // 見えないから派手にした
-                style={{ background: "red",  
-                    color: "yellow", 
-                    border: "3px solid blue", 
-                    fontSize: "30px",
-                    width: "40px",
-                    height: "40px",
-                    zIndex: 9999, 
-                    position: "relative" }}
+            // 見えないから派手にした
+            // style={{ background: "red",  
+            //     color: "yellow", 
+            //     border: "3px solid blue", 
+            //     fontSize: "30px",
+            //     width: "40px",
+            //     height: "40px",
+            //     zIndex: 9999, 
+            //     position: "relative" }}
             >
                 ⋮
             </button>
@@ -101,8 +101,8 @@ const MenuButton = ({
 
                             {/* 通報ボタン */}
                             {isReported ? (
-                                <button 
-                                    disabled 
+                                <button
+                                    disabled
                                     style={{ ...btnStyle, color: "gray", cursor: "not-allowed" }}
                                 >
                                     通報済み
