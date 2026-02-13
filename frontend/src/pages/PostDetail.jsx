@@ -22,7 +22,7 @@ const PostDetail = () => {
     // フックを呼び出す
     const {handleDelete, handleLike, handleFollow, formatPostDate,reportTarget, 
         setReportTarget, handleReportSuccess } = 
-        usePostActions(setPost, navigate);
+            usePostActions(setPost, navigate);
 
     useEffect(() => {
         const fetchPostAndComments = async () => {

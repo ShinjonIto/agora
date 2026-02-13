@@ -47,12 +47,13 @@ const MenuButton = ({
             <button
                 onClick={(e) => {
                     e.stopPropagation();
-                    setIsOpen(prev => {
-                        const next = !prev;
-
-                        if (type === "post" && setIsMenuOpen) setIsMenuOpen(next);
-                        return next;
-                    });
+                    const nextState = !isOpen;
+                    
+                    setIsOpen(nextState);
+                    
+                    if (type === "post" && setIsMenuOpen) {
+                        setIsMenuOpen(nextState);
+                    }
                 }}
                 style={{ 
                     background: "red", color: "yellow", border: "3px solid blue", 

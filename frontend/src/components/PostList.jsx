@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import axiosPrivate from "../api/axiosPrivate";
 import Loading from "./Loading";
 import "./PostList.css";
@@ -77,7 +77,6 @@ const PostList = () => {
                 <label htmlFor="sortType">並び替え：</label>
                 <select
                     value={sortType}
-                    ref={selectRef}
                     onChange={(e) => setSortType(e.target.value)}
                     id="sortType">
                     <option value="new">新着順</option>
