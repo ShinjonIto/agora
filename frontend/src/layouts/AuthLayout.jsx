@@ -26,7 +26,7 @@ export default function AuthLayout() {
     }
     return (
         <div className="Authlayout">
-            <LoginHeader className="LoginHeader" />
+            <LoginHeader className="loginHeader" />
             <div className="authShell">
                 <h2>{getTitle()}</h2>
                 <div className="authCard">
@@ -35,7 +35,7 @@ export default function AuthLayout() {
             </div>
 
             <img src={Sakaki} className="sakaki" />
-        </div>
+        </div >
 
     );
 }

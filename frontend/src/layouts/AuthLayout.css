@@ -36,20 +36,29 @@
 }
 
 .Authlayout .authShell .authCard {
+    position: relative;
+    /* ←after用 */
     width: 100%;
     margin: 0 0 30px 0;
 
     border-radius: 16px;
     background: var(--login-accent-color);
     display: grid;
-    z-index: 100;
-    overflow: auto;
 
-
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
-    max-height: 100%
+    scrollbar-gutter: stable;
+    max-height: 100%;
+    transition: 1s;
 }
+
+.Authlayout .authShell .authCard:hover {
+    /* 時間あるときにゆっくり表示にする */
+    overflow: auto;
+}
+
+
+
 
 .Authlayout .sakaki {
     position: absolute;
@@ -62,7 +71,7 @@
 }
 
 .authShell h2 {
-    padding: 10px var(--login-padding);
+    padding: 10px calc(var(--login-padding) + 8px);
     width: 100%;
     font-size: 3rem;
     margin: 5px;

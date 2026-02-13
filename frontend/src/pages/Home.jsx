@@ -1,6 +1,6 @@
 import MainLayout from "../layouts/MainLayout";
-import PostList from "../components/PostList";
 import Sidebar from "../components/Sidebar";
+import { Outlet } from "react-router-dom";
 import "./Home.css";
 
 
@@ -13,10 +13,14 @@ const Home = () => {
                 {/* サイドバー */}
                 <Sidebar className="sidebar" />
 
-                {/* 記事一覧 */}
+                {/* {ホーム内の表示が切り替わる部分} */}
                 <div className="main_contents">
                     <div className="PostListBody">
-                        <PostList />
+                        <div className="postListScroll">
+                            <Outlet />
+                        </div>
+
+
                     </div>
                 </div>
             </div>

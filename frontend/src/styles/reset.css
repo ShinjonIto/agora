@@ -25,7 +25,8 @@ select {
     font: inherit;
 }
 
-button {
+button,
+a {
     all: unset;
     display: inline-flex;
     align-items: center;

@@ -5,6 +5,7 @@ import FormInput from "../components/form/FormInput";
 import { validateField, validateAll } from "../utils/validation";
 import { getFormStatus } from "../utils/formState";
 
+
 import "./authPages.css"
 
 const Signup = () => {
@@ -85,12 +86,14 @@ const Signup = () => {
     return (
         <div className="authPages">
             {/* ✕ボタン */}
-            <Link to="/login" >
-                ✕
-            </Link>
+            <div className="batu">
+                <Link to="/login" >
+                    ×
+                </Link>
+            </div>
 
-            {/* 全体エラー */}
-            {submitErrors && <p>{submitErrors}</p>}
+
+
 
 
             <form onSubmit={handleSubmit} >
@@ -132,18 +135,24 @@ const Signup = () => {
                     required
                 />
 
+                {/* 全体エラー */}
+                {submitErrors && <p className="error">{submitErrors}</p>}
 
-                <button
-                    type="submit"
-                    className={`button ${canSubmit ? "ok_button" : "no_button"}`}
-                    disabled={!canSubmit}
-                >
-                    登録
-                </button>
 
-                <Link to="/login" >
-                    ログインはこちら
-                </Link>
+
+
+                <div className="links">
+                    <button
+                        type="submit"
+                        className={`button ${canSubmit ? "ok_button" : "no_button"}`}
+                        disabled={!canSubmit}
+                    >
+                        登録
+                    </button>
+                    <Link to="/login" className="link">
+                        ログインはこちら
+                    </Link>
+                </div>
 
 
             </form>

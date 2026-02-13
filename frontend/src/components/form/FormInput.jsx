@@ -28,7 +28,7 @@ const FormInput = ({
     const className = `authInput ${isValid ? "isValid" : ""} ${isInvalid ? "isInvalid" : ""}`;
 
     return (
-        <div>
+        <div className="form">
             {title && <h3>{title}</h3>}
             <input
                 className={className}
@@ -41,7 +41,7 @@ const FormInput = ({
                 autoComplete={autoComplete}
                 required={required}
             />
-            {error && <p className="errorText">{error}</p>}
+            {error && <p className="error">{error}</p>}
         </div>
     );
 };

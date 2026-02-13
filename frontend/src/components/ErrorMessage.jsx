@@ -1,5 +1,5 @@
 const ErrorMessage = ({ message }) => {
-    return <p style={{ color: "red" }}>{message}</p>;
+    return <p className="error">{message}</p>;
 };
 
 export default ErrorMessage;
