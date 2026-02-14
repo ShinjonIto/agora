@@ -59,7 +59,7 @@ const Header = ({ user }) => {
 
                 {/* ユーザーアイコン：クリックでモーダル表示 */}
                 <div className="icon" onClick={toggleMenu} >
-                    <UserProfile user={user} />
+                    <UserProfile user={user} onClick={toggleMenu} />
 
                     {/* アイコン押した時のモーダル */}
                     {showMenu && (

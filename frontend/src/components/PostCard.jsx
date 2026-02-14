@@ -22,9 +22,10 @@ const PostCard = ({
     const isMyPost =
         currentUserId &&
         post.post_user &&
-        String(post.post_user) === String(currentUserId);
+        Number(post.post_user) === Number(currentUserId);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    console.log(post); // post_user が数値かオブジェクトか
 
     return (
         <div
@@ -36,7 +37,17 @@ const PostCard = ({
         >
             <div className="dai_flex">
                 <div className="syo_flex">
-                    <UserProfile user={{ icon_image: post.author_icon }} />
+                    {/* アイコン */}
+                    <UserProfile
+                        user={{ 
+                            icon_image: post.author_icon, 
+                            id: post.post_user_id 
+                        }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/mypage/${post.post_user_id }`);
+                        }}
+                        />
                     <p>{post.author_name}</p>
                     <p>{formatPostDate(post.created_at)}</p>
                 </div>
@@ -45,7 +56,7 @@ const PostCard = ({
                     <MenuButton
                         type="post"
                         targetId={post.post_id}
-                        ownerId={post.post_user}
+                        ownerId={post.post_user} 
                         currentUserId={currentUserId}
                         setIsMenuOpen={setIsMenuOpen} 
                         handlers={{

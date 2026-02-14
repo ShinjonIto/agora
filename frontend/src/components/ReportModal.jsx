@@ -18,7 +18,7 @@ const ReportModal = ({ type, targetId, onClose, onSuccess }) => {
             await axiosPrivate.post(url, { reason });
             
             alert("通報を送信しました。");
-            onSuccess(targetId); // 親側で「通報済み」の状態を更新するため
+            onSuccess?.(targetId); 
             onClose();
         } catch (err) {
             console.error(err);

@@ -60,7 +60,7 @@ class CommentLikeAPIView(APIView):
         })
         
         
-        
+# コメント作成
 class CommentCreateAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
@@ -88,5 +88,56 @@ class CommentCreateAPIView(APIView):
             post=post, user=request.user, content=content, parent_comment=parent_comment
         )
         
-        serializer = CommentSerializer(comment, context={"request" : request})
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = CommentSerializer(comment, context={"request": request})
+        return Response(serializer.data, status=201)
+    
+    
+# 削除
+class CommentDeleteAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, comment_id):
+        comment = Comment.objects.filter(comment_id=comment_id).first()
+        if not comment:
+            return Response({"detail": "コメントが存在しません"}, status=status.HTTP_404_NOT_FOUND)
+
+        # 自分のコメントのみ削除可能
+        if comment.user != request.user:
+            return Response({"detail": "削除権限がありません"}, status=status.HTTP_403_FORBIDDEN)
+
+        comment.delete()
+        return Response({"detail": "削除しました"}, status=status.HTTP_204_NO_CONTENT)
+    
+    
+# コメント編集
+class CommentEditAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, comment_id):
+        comment = Comment.objects.filter(comment_id=comment_id).first()
+        print(request)
+
+        if not comment:
+            return Response({"detail": "コメントが存在しません"}, status=status.HTTP_404_NOT_FOUND)
+        
+        # 編集権限チェック
+        if comment.user_id != request.user.id:
+            return Response({"detail": "編集権限がありません"}, status=status.HTTP_403_FORBIDDEN)
+
+        comment.content = request.data.get("content", comment.content)
+        comment.save()
+
+        serializer = CommentSerializer(comment, context={"request": request})
+        return Response(serializer.data, status=200)
+    
+    
+# コメントした記事
+class MyCommentedPostsAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # 自分がコメントした投稿を重複なしで取得
+        posts = Post.objects.filter(comment__user=request.user, is_deleted=False).distinct().order_by("-created_at")
+
+        serializer = MyCommentedPostSerializer(posts, many=True, context={"request": request})
+        return Response(serializer.data)

@@ -1,12 +1,17 @@
 import "./UserProfile.css"
 
 
-const UserProfile = ({ user }) => {
+const UserProfile = ({ user, onClick  }) => {
     // userがまだない場合描画しない
     if (!user) return null;
 
     return (
-        <div className="UserProfile">
+        <div className="UserProfile"  onClick={onClick} 
+            style={{ 
+                width: "40px", 
+                height: "40px", 
+                cursor: onClick ? "pointer" : "default" 
+            }}>
             <img
                 className="Profile_img"
                 src={user.icon_image}
