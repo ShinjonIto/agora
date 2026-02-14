@@ -55,7 +55,10 @@ function App() {
           <Route path="posts/edit/:post_id" element={<EditPost />} />
 
           {/* マイページ */}
-          <Route path="mypage/:id" element={<MyPage />} />
+          {/* <Route path="mypage/:id" element={<MyPage />} /> */}
+
+          <Route path="/mypage/me" element={<MyPage />} />
+          <Route path="/mypage/:userId" element={<MyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

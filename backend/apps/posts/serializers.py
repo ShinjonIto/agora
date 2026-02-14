@@ -50,6 +50,10 @@ class PostSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
+    
+    # ユーザーID
+    post_user_id = serializers.IntegerField(source="post_user.id", read_only=True)
+    
     # いいね数
     like_count = serializers.IntegerField(
         source="postlike_set.count",
@@ -77,7 +81,7 @@ class PostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ["post_id","post_user", "title", "content", "department_name", 
+        fields = ["post_id","post_user", "post_user_id", "title", "content", "department_name", 
                     "author_icon", "author_name", "images", "like_count", 
                     "liked", "total_views", "is_followed", "is_reported", 
                     "comment_count", "created_at",

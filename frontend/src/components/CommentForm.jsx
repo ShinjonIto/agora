@@ -2,12 +2,14 @@ import axiosPrivate from "@/api/axiosPrivate";
 import React, { useState, useMemo, useRef, useCallback } from "react"; 
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css"; 
+import { useCommentQuillModules, commentFormats } from "@/utils/commentQuillConfig";
 
-const CommentForm = ({ postId, parentCommentId = null, setComments, onSuccess }) => {
+const CommentForm = ({ postId, parentCommentId = null, replyTargetName = null, setComments, onSuccess }) => {
     const [content, setContent] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null); 
     const quillRef = useRef(null);
+
 
     // 画像アップロード
     const imageHandler = useCallback(() => {
@@ -39,18 +41,7 @@ const CommentForm = ({ postId, parentCommentId = null, setComments, onSuccess })
         };
     }, []);
 
-    // エディタの構成
-    const modules = useMemo(() => ({
-        toolbar: {
-            container: [
-                ["image", "link"],
-                ['blockquote', 'code-block'],
-            ],
-            handlers: {
-                image: imageHandler,
-            },
-        },
-    }), [imageHandler]);
+    const modules = useCommentQuillModules(imageHandler);  // フォーム
 
 
     // 空で投稿できないように
@@ -64,62 +55,72 @@ const CommentForm = ({ postId, parentCommentId = null, setComments, onSuccess })
 
 
     // コメント投稿
+    // コメント投稿
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // フォームのデフォルト動作を阻止
 
         if (isQuillEmpty(content)) {
             setError("コメントを入力してください");
             return;
         }
-
-
+        
         try {
             setLoading(true);
             setError(null);
-
             const res = await axiosPrivate.post(`/api/comments/${postId}/create/`, {
                 content,
                 parent_comment: parentCommentId,
             });
 
-            const newComment = res.data;
+            const newComment = {...res.data, children: []};
 
+            // ステートを更新
             if (!parentCommentId) {
-                setComments((prev) => [...prev, newComment]);
-            } 
-            else {
-                const addReply = (list) =>
-                    list.map((c) => {
-                        if (c.comment_id === parentCommentId) {
-                            return {
-                                ...c,
-                                children: [...(c.children || []), newComment],
-                            };
-                        }
-                        if (c.children?.length) {
-                            return {
-                                ...c,
-                                children: addReply(c.children),
-                            };
-                        }
-                        return c;
-                    });
-                setComments((prev) => addReply(prev));
+                setComments(prev => [...prev, newComment]);
+            } else {
+                setComments((prev) => {
+                    const addReply = (list) =>
+                        list.map((c) => {
+                            if (String(c.comment_id) === String(parentCommentId)) {
+                                return {
+                                    ...c,
+                                    children: [...(c.children || []), newComment],
+                                };
+                            }
+                            if (c.children && c.children.length > 0) {
+                                return {
+                                    ...c,
+                                    children: addReply(c.children),
+                                };
+                            }
+                            return c;
+                        });
+                    return addReply(prev);
+                });
             }
 
-            setContent("");
-            if (onSuccess) onSuccess();
+            setContent(""); 
+            if (onSuccess) onSuccess(); 
 
         } catch (err) {
-            console.error(err);
+            console.error("投稿エラー:", err);
             setError("コメントの投稿に失敗しました");
         } finally {
-            setLoading(false);
+            setLoading(false); // 成功しても失敗しても、ここで送信中を解除
         }
     };
 
+
+
     return (
         <div className="comment-form-container">
+            {/* 返信の時だけ宛先を表示 */}
+            {parentCommentId && replyTargetName && (
+                <p style={{ fontSize: "14px", color: "#666", marginBottom: "5px" }}>
+                    <strong>@{replyTargetName}</strong> さんへの返信
+                </p>
+            )}
+            
             <form onSubmit={handleSubmit}>
                 <ReactQuill 
                     ref={quillRef}
@@ -127,16 +128,17 @@ const CommentForm = ({ postId, parentCommentId = null, setComments, onSuccess })
                     value={content} 
                     onChange={setContent} 
                     modules={modules}
-                    placeholder="画像はドラッグ＆ドロップで好きな場所に貼れます..."
+                    formats={commentFormats}
+                    placeholder="コメントを入力..."
                     style={{ backgroundColor: "white", color: "black", borderRadius: "8px"}}
                 />
                 {error && <p style={{ color: "red", fontSize: "12px", marginTop: "5px" }}>{error}</p>}
                 <button 
                     type="submit" 
-                    disabled={loading || !content || content === "<p><br></p>"}
+                    disabled={loading}
                     style={{ marginTop: "10px" }}
                 >
-                    {loading ? "送信中..." : "コメントする"}
+                    {loading ? "送信中..." : parentCommentId ? "返信する" : "コメントする"}
                 </button>
             </form>
         </div>

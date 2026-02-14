@@ -8,8 +8,24 @@ import UserProfile from "@/components/UserProfile";
 
 const MyPage = () => {
     const [activeTab, setActiveTab] = useState("myposts"); // 初期値をAPIのパス
+    const [posts, setPosts] = useState([]);
     // ユーザーID
     const currentUserId = Number(localStorage.getItem("user_id"));
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if (activeTab === "mycomments") {
+                    const res = await axiosPrivate.get("/my_comments/"); // Django API
+                    setPosts(res.data);
+                }
+                // myposts, mylikes は MyPostList が内部で fetch する想定
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchData();
+    }, [activeTab]);
 
     return (
         <MainLayout>
