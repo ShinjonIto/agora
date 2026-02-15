@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.response import Response
-from .models import User
-from .serializers import SignupSerializer
+from .models import *
+from .serializers import *
 from rest_framework.authtoken.views import ObtainAuthToken   # ユーザー名＋パスワードで認証する仕組み
 from rest_framework.authtoken.models import Token            # Tokenテーブルを使う
 from rest_framework.permissions import IsAuthenticated
@@ -53,6 +53,18 @@ class SignupAPIView(APIView):
             
 
 
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = UserProfileSerializer(
+            request.user,
+            context={"request": request}
+        )
+        return Response(serializer.data)
+
+
+
 # ユーザーのアイコン取得
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
@@ -74,3 +86,57 @@ def user_profile(request, user_id):
         "following_count": following_count,
         "followers_count": followers_count,
     })
+    
+    
+    
+# アイコン画像変更
+class UserIconUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, user_id):
+        if request.user.id != user_id:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        serializer = UserIconUpdateSerializer(
+            request.user,
+            data=request.data,
+            partial=True
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+
+            res_serializer = UserIconUpdateResponseSerializer(
+                request.user,
+                context={"request": request}
+            )
+            return Response(res_serializer.data)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+# ユーザー情報
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, user_id):
+        user = User.objects.filter(id=user_id).first()
+        if not user:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = UserProfileSerializer(user, context={"request": request})
+        return Response(serializer.data)
+
+    def patch(self, request, user_id):
+        # 自分以外は編集できないように
+        if request.user.id != user_id:
+            return Response({"detail": "権限がありません"},status=status.HTTP_403_FORBIDDEN)
+
+        user = request.user
+        serializer = UserProfileUpdateSerializer(user, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

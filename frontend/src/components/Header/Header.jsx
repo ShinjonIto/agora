@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import UserProfile from "../UserProfile";
 import LogoutButton from "../LogoutButton";
 import axiosPrivate from "@/api/axiosPrivate";
+import { useAuth } from "@/contexts/AuthContext";
 
 import "./Header.css";
 
@@ -11,9 +12,10 @@ import HeaderOka from "@/assets/images/header/header_oka.svg?react";
 
 
 
-const Header = ({ user }) => {
+const Header = () => {
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false); // モーダルの開閉状態
+    const { user, loading } = useAuth();
 
     // ユーザーID
     const currentUserId = localStorage.getItem("userId");
@@ -36,6 +38,9 @@ const Header = ({ user }) => {
         const closeMenu = () => setShowMenu(false);
         window.addEventListener("click", closeMenu);
     }, []);
+
+    if (loading) return null;
+    if (!user) return null;
 
 
     return (

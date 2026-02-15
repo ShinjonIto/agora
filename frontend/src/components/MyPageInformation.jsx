@@ -84,6 +84,11 @@ const MyPageInformation = ({userId}) => {
 
             {/* フォロワー数 */}
             <p>フォロワー: {user.followers_count}</p>
+
+            {/* 設定 */}
+            {user.id === currentUserId && (
+                <button onClick={() => navigate(`/settings/${currentUserId}`)}>設定</button>
+            )}
         </div>
     );
 };
