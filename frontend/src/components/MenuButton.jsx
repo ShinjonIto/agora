@@ -30,7 +30,8 @@ const MenuButton = ({
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef(null);
-    const isMine = currentUserId && String(ownerId) === String(currentUserId);
+    const isMine = currentUserId && ownerId && Number(ownerId) === Number(currentUserId);
+
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -42,6 +43,12 @@ const MenuButton = ({
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [type, setIsMenuOpen]);
+
+    // 閉じる処理の共通化
+    const closeMenu = () => {
+        setIsOpen(false);
+        if (type === "post" && setIsMenuOpen) setIsMenuOpen(false);
+    };
 
     return (
         <div style={{ position: "relative" }} ref={menuRef}>
@@ -86,7 +93,14 @@ const MenuButton = ({
                         <div>
                             {/* フォローボタン (type条件を外したのでコメントでも出る) */}
                             {onFollow && (
-                                <button style={btnStyle} onClick={() => { onFollow(ownerId); }}>
+                                <button 
+                                    style={btnStyle} 
+                                    onClick={async (e) => { 
+                                    e.stopPropagation(); 
+                                    await onFollow(ownerId);
+                                    closeMenu();
+                                }}
+                                >
                                     {isFollowed ? "フォロー解除" : "フォロー"}
                                 </button>
                             )}

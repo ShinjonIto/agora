@@ -1,4 +1,3 @@
-// src/utils/formState.js
 export const getFormStatus = (form, errors) => {
     const allFilled = Object.values(form).every((v) => String(v ?? "").trim() !== "");
     const noFieldErrors = Object.values(errors).every((m) => m === "");
