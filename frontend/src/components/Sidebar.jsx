@@ -26,7 +26,7 @@ const Sidebar = () => {
                 }
             >
                 <Car className="aside_icon" />
-                <span>自動車学科</span>
+                <span>自動車整備学科</span>
             </NavLink>
 
             <NavLink
@@ -36,7 +36,7 @@ const Sidebar = () => {
                 }
             >
                 <Bike className="aside_icon" />
-                <span>バイシクル学科</span>
+                <span>スポーツバイシクル学科</span>
             </NavLink>
 
             <NavLink

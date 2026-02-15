@@ -9,19 +9,34 @@
 }
 
 /* エディタ全体の枠（ツールバーの下の白い箱） */
-.postForm .ql-container {
-    height: 320px;
-
-    /* 好きな高さに */
-}
 
 /* 入力エリア（文字が入るところ） */
 .postForm .ql-editor {
-    height: 320px;
+    /* height: 320px; */
     /* containerと合わせる */
     overflow-y: auto;
     /* 中だけスクロール */
     font-size: 16px;
     /* 文字サイズもここ */
     line-height: 1.7;
+}
+
+.ql-editor.ql-blank:focus::before {
+    content: "";
+}
+
+/* ReactQuill 全体の角丸 */
+.postForm .ql-toolbar {
+    border-radius: 12px 12px 0 0;
+    background-color: white;
+}
+
+.postForm .ql-container {
+    border-radius: 0 0 12px 12px;
+    background-color: white;
+}
+
+.postForm .ql-container img {
+    height: 50%;
+
 }

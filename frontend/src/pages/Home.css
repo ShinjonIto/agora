@@ -22,7 +22,7 @@
 
     flex: 1;
 
-    min-height: 0;
+    min-height: 650px;
     width: 80%;
     margin: 0 auto;
 
@@ -45,10 +45,16 @@
     transform: translateX(8px);
 
 
-    padding: 0 10%;
+    padding: 0 5%;
     /* スクロール */
 }
 
 .postListScroll:hover {
     overflow-y: scroll;
+}
+
+@media screen and (max-width: 500px) {
+    .sidebar {
+        width: 50px;
+    }
 }

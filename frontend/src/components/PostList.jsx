@@ -4,7 +4,7 @@ import Loading from "./Loading";
 import "./PostList.css";
 import { useNavigate, useParams } from "react-router-dom";
 import PostCard from "./PostCard";
-import ReportModal from "./ReportModal"; 
+import ReportModal from "./ReportModal";
 import { usePostActions } from "@/hooks/usePostActions";
 
 const deptMap = { mch: 0, cyc: 1, sys: 2 };
@@ -19,15 +19,15 @@ const PostList = () => {
     const currentUserId = localStorage.getItem("userId");
 
     // フックからロジック取得
-    const { 
-        handleDelete, 
-        handleLike, 
-        handleFollow, 
-        formatPostDate, 
-        reportTarget, 
-        setReportTarget, 
-        handleReportSuccess 
-    } = usePostActions(setPosts); 
+    const {
+        handleDelete,
+        handleLike,
+        handleFollow,
+        formatPostDate,
+        reportTarget,
+        setReportTarget,
+        handleReportSuccess
+    } = usePostActions(setPosts);
 
 
     useEffect(() => {
@@ -56,14 +56,15 @@ const PostList = () => {
         return new Date(b.created_at) - new Date(a.created_at);
     });
 
-    
 
 
-    if (loading) return <Loading />;
+
 
 
     return (
+
         <div className="postList">
+            {loading && <Loading />}
             {reportTarget && (
                 <ReportModal
                     type={reportTarget.type}
@@ -93,10 +94,10 @@ const PostList = () => {
                         isReported={post.is_reported}
                         currentUserId={currentUserId}
                         navigate={navigate}
-                        handleDelete={handleDelete} 
-                        handleFollow={handleFollow} 
-                        handleLike={handleLike}     
-                        formatPostDate={formatPostDate} 
+                        handleDelete={handleDelete}
+                        handleFollow={handleFollow}
+                        handleLike={handleLike}
+                        formatPostDate={formatPostDate}
                         openReportModal={(id) => setReportTarget({ type: "post", id })}
                     />
                 ))}

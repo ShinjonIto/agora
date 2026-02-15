@@ -3,12 +3,13 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    gap: 5%;
 
 }
 
-/* .layout header {
+.layout header {
     height: 80px;
-} */
+}
 
 .layout .main {
     flex: 1;

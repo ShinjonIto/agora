@@ -140,7 +140,7 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
                 </div>
 
                 {/* 本文 */}
-                <div style={{ backgroundColor: "white", color: "black" }}>
+                <div >
                     <ReactQuill
                         ref={quillRef}
                         theme="snow"
@@ -151,7 +151,7 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
                     />
                 </div>
 
-                {error && <p>{error}</p>}
+                {error && <p className="error">{error}</p>}
 
                 <button className="link_button" type="submit" disabled={loading} >
                     {loading ? "投稿中..." : "記事を公開する"}
