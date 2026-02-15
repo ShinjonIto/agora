@@ -7,6 +7,7 @@ from .serializers import *
 from rest_framework.permissions import IsAuthenticated
 from django.core.files.storage import default_storage
 import os
+from apps.users.models import User
 
 
 class DepartmentAPIView(APIView):
@@ -163,16 +164,28 @@ class PostDeleteAPIView(APIView):
             return Response({"error": "記事が見つからないか、権限がありません"}, status=status.HTTP_404_NOT_FOUND)
 
 
-# 自分の記事一覧
+
+# マイページの自分の記事一覧
 class MyPostAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
-        user = request.user
+        user_id = request.query_params.get("user_id")
+        
+        # 他人のページ
+        if user_id:
+            try:
+                user = User.objects.get(id=user_id)
+            except User.DoesNotExist:
+                return Response({"error": "ユーザーが存在しません"}, status=404)
+        # 自分のページ
+        else: 
+            user = request.user
+
         myposts = Post.objects.filter(post_user=user, is_deleted=False).order_by("-created_at")
         serializer = PostSerializer(myposts, many=True, context={'request': request})
-        
         return Response(serializer.data, status=status.HTTP_200_OK)
+
             
             
 # 自分がいいねした記事一覧
@@ -180,11 +193,19 @@ class MyLikeAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
-        user = request.user
+        user_id = request.query_params.get("user_id")
+        
+        if user_id:
+            try:
+                user = User.objects.get(id=user_id)
+            except User.DoesNotExist:
+                return Response({"error": "ユーザーが存在しません"}, status=404)
+        else:
+            user = request.user
+
         # いいねした順
         mylikepost = Post.objects.filter(postlike__user=user, is_deleted=False).order_by("-postlike__created_at")
         serializer = PostSerializer(mylikepost, many=True, context={'request' : request})
-        
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     
@@ -193,8 +214,16 @@ class MyCommentPostAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
-        user = request.user
+        user_id = request.query_params.get("user_id")
+        
+        if user_id:
+            try:
+                user = User.objects.get(id=user_id)
+            except User.DoesNotExist:
+                return Response({"error": "ユーザーが存在しません"}, status=404)
+        else:
+            user = request.user
+
         comment_posts = Post.objects.filter(comment__user=user, is_deleted=False).distinct().order_by("-created_at")
         serializer = MyCommentedPostSerializer(comment_posts, many=True, context={'request' : request})
-        
         return Response(serializer.data, status=status.HTTP_200_OK)

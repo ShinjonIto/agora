@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import UserProfile from "../UserProfile";
 import LogoutButton from "../LogoutButton";
+import axiosPrivate from "@/api/axiosPrivate";
 
 import "./Header.css";
 
@@ -16,6 +17,7 @@ const Header = ({ user }) => {
 
     // ユーザーID
     const currentUserId = localStorage.getItem("userId");
+
 
     // ロゴクリックしたらホーム画面へ
     const handleLogoClick = () => {

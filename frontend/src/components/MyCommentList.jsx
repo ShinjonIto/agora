@@ -1,33 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CommentItem from "./CommentItem";
 import UserProfile from "./UserProfile";
 import MenuButton from "./MenuButton";
 import { useCommentActions } from "@/hooks/useCommentActions";
 
-
 const MyCommentList = ({ posts, currentUserId, navigate, handleDelete, handleFollow, openReportModal }) => {
     return (
         <>
-        {posts.map(post => (
-            <CommentPost
-            key={post.post_id}
-            post={post}
-            currentUserId={currentUserId}
-            navigate={navigate}
-            handleDelete={handleDelete}
-            handleFollow={handleFollow}
-            openReportModal={openReportModal}
-            />
-        ))}
+            {posts.map(post => (
+                <CommentPost
+                    key={`${post.post_user}-${post.post_id}`}
+                    post={post}
+                    currentUserId={currentUserId}
+                    navigate={navigate}
+                    handleDelete={handleDelete}
+                    handleFollow={handleFollow}
+                    openReportModal={openReportModal}
+                />
+            ))}
         </>
     );
 };
 
-// handleDelete, handleFollow, openReportModal を引数に追加
+// 投稿ごとのコメントリスト
 const CommentPost = ({ post, currentUserId, navigate, handleDelete, handleFollow, openReportModal }) => {
-    // 自分のコメントだけ
     const [comments, setComments] = useState(post.my_comments || []);
     const { handleEdit, handleDelete: handleCommentDelete, handleLike } = useCommentActions(setComments, navigate);
+
+    useEffect(() => {
+        setComments(post.my_comments || []);
+    }, [post.my_comments]);
 
     if (!comments || comments.length === 0) return null;
 
@@ -36,12 +38,13 @@ const CommentPost = ({ post, currentUserId, navigate, handleDelete, handleFollow
             {/* 投稿情報 */}
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "5px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    {/* 記事のアイコン */}
-                    <UserProfile user={{ icon_image: post.author_icon }}
+                    <UserProfile
+                        user={{ icon_image: post.author_icon }}
                         onClick={(e) => {
                             e.stopPropagation();
                             navigate(`/mypage/${post.post_user}`);
-                    }} />
+                        }}
+                    />
                     <div>
                         <div style={{ fontWeight: "bold", color: "white" }}>{post.author_name}</div>
                     </div>

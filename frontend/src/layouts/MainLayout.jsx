@@ -8,11 +8,13 @@ import "./MainLayout.css"
 const MainLayout = ({ children }) => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
+    const currentUserId = localStorage.getItem("userId");
 
     useEffect(() => {
         const fetchMe = async () => {
+
             try {
-                const response = await axiosPrivate.get("/api/users/me/");
+                const response = await axiosPrivate.get(`/api/users/${currentUserId}/`);
                 setUser(response.data);
             } catch (err) {
                 console.error(err);
