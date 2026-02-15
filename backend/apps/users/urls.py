@@ -7,6 +7,9 @@ urlpatterns = [
     path('login/', LoginAPIView.as_view()),
     path('signup/', SignupAPIView.as_view()),
     path("<int:user_id>/", user_profile),
+    path("me/", MeView.as_view()),
+    path("settings/<int:user_id>/", UserProfileView.as_view()),
+    path("settings/<int:user_id>/icon/", UserIconUpdateView.as_view()),
 ]
 
 if settings.DEBUG:

@@ -28,3 +28,60 @@ class SignupSerializer(serializers.ModelSerializer):
             password = varidated_data["password"],
         )
         return user
+
+
+# ユーザー情報
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "user_name",
+            "self_introduction",
+            "icon_image",
+        ]
+    
+    def get_icon_image(self, obj):
+        request = self.context.get("request")
+        if obj.icon_image and request:
+            return request.build_absolute_uri(obj.icon_image.url)
+        return None
+        
+
+
+# アイコン画像だけ更新
+class UserIconUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["icon_image"]
+
+    
+    
+# アイコン画像もらうとき
+class UserIconUpdateResponseSerializer(serializers.ModelSerializer):
+    icon_image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ["icon_image"]
+
+    def get_icon_image(self, obj):
+        request = self.context.get("request")
+        if obj.icon_image:
+            return request.build_absolute_uri(obj.icon_image.url)
+        return None
+        
+
+        
+# ユーザー名・自己紹介文だけ更新
+class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "user_name",
+            "self_introduction",
+        ]
+        
+        
+
+        

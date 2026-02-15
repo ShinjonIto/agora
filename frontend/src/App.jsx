@@ -9,6 +9,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 import MyPage from "./pages/MyPage";
+import ProfileSettings from "./pages/ProfileSettings";
 import PostList from "./components/PostList";
 
 
@@ -55,9 +56,13 @@ function App() {
           <Route path="posts/edit/:post_id" element={<EditPost />} />
 
           {/* マイページ */}
-
-          {/* <Route path="/mypage/me" element={<MyPage />} /> */}
           <Route path="/mypage/:userId" element={<MyPage />} />
+
+          {/* 設定 */}
+          <Route path="/settings/:userId" element={<ProfileSettings />} />
+
+          {/* パスワード変更 */}
+          {/* <Route path="/settings/password" element={<PasswordChange />} /> */}
         </Route>
       </Routes>
     </BrowserRouter>
