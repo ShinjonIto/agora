@@ -68,6 +68,7 @@ select:focus-visible {
 select option {
     background: var(--main-color);
     color: var(--main-text);
+    border-radius: 5px;
 }
 
 .selectWrap {
@@ -78,7 +79,7 @@ select option {
 .selectWrap::after {
     content: "▾";
     position: absolute;
-    right: 14px;
+    left: 150px;
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;

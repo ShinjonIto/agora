@@ -53,7 +53,7 @@
 
 
 .authPages .authInput {
-    border-bottom: 5px solid var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
     width: 100%;
     border-radius: var(--radius) var(--radius) 0 0;
     background-color: var(--login-base-color);
@@ -75,11 +75,11 @@
 }
 
 .authPages .authInput.isValid {
-    border-bottom: 3px solid var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
 }
 
 .authPages .authInput.isInvalid {
-    border-bottom: 3px solid var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
 }
 
 .authPages .error {
@@ -97,7 +97,7 @@
     background-color: color-mix(in srgb, var(--accent-color) 18%, white);
     border-color: var(--accent-color);
     transition: 0.2s ease;
-    border-bottom: 3px solid transparent;
+    border-bottom: 2px solid transparent;
 }
 
 /* invalid のときはフォーカス枠もエラー色 */
