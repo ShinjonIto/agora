@@ -25,7 +25,6 @@ const PostCard = ({
         Number(post.post_user) === Number(currentUserId);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    console.log(post); // post_user が数値かオブジェクトか
 
     return (
         <div

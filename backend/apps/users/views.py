@@ -8,6 +8,7 @@ from rest_framework.authtoken.views import ObtainAuthToken   # ユーザー名�
 from rest_framework.authtoken.models import Token            # Tokenテーブルを使う
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+from apps.follows.models import Follow
 
 # def get(self, request):     　                getの場合
 # def post(self, request, *args, **kwargs):     postの場合
@@ -52,15 +53,24 @@ class SignupAPIView(APIView):
             
 
 
-# ユーザーのアイコン・名前
+# ユーザーのアイコン取得
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def my_profile(request):
-    user = request.user
+def user_profile(request, user_id):
+    user = User.objects.filter(id=user_id).first()
+    
+    if not user:
+        return Response({"ユーザー情報が存在しません"}, status=status.HTTP_404_NOT_FOUND)
+        
+    # フォロー数・フォロワー数を取得
+    following_count = Follow.objects.filter(follower=user).count()  
+    followers_count = Follow.objects.filter(following=user).count() 
+
     return Response({
+        "id": user.id,
         "user_name": user.user_name,
-        "icon_image": request.build_absolute_uri(user.icon_image.url)
-        if user.icon_image else None,
+        "icon_image": request.build_absolute_uri(user.icon_image.url) if user.icon_image else None,
+        "is_followed": False,  
+        "following_count": following_count,
+        "followers_count": followers_count,
     })
-    
-    

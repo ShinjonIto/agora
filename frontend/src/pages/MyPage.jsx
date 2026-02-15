@@ -4,12 +4,17 @@ import axiosPrivate from "@/api/axiosPrivate";
 import MainLayout from "../layouts/MainLayout";
 import Sidebar from "../components/Sidebar";
 import MyPostList from "../components/MyPostList";
+import MyPageInformation from "../components/MyPageInformation";
+
+
 
 const MyPage = () => {
     const [activeTab, setActiveTab] = useState("myposts"); // 初期値をAPIのパス
     const [posts, setPosts] = useState([]);
-    // ユーザーID
-    const currentUserId = Number(localStorage.getItem("user_id"));
+    const { userId } = useParams();
+    const currentUserId = localStorage.getItem("userId");
+    const pageUserId = userId ? userId : currentUserId;
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -18,7 +23,6 @@ const MyPage = () => {
                     const res = await axiosPrivate.get("/my_comments/"); // Django API
                     setPosts(res.data);
                 }
-                // myposts, mylikes は MyPostList が内部で fetch する想定
             } catch (err) {
                 console.error(err);
             }
@@ -26,12 +30,17 @@ const MyPage = () => {
         fetchData();
     }, [activeTab]);
 
+
+
     return (
         <MainLayout>
             <div className="homeLayout">
                 <Sidebar className="sidebar" />
 
                 <main>
+                    {/* ログインユーザー情報 */}
+                    <MyPageInformation userId={pageUserId} />
+                    
                     {/* タブボタン */}
                     <div style={{ display: "flex", gap: "20px", marginBottom: "20px", borderBottom: "1px solid #ddd" }}>
                         <button onClick={() => setActiveTab("myposts")}>投稿</button>
@@ -40,7 +49,7 @@ const MyPage = () => {
                     </div>
 
                     {/* fetchTypeを渡して、これ1つでいいねした記事・自分の記事を表示する */}
-                    <MyPostList fetchType={activeTab} />
+                    <MyPostList fetchType={activeTab} pageUserId={pageUserId} />
                 </main>
             </div>
         </MainLayout>

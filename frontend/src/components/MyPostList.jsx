@@ -9,7 +9,7 @@ import { usePostActions } from "@/hooks/usePostActions";
 import MyCommentList from "./MyCommentList";
 import "./PostList.css";
 
-const MyPostList = ({ fetchType }) => {
+const MyPostList = ({ fetchType, pageUserId }) => {
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -37,15 +37,14 @@ const MyPostList = ({ fetchType }) => {
                 // fetchType（タブ）によって叩くURLを切り替える
                 let url = "";
                 if (fetchType === "myposts") {
-                    url = "/api/posts/myposts/";
+                    url = `/api/posts/myposts/?user_id=${pageUserId}`;
                 } else if (fetchType === "mylikes") {
-                    url = "/api/posts/mylikes/";
+                    url = `/api/posts/mylikes/?user_id=${pageUserId}`;
                 } else if (fetchType === "mycomments") {
-                    url = "/api/comments/mycomments/"; 
+                    url = `/api/comments/mycomments/?user_id=${pageUserId}`;
                 }
 
                 const res = await axiosPrivate.get(url);
-                console.log("Fetched posts:", res.data);
                 setPosts(res.data); 
 
             } catch (err) {
@@ -56,7 +55,7 @@ const MyPostList = ({ fetchType }) => {
             }
             };
             fetchPosts();
-        }, [fetchType]);
+        }, [fetchType, pageUserId]);
 
     if (loading) return <Loading message="読み込み中..." />;
     if (error) return <ErrorMessage message={error} />;
@@ -95,7 +94,7 @@ const MyPostList = ({ fetchType }) => {
             ) : (
                 posts.map(post => (
                 <PostCard
-                    key={post.post_id}
+                    key={`${post.post_user}-${post.post_id}`}
                     post={post}
                     currentUserId={currentUserId}
                     navigate={navigate}
