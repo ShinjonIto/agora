@@ -27,6 +27,9 @@ const MyPostList = ({ fetchType, pageUserId }) => {
         formatPostDate
     } = usePostActions(setPosts, navigate);
 
+
+    
+
     // データ取得
     useEffect(() => {
         const fetchPosts = async () => {

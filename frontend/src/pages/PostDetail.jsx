@@ -30,15 +30,24 @@ const PostDetail = () => {
     const commentActions = useCommentActions(setComments, navigate);
 
     // 削除
-    const handleCommentDelete = async (commentId) => {
-        await commentActions.handleDelete(commentId);
+    const handlePostDelete = async (id) => {
+        const success = await handleDelete(id);
+        if (success) {
+            alert("削除しました");
+            navigate("/");
+        }
+    };
 
+
+    // コメント削除
+    const handleCommentDelete = async (commentId) => {
+        await commentActions.handleDelete(commentId); // useCommentActions の handleDelete を呼ぶ
+        // コメント件数を減らす
         setPost(prev => ({
             ...prev,
             comment_count: Math.max((prev.comment_count || 1) - 1, 0)
         }));
-    };
-
+    };  
 
 
     useEffect(() => {
@@ -96,7 +105,7 @@ const PostDetail = () => {
                 currentUserId={currentUserId}
                 isReported={post.is_reported}
                 navigate={navigate}
-                handleDelete={handleDelete}
+                handleDelete={handlePostDelete}
                 handleLike={handleLike}
                 handleFollow={handleFollow}
                 formatPostDate={formatPostDate}

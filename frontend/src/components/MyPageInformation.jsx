@@ -79,6 +79,9 @@ const MyPageInformation = ({userId}) => {
                 </button>
             )}
 
+            {/* 自己紹介文 */}
+            <p>自己紹介文：{user.self_introduction}</p>
+
             {/* フォロー数 */}
             <p>フォロー: {user.following_count}</p>
 

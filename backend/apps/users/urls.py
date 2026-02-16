@@ -8,8 +8,9 @@ urlpatterns = [
     path('signup/', SignupAPIView.as_view()),
     path("<int:user_id>/", user_profile),
     path("me/", MeView.as_view()),
-    path("settings/<int:user_id>/", UserProfileView.as_view()),
-    path("settings/<int:user_id>/icon/", UserIconUpdateView.as_view()),
+    path("settings/<int:user_id>/", UserProfileAPIView.as_view()),
+    path("settings/<int:user_id>/icon/", UserIconUpdateAPIView.as_view()),
+    path("settings/<int:user_id>/password/", PasswordChangeAPIView().as_view()),
 ]
 
 if settings.DEBUG:

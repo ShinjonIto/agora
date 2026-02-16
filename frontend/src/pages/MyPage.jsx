@@ -33,9 +33,7 @@ const MyPage = () => {
 
 
     return (
-        <MainLayout>
             <div className="homeLayout">
-                <Sidebar className="sidebar" />
 
                 <main>
                     {/* ログインユーザー情報 */}
@@ -52,7 +50,7 @@ const MyPage = () => {
                     <MyPostList fetchType={activeTab} pageUserId={pageUserId} />
                 </main>
             </div>
-        </MainLayout>
+
     )
 };
 
