@@ -83,6 +83,7 @@ def user_profile(request, user_id):
         "user_name": user.user_name,
         "icon_image": request.build_absolute_uri(user.icon_image.url) if user.icon_image else None,
         "is_followed": False,  
+        "self_introduction": user.self_introduction,
         "following_count": following_count,
         "followers_count": followers_count,
     })
@@ -90,7 +91,7 @@ def user_profile(request, user_id):
     
     
 # アイコン画像変更
-class UserIconUpdateView(APIView):
+class UserIconUpdateAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def patch(self, request, user_id):
@@ -116,7 +117,7 @@ class UserIconUpdateView(APIView):
     
 
 # ユーザー情報
-class UserProfileView(APIView):
+class UserProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request, user_id):
@@ -140,3 +141,24 @@ class UserProfileView(APIView):
             return Response(serializer.data)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+# パスワード変更
+from django.contrib.auth import update_session_auth_hash
+class PasswordChangeAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, user_id):
+        user = request.user
+        if user.id != user_id:
+            return Response({"detail": "権限がありません"}, status=403)
+
+        serializer = PasswordChangeSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+
+        user.set_password(serializer.validated_data['new_password'])
+        user.save()
+        update_session_auth_hash(request, user)
+        return Response({"detail": "パスワードを変更しました"})

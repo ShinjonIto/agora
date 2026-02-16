@@ -57,6 +57,15 @@ const PostList = () => {
     });
 
 
+    // 削除処理
+    const handlePostDelete = async (id) => {
+        const success = await handleDelete(id);
+        if (success) {
+            alert("削除しました");
+            // navigateしない
+        }
+    };
+
 
 
 
@@ -94,7 +103,7 @@ const PostList = () => {
                         isReported={post.is_reported}
                         currentUserId={currentUserId}
                         navigate={navigate}
-                        handleDelete={handleDelete}
+                        handleDelete={handlePostDelete}
                         handleFollow={handleFollow}
                         handleLike={handleLike}
                         formatPostDate={formatPostDate}

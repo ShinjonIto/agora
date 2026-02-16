@@ -11,6 +11,7 @@ import EditPost from "./pages/EditPost";
 import MyPage from "./pages/MyPage";
 import ProfileSettings from "./pages/ProfileSettings";
 import PostList from "./components/PostList";
+import PasswordChange from "./pages/PasswordChange";
 
 
 
@@ -62,7 +63,7 @@ function App() {
           <Route path="/settings/:userId" element={<ProfileSettings />} />
 
           {/* パスワード変更 */}
-          {/* <Route path="/settings/password" element={<PasswordChange />} /> */}
+          <Route path="/settings/:userId/password" element={<PasswordChange />} />
         </Route>
       </Routes>
     </BrowserRouter>
