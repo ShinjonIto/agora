@@ -10,6 +10,7 @@
     padding: 20px;
     margin: 0 auto 20px auto;
     border-radius: var(--radius);
+    /* border: 1px solid black; */
 }
 
 .post:hover {
@@ -31,17 +32,63 @@
     opacity: 0.7;
 }
 
-.post .markdown-body {
+/* 1枚目サムネ */
+.postThumb {
     width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin-top: 8px;
+}
+
+/* 共通: 長い英数字対策 */
+.post .ql-editor {
     overflow-wrap: anywhere;
     word-break: break-word;
-    text-overflow: ellipsis;
 }
+
+/* 一覧: 3行で省略 */
+.post .ql-preview {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+/* 一覧: 本文内の画像は隠す（上に1枚目を出してるから） */
+.post .ql-preview img {
+    display: none;
+}
+
+/* 詳細: 全文（制限なし） */
+.post .ql-full {
+    overflow: visible;
+    display: block;
+}
+
+.post .ql-preview>*:not(:first-child) {
+    display: none;
+}
+
+/* 一覧：1段落目だけを3行…にする */
+.post .ql-preview> :first-child {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+
+
 
 .post .dai_flex {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.post .ql-full {
+    overflow: visible;
 }
 
 .post .syo_flex {
@@ -53,4 +100,16 @@
 
 .comment_flex {
     gap: 10px;
+}
+
+.post .titleBlock {
+
+    flex: 1;
+    /* ← 右の「…ボタン」に押されて縮む */
+
+}
+
+.post .titleBlock h3,
+.post .titleBlock .title {
+    word-break: break-word;
 }

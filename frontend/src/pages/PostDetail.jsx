@@ -5,7 +5,7 @@ import PostCard from "@/components/PostCard";
 import CommentItem from "../components/CommentItem";    // コメント
 import CommentForm from "../components/CommentForm";    // コメントフォーム
 import { usePostActions } from "@/hooks/usePostActions";
-import { useCommentActions } from "@/hooks/useCommentActions"; 
+import { useCommentActions } from "@/hooks/useCommentActions";
 import ReportModal from "@/components/ReportModal";
 
 
@@ -19,7 +19,7 @@ const PostDetail = () => {
     const [error, setError] = useState(null);
     const [replyTarget, setReplyTarget] = useState(null);
     const [reportTarget, setReportTarget] = useState(null);
-    
+
 
     // ユーザーID
     const currentUserId = Number(localStorage.getItem("userId"));
@@ -63,16 +63,16 @@ const PostDetail = () => {
 
     // 編集の時、子要素に情報渡す
     const updateCommentInTree = (list, updated) => {
-    return list.map(c => {
-        if (c.comment_id === updated.comment_id) {
-            return { ...c, ...updated };
-        }
-        if (c.children?.length > 0) {
-            return { ...c, children: updateCommentInTree(c.children, updated) };
-        }
-        return c;
-    });
-};
+        return list.map(c => {
+            if (c.comment_id === updated.comment_id) {
+                return { ...c, ...updated };
+            }
+            if (c.children?.length > 0) {
+                return { ...c, children: updateCommentInTree(c.children, updated) };
+            }
+            return c;
+        });
+    };
 
 
 
@@ -91,7 +91,7 @@ const PostDetail = () => {
     return (
         <div>
             {/* 記事 */}
-            <PostCard 
+            <PostCard
                 post={post}
                 currentUserId={currentUserId}
                 isReported={post.is_reported}
@@ -101,9 +101,10 @@ const PostDetail = () => {
                 handleFollow={handleFollow}
                 formatPostDate={formatPostDate}
                 openReportModal={(id) => setReportTarget({ type: "post", id })}
+                variant="detail"
             />
 
-            
+
 
             {/* コメント */}
             <h3>コメント</h3>
@@ -121,7 +122,7 @@ const PostDetail = () => {
                             handleDelete={handleCommentDelete}
                             handleLike={commentActions.handleLike}
                             handleFollow={commentActions.handleFollow}
-                            onReplyClick={(c) => setReplyTarget(c)} 
+                            onReplyClick={(c) => setReplyTarget(c)}
                             updateComment={(updated) => setComments(prev => updateCommentInTree(prev, updated))}
                             openReportModal={(id) => setReportTarget({ type: "comment", id })}
                         />
@@ -129,7 +130,7 @@ const PostDetail = () => {
                         {/* 2. 返信フォームの表示ロジック */}
                         {replyTarget && replyTarget.comment_id === comment.comment_id && (
                             <div style={{ marginLeft: "40px", marginTop: "10px", borderLeft: "2px solid #ccc", paddingLeft: "10px" }}>
-                                <CommentForm 
+                                <CommentForm
                                     postId={postId}
                                     parentCommentId={comment.comment_id}
                                     replyTargetName={comment.comment_author_name}
@@ -140,7 +141,7 @@ const PostDetail = () => {
                                     }}
                                 />
                                 {/* 3. ボタンのタグ記述を修正 */}
-                                <button 
+                                <button
                                     onClick={() => setReplyTarget(null)}
                                     style={{ fontSize: "12px", color: "gray", background: "none", border: "none", cursor: "pointer", marginTop: "5px" }}
                                 >

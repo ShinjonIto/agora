@@ -18,6 +18,7 @@ const PostCard = ({
     openReportModal,
     handleLike,
     formatPostDate,
+    variant = "list",
 }) => {
     const isMyPost =
         currentUserId &&
@@ -25,6 +26,17 @@ const PostCard = ({
         Number(post.post_user) === Number(currentUserId);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const isDetail = variant === "detail";
+
+    // ポストリストのみ画像の一番最初のものを取り出す
+    const getFirstImageSrc = (html) => {
+        if (!html) return null;
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        const img = doc.querySelector("img");
+        return img?.getAttribute("src") || null;
+    };
+
+    const firstImg = getFirstImageSrc(post.content);
 
     return (
         <div
@@ -38,15 +50,15 @@ const PostCard = ({
                 <div className="syo_flex">
                     {/* アイコン */}
                     <UserProfile
-                        user={{ 
-                            icon_image: post.author_icon, 
-                            id: post.post_user_id 
+                        user={{
+                            icon_image: post.author_icon,
+                            id: post.post_user_id
                         }}
                         onClick={(e) => {
                             e.stopPropagation();
-                            navigate(`/mypage/${post.post_user_id }`);
+                            navigate(`/mypage/${post.post_user_id}`);
                         }}
-                        />
+                    />
                     <p>{post.author_name}</p>
                     <p>{formatPostDate(post.created_at)}</p>
                 </div>
@@ -55,9 +67,9 @@ const PostCard = ({
                     <MenuButton
                         type="post"
                         targetId={post.post_id}
-                        ownerId={post.post_user} 
+                        ownerId={post.post_user}
                         currentUserId={currentUserId}
-                        setIsMenuOpen={setIsMenuOpen} 
+                        setIsMenuOpen={setIsMenuOpen}
                         handlers={{
                             onEdit: (id) => navigate(`/posts/edit/${id}`),
                             onDelete: handleDelete,
@@ -77,8 +89,12 @@ const PostCard = ({
                         <span className="dept">{post.department_name}</span>
                     )}
                 </div>
+                {/* 1枚目だけ表示（あれば） */}
+                {!isDetail && firstImg && (
+                    <img className="postThumb" src={firstImg} alt="" loading="lazy" />
+                )}
                 <div
-                    className="ql-editor"
+                    className={`ql-editor ${isDetail ? "ql-full" : "ql-preview"}`}
                     dangerouslySetInnerHTML={{ __html: post.content }}
                 />
             </div>
@@ -98,9 +114,9 @@ const PostCard = ({
                     <View style={{ width: "18px" }} />
                     {post.total_views}
                 </div>
-                <button onClick={(e) => e.stopPropagation()} style={{ background: "none", border: "none", cursor: "pointer" }}>
+                {/* <button onClick={(e) => e.stopPropagation()} style={{ background: "none", border: "none", cursor: "pointer" }}>
                     <Share style={{ width: "18px" }} />
-                </button>
+                </button> */}
             </div>
         </div>
     );
