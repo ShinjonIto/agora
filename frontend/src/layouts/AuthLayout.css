@@ -42,7 +42,7 @@
     margin: 0 0 30px 0;
 
     border-radius: 16px;
-    background: var(--login-accent-color);
+    background: var(--login-accent-sub-color);
     display: grid;
 
     overflow-y: hidden;

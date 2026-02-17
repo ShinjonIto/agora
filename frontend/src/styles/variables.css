@@ -1,6 +1,6 @@
 :root {
     /* カラー */
-    --main-color: #FFF7E4;
+    /* --main-color: #FFF7E4;
     --main-sub-color: #F4ECCF;
     --base-color: #B6D586;
     --accent-color: #9FC3D1;
@@ -8,10 +8,47 @@
     --main-black: #000000;
     --main-white: #ffffff;
     --main-text: #544F4A;
-    --main-shadow: #9CC095;
+    --main-shadow: #9CC095; */
 
-    --login-base-color: #FCF2EB;
-    --login-accent-color: #F9E8D9;
+
+    --main-color: #FFF7E4;
+    --main-sub-color: #FFF7E4;
+    --base-color: #FFF7E4;
+    --accent-color: #6295CC;
+    --accent-sub-color: #FF7272;
+    --main-black: #000000;
+    --main-white: #ffffff;
+    --main-text: #537293;
+    --main-shadow: #6295CC;
+
+    /* --main-color: #A3C8DB;
+    --main-sub-color: #A3C8DB;
+    --base-color: #FFF7E4;
+    --accent-color: #027ACA;
+    --accent-sub-color: #FF7272;
+    --main-black: #000000;
+    --main-white: #ffffff;
+    --main-text: #537293;
+    --main-shadow: #A3C8DB; */
+
+
+
+
+
+    /* ログインパターン */
+    /* --login-base-color: #FCF2EB;
+    --login-accent-color: #F9E8D9; */
+
+    --login-base-color: #FFF7E4;
+    --login-accent-color: #FFF7E4;
+    --login-accent-sub-color: #6295CC;
+
+    /* --login-base-color: #FFF7E4;
+    --login-accent-color: #A3C8DB;
+    */
+
+    /* --login-base-color: #FCF2EB;
+    --login-accent-color: #F9E8D9; */
     /* フォント */
     --font-zen-maru: "zen-maru-gothic", sans-serif;
     --font-new-astro: "new-astro", sans-serif;
