@@ -12,6 +12,7 @@ import MyPage from "./pages/MyPage";
 import ProfileSettings from "./pages/ProfileSettings";
 import PostList from "./components/PostList";
 import PasswordChange from "./pages/PasswordChange";
+import AdminDashboard from "./pages/AdminDashboard";
 
 
 
@@ -64,6 +65,9 @@ function App() {
 
           {/* パスワード変更 */}
           <Route path="/settings/:userId/password" element={<PasswordChange />} />
+
+          {/* 管理画面 */}
+          <Route path="/managements" element={<AdminDashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>

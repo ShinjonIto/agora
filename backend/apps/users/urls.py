@@ -11,6 +11,9 @@ urlpatterns = [
     path("settings/<int:user_id>/", UserProfileAPIView.as_view()),
     path("settings/<int:user_id>/icon/", UserIconUpdateAPIView.as_view()),
     path("settings/<int:user_id>/password/", PasswordChangeAPIView().as_view()),
+    path("student_number/add/", StudentNumberAddAPIView().as_view()),
+    path("student_number/list/", StudentNumberListAPIView().as_view()),
+    path("student_number/delete/", StudentNumberDeleteAPIView().as_view()),
 ]
 
 if settings.DEBUG:

@@ -4,8 +4,27 @@ import Zyouhou from "@/assets/images/icon/zyouhou.svg?react";
 import Car from "@/assets/images/icon/car.svg?react";
 import Bike from "@/assets/images/icon/bike.svg?react";
 import "./Sidebar.css";
+import { useEffect, useState } from "react";
+import axiosPrivate from "@/api/axiosPrivate";
 
 const Sidebar = () => {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+    const fetchUser = async () => {
+        try {
+            const res = await axiosPrivate.get("/api/users/me/");
+            setUser(res.data);
+        } catch (err) {
+            console.error(err);
+        }
+        };
+        fetchUser();
+    }, []);
+
+
+
+
     return (
         <aside className="sidebar">
             <NavLink
@@ -48,6 +67,19 @@ const Sidebar = () => {
                 <Zyouhou className="aside_icon" />
                 <span>情報システム学科</span>
             </NavLink>
+
+
+            {/* 管理画面 */}
+            {user?.permission === 0 && (
+                <NavLink
+                    to="/managements"
+                    className={({ isActive }) =>
+                    `aside_button ${isActive ? "active" : ""}`
+                    }
+                >
+                    <span>管理者画面</span>
+                </NavLink>
+                )}
         </aside>
     );
 };
