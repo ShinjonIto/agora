@@ -1,6 +1,7 @@
 # Jsonに変換する Reactが読める形に変換
 from rest_framework import serializers
 from .models import User
+from django.contrib.auth import password_validation
 
 class SignupSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -39,6 +40,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "user_name",
             "self_introduction",
             "icon_image",
+            "email",
         ]
     
     def get_icon_image(self, obj):
@@ -73,15 +75,36 @@ class UserIconUpdateResponseSerializer(serializers.ModelSerializer):
         
 
         
-# ユーザー名・自己紹介文だけ更新
+# ユーザー名・自己紹介文・メールアドレスだけ更新
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
             "user_name",
             "self_introduction",
+            "email",
         ]
         
         
 
         
+
+
+# パスワード変更
+class PasswordChangeSerializer(serializers.Serializer):
+    current_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+    def validate_current_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError("現在のパスワードが正しくありません")
+        return value
+
+    def validate_new_password(self, value):
+        user = self.context['request'].user
+        try:
+            password_validation.validate_password(value, user)
+        except Exception as e:
+            raise serializers.ValidationError(str(e))
+        return value

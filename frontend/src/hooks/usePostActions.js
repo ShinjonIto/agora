@@ -10,12 +10,23 @@ export const usePostActions = (setPost, navigate, setComments = null) => {
     const handleDelete = async (id) => {
         if (!window.confirm("投稿を削除しますか？")) return;
         try {
-            await axiosPrivate.delete(`/api/posts/${id}/`);
-            if (navigate) navigate("/posts");
+            await axiosPrivate.delete(`/api/posts/${id}/delete/`);
+            if (setPost) {
+                setPost(prev => {
+                    if (Array.isArray(prev)) {
+                        return prev.filter(post => post.post_id !== id);
+                    }
+                    return null;
+                });
+            }
+
+            return true; // 成功だけ返す
+
         } catch (err) {
             alert("削除に失敗しました");
         }
     };
+
 
 
     // いいね処理

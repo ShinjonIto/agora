@@ -87,7 +87,14 @@ const MenuButton = ({
                     {isMine ? (
                         <div>
                             <button style={btnStyle} onClick={() => { onEdit?.(targetId); setIsOpen(false); }}>編集</button>
-                            <button style={{ ...btnStyle, color: "red" }} onClick={() => { onDelete?.(targetId); setIsOpen(false); }}>削除</button>
+                            <button style={{ ...btnStyle, color: "red" }} onClick={(e) => {
+                                    e.stopPropagation();
+                                    onDelete?.(targetId);
+                                    setIsOpen(false);
+                                }}  
+                                >
+                                削除
+                                </button>
                         </div>
                     ) : (
                         <div>

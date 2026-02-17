@@ -1,16 +1,26 @@
 import { useEffect, useState, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import axiosPrivate from "@/api/axiosPrivate";
 import { useAuth } from "@/contexts/AuthContext";
+import { useParams, useNavigate } from "react-router-dom";
 
 const ProfileSettings = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
     const { setUser } = useAuth();
 
+    const currentUserId = Number(localStorage.getItem("userId"));
+
+
+    // パスワード変更ページ
+    const handlePasswordChange = () => {
+        navigate(`/settings/${currentUserId}/password`);
+    };
+
+
+
     // アイコン用
     const [iconFile, setIconFile] = useState(null);
-    const [iconPreview, setIconPreview] = useState("");
+    const [iconPreview, setIconPreview] = useState(null);
     const [isIconEditing, setIsIconEditing] = useState(false);
     const fileInputRef = useRef(null);
     const [originalIcon, setOriginalIcon] = useState("");
@@ -19,6 +29,7 @@ const ProfileSettings = () => {
     const [profileForm, setProfileForm] = useState({
         user_name: "",
         self_introduction: "",
+        email: "",
     });
 
 
@@ -33,6 +44,7 @@ const ProfileSettings = () => {
                 setProfileForm({
                     user_name: user.user_name ?? "",
                     self_introduction: user.self_introduction ?? "",
+                    email: user.email ?? "",
                 });
 
                 setIconPreview(res.data.icon_image + "?t=" + Date.now());
@@ -57,7 +69,7 @@ const ProfileSettings = () => {
     };
 
 
-
+    // 変更ボタン
     const handleIconSave = async () => {
         if (!iconFile) return;
 
@@ -112,27 +124,44 @@ const ProfileSettings = () => {
     
     // 変更を保存ボタン処理
     const handleProfileSave = async () => {
+        if (!profileForm.email.includes("@")) {
+            alert("正しいメールアドレスを入力してください");
+            return;
+        }
         try {
-            await axiosPrivate.patch(`/api/users/settings/${userId}/`, profileForm);
+            const res = await axiosPrivate.patch(
+                `/api/users/settings/${userId}/`,
+                profileForm
+            );
+            // Contextのユーザー情報も更新
+            setUser(prev => ({
+                ...prev,
+                user_name: res.data.user_name,
+                email: res.data.email,
+            }));
             alert("プロフィールを更新しました");
             navigate(`/mypage/${userId}`);
         } catch (err) {
             console.error(err);
             alert("更新に失敗しました");
         }
-        };
+    };
     
+
+
 
     return (
         <div>
             <h2>設定</h2>
 
             {/* アイコン表示 */}
-            <img
-                src={iconPreview}
-                alt="icon"
-                style={{ width: 80, borderRadius: "50%" }}
-            />
+            {iconPreview && (
+                <img
+                    src={iconPreview}
+                    alt="icon"
+                    style={{ width: 80, borderRadius: "50%" }}
+                />
+            )}
 
             <button onClick={handleIconEditClick}>
                 写真を変更
@@ -179,9 +208,19 @@ const ProfileSettings = () => {
                         self_introduction: e.target.value,
                     })
                 }
+            />  
+
+            {/* メールアドレス */}
+            メールアドレス：
+            <input value={profileForm.email}
+                onChange={(e) =>
+                    setProfileForm({ ...profileForm, email: e.target.value })
+                }
             />
 
             <button onClick={handleProfileSave}>変更を保存</button>
+
+            <button onClick={handlePasswordChange}>パスワード変更はこちら</button>
         </div>
     );
 };
