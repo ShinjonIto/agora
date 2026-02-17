@@ -1,14 +1,15 @@
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.response import Response
 from .models import *
 from .serializers import *
 from rest_framework.authtoken.views import ObtainAuthToken   # ユーザー名＋パスワードで認証する仕組み
 from rest_framework.authtoken.models import Token            # Tokenテーブルを使う
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
 from apps.follows.models import Follow
+from .permissions import IsAdminPermission
+from django.db import transaction
 
 # def get(self, request):     　                getの場合
 # def post(self, request, *args, **kwargs):     postの場合
@@ -162,3 +163,72 @@ class PasswordChangeAPIView(APIView):
         user.save()
         update_session_auth_hash(request, user)
         return Response({"detail": "パスワードを変更しました"})
+    
+    
+    
+# 学生番号一覧
+class StudentNumberListAPIView(APIView):
+    permission_classes = [IsAdminPermission]   # admin のみ
+
+    def get(self, request):
+        students = Student_management.objects.filter(is_deleted=False).order_by("student_number")
+        data = [
+            {"management_id": s.management_id, "student_number": s.student_number}
+            for s in students
+        ]
+        return Response(data)    
+
+    
+    
+
+# 学生番号登録
+class StudentNumberAddAPIView(APIView):
+    permission_classes = [IsAdminPermission]   # admin のみ
+
+    def post(self, request):
+        serializer = StudentNumberBulkSerializer(data=request.data)
+        if serializer.is_valid():
+            created = serializer.save()
+            return Response({"created_count": len(created)}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    
+
+# 学生番号削除
+class StudentNumberDeleteAPIView(APIView):
+    permission_classes = [IsAdminPermission]
+
+    @transaction.atomic
+    def post(self, request):
+        serializer = StudentNumberDeleteSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        start = serializer.validated_data["start_number"]
+        end = serializer.validated_data["end_number"]
+
+        targets = Student_management.objects.filter(
+            student_number__gte=start,
+            student_number__lte=end,
+            is_deleted=False
+        )
+
+        numbers = list(targets.values_list("student_number", flat=True))
+        deleted_count = targets.count()
+
+        # 学生番号を削除
+        targets.update(is_deleted=True)
+
+        # その学生番号で作られた User も削除扱い
+        User.objects.filter(
+            student_number__in=numbers,
+            is_deleted=False
+        ).update(is_deleted=True)
+
+        return Response(
+            {
+                "deleted_count": deleted_count,
+                "deleted_numbers": numbers
+            },
+            status=status.HTTP_200_OK
+        )
