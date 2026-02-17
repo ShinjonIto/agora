@@ -33,6 +33,8 @@ const MyPage = () => {
 
 
     return (
+
+      
             <div className="homeLayout">
 
                 <main>
@@ -50,6 +52,7 @@ const MyPage = () => {
                     <MyPostList fetchType={activeTab} pageUserId={pageUserId} />
                 </main>
             </div>
+
 
     )
 };

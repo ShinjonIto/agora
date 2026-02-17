@@ -22,7 +22,7 @@
 
     flex: 1;
 
-    min-height: 650px;
+    /* min-height: 650px; */
     width: 80%;
     margin: 0 auto;
 
@@ -39,8 +39,7 @@
     min-height: 0;
     /* これも超重要 */
 
-    overflow-y: hidden;
-    overflow-x: hidden;
+    overflow: hidden;
     scrollbar-gutter: stable;
     transform: translateX(8px);
 
