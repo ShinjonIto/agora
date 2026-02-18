@@ -51,7 +51,7 @@ const MenuButton = ({
     };
 
     return (
-        <div style={{ position: "relative" }} ref={menuRef}>
+        <div className="click_button" style={{ position: "relative" }} ref={menuRef}>
             <button
                 onClick={(e) => {
                     e.stopPropagation();
@@ -88,25 +88,25 @@ const MenuButton = ({
                         <div>
                             <button style={btnStyle} onClick={() => { onEdit?.(targetId); setIsOpen(false); }}>編集</button>
                             <button style={{ ...btnStyle, color: "red" }} onClick={(e) => {
-                                    e.stopPropagation();
-                                    onDelete?.(targetId);
-                                    setIsOpen(false);
-                                }}  
-                                >
+                                e.stopPropagation();
+                                onDelete?.(targetId);
+                                setIsOpen(false);
+                            }}
+                            >
                                 削除
-                                </button>
+                            </button>
                         </div>
                     ) : (
                         <div>
                             {/* フォローボタン (type条件を外したのでコメントでも出る) */}
                             {onFollow && (
-                                <button 
-                                    style={btnStyle} 
-                                    onClick={async (e) => { 
-                                    e.stopPropagation(); 
-                                    await onFollow(ownerId);
-                                    closeMenu();
-                                }}
+                                <button
+                                    style={btnStyle}
+                                    onClick={async (e) => {
+                                        e.stopPropagation();
+                                        await onFollow(ownerId);
+                                        closeMenu();
+                                    }}
                                 >
                                     {isFollowed ? "フォロー解除" : "フォロー"}
                                 </button>

@@ -2,9 +2,13 @@ import MainLayout from "../layouts/MainLayout";
 import Sidebar from "../components/Sidebar";
 import { Outlet } from "react-router-dom";
 import "./Home.css";
-
+// import usePostAction from "@/hooks/usePostActions";
 
 const Home = () => {
+    // const { dept } = useParams();
+
+    // ⭐ ページごとにscroll保存
+    // const usePostActions = useScrollRestoration(`home:${dept || "all"}`);
 
     return (
         <MainLayout>

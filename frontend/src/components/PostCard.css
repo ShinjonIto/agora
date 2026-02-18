@@ -7,19 +7,22 @@
     justify-content: space-between;
     gap: 30px;
 
-    padding: 20px;
+    padding: 30px;
     margin: 0 auto 20px auto;
     border-radius: var(--radius);
     /* border: 1px solid black; */
 }
 
-.post:hover {
-    background-color: rgb(249, 249, 249);
-}
+
+
 
 .post .honbun {
-    margin: 0 20px;
+    margin: 30px 30px;
+    line-height: 2.5rem;
+
 }
+
+
 
 .titleBlock {
     display: flex;
@@ -28,27 +31,73 @@
     /* タイトル内だけ詰める */
 }
 
+
+
 .dept {
     opacity: 0.7;
 }
 
 /* 1枚目サムネ */
 .postThumb {
-    width: 100%;
-    max-height: 220px;
+    width: 90%;
+
     object-fit: cover;
     border-radius: var(--radius);
-    margin-top: 8px;
+    margin: 10px auto;
 }
 
 /* 共通: 長い英数字対策 */
-.post .ql-editor {
+.post .editor {
     overflow-wrap: anywhere;
     word-break: break-word;
 }
 
+.editor .codeblock-wrap {
+    position: relative;
+    margin: 12px 0;
+}
+
+/* Quillのpre（ql-syntax）の見た目はお好みで */
+.editor pre {
+    overflow-x: auto;
+    /* 折り返さず横スクロール派 */
+    max-width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+/* 右上コピー */
+.editor .codeblock-copy {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    background: var(--button-color);
+    color: var(--main-text);
+}
+
+/* 押した後 */
+.editor .codeblock-copy:disabled {
+    opacity: 0.7;
+    cursor: default;
+}
+
+
+.post .editor pre {
+    white-space: pre;
+    overflow-x: auto;
+    max-width: 100%;
+    background-color: rgb(53, 53, 53);
+    color: white;
+
+}
+
 /* 一覧: 3行で省略 */
-.post .ql-preview {
+.preview .honbun {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -56,28 +105,33 @@
 }
 
 /* 一覧: 本文内の画像は隠す（上に1枚目を出してるから） */
-.post .ql-preview img {
+.preview .honbun .editor img,
+.preview .none {
     display: none;
 }
 
 /* 詳細: 全文（制限なし） */
-.post .ql-full {
+.full .honbun {
     overflow: visible;
     display: block;
 }
 
-.post .ql-preview>*:not(:first-child) {
-    display: none;
-}
+/* プレビュー時：本文は最初のブロックだけ表示 */
 
-/* 一覧：1段落目だけを3行…にする */
-.post .ql-preview> :first-child {
+
+.preview .honbun .editor> :first-child {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
 }
 
+.preview .titleBlock h3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
 
 
 
@@ -87,7 +141,7 @@
     justify-content: space-between;
 }
 
-.post .ql-full {
+.post .full {
     overflow: visible;
 }
 
@@ -112,4 +166,9 @@
 .post .titleBlock h3,
 .post .titleBlock .title {
     word-break: break-word;
+}
+
+.post .comment_flex {
+    display: flex;
+    gap: 15px;
 }

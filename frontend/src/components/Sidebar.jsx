@@ -11,13 +11,13 @@ const Sidebar = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-    const fetchUser = async () => {
-        try {
-            const res = await axiosPrivate.get("/api/users/me/");
-            setUser(res.data);
-        } catch (err) {
-            console.error(err);
-        }
+        const fetchUser = async () => {
+            try {
+                const res = await axiosPrivate.get("/api/users/me/");
+                setUser(res.data);
+            } catch (err) {
+                console.error(err);
+            }
         };
         fetchUser();
     }, []);
@@ -27,6 +27,9 @@ const Sidebar = () => {
 
     return (
         <aside className="sidebar">
+
+
+
             <NavLink
                 to="/"
                 end
@@ -36,6 +39,16 @@ const Sidebar = () => {
             >
                 <Home className="aside_icon" />
                 <span>ホーム</span>
+            </NavLink>
+
+            <NavLink
+                to="/department/sys"
+                className={({ isActive }) =>
+                    `aside_button ${isActive ? "active" : ""}`
+                }
+            >
+                <Zyouhou className="aside_icon" />
+                <span>情報システム学科</span>
             </NavLink>
 
             <NavLink
@@ -58,15 +71,7 @@ const Sidebar = () => {
                 <span>スポーツバイシクル学科</span>
             </NavLink>
 
-            <NavLink
-                to="/department/sys"
-                className={({ isActive }) =>
-                    `aside_button ${isActive ? "active" : ""}`
-                }
-            >
-                <Zyouhou className="aside_icon" />
-                <span>情報システム学科</span>
-            </NavLink>
+
 
 
             {/* 管理画面 */}
@@ -74,12 +79,12 @@ const Sidebar = () => {
                 <NavLink
                     to="/managements/student_number"
                     className={({ isActive }) =>
-                    `aside_button ${isActive ? "active" : ""}`
+                        `aside_button ${isActive ? "active" : ""}`
                     }
                 >
                     <span>管理者画面</span>
                 </NavLink>
-                )}
+            )}
         </aside>
     );
 };
