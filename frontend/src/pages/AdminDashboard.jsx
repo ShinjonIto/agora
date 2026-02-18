@@ -1,52 +1,50 @@
-import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import StudentNumberAdd from "../components/StudentNumberAdd";
-import StudentNumberList from "../components/StudentNumberList";
-import StudentNumberDelete from "../components/StudentNumberDelete";
+import { NavLink, Outlet } from "react-router-dom";
 
 const AdminDashboard = () => {
-    const location = useLocation();
-    const [activeTab, setActiveTab] = useState("list"); // デフォルト
-
-    // URLに応じてタブを切り替える
-    useEffect(() => {
-        if (location.pathname.endsWith("/list")) {
-        setActiveTab("list");
-        } else if (location.pathname.endsWith("/add")) {
-        setActiveTab("add");
-        } else if (location.pathname.endsWith("/delete")) {
-        setActiveTab("delete");
-        }
-    }, [location.pathname]);
-
     return (
         <div>
-        {/* 上部タブボタン */}
+        {/* タブ（＝リンク） */}
         <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-            <button
-            onClick={() => setActiveTab("list")}
-            style={{ fontWeight: activeTab === "list" ? "bold" : "normal" }}
+            <NavLink
+            to="/managements/student_number"
+            end
+            style={({ isActive }) => ({
+                fontWeight: isActive ? "bold" : "normal",
+            })}
             >
-            学生番号一覧
-            </button>
-            <button
-            onClick={() => setActiveTab("add")}
-            style={{ fontWeight: activeTab === "add" ? "bold" : "normal" }}
+            学生一覧
+            </NavLink>
+
+            <NavLink
+            to="/managements/student_number/add"
+            style={({ isActive }) => ({
+                fontWeight: isActive ? "bold" : "normal",
+            })}
             >
-            登録
-            </button>
-            <button
-            onClick={() => setActiveTab("delete")}
-            style={{ fontWeight: activeTab === "delete" ? "bold" : "normal" }}
+            学生登録
+            </NavLink>
+
+            <NavLink
+            to="/managements/student_number/delete"
+            style={({ isActive }) => ({
+                fontWeight: isActive ? "bold" : "normal",
+            })}
             >
-            削除
-            </button>
+            卒業生削除
+            </NavLink>
+
+            <NavLink
+            to="/managements/admin"
+            style={({ isActive }) => ({
+                fontWeight: isActive ? "bold" : "normal",
+            })}
+            >
+            管理者一覧
+            </NavLink>
         </div>
 
-        {/* タブ切替 */}
-        {activeTab === "list" && <StudentNumberList />}
-        {activeTab === "add" && <StudentNumberAdd />}
-        {activeTab === "delete" && <StudentNumberDelete />}
+        {/* ここに子ルートが表示される */}
+        <Outlet />
         </div>
     );
 };

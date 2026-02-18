@@ -14,6 +14,10 @@ urlpatterns = [
     path("student_number/add/", StudentNumberAddAPIView().as_view()),
     path("student_number/list/", StudentNumberListAPIView().as_view()),
     path("student_number/delete/", StudentNumberDeleteAPIView().as_view()),
+    path("student_number/detail/<int:student_number>/", StudentNumberDetailAPIView().as_view()),
+    path("admin/list/", AdminListAPIView().as_view()),
+    path("admin/add/", AdminAddAPIView().as_view()),
+    path("admin/delete/<int:user_id>/", AdminDeleteAPIView().as_view()),
 ]
 
 if settings.DEBUG:

@@ -4,13 +4,16 @@ import axiosPrivate from "@/api/axiosPrivate";
 const StudentNumberAdd = () => {
     const [startNumber, setStartNumber] = useState("");
     const [endNumber, setEndNumber] = useState("");
-    const [message, setMessage] = useState("");
-    const [addedNumbers, setAddedNumbers] = useState([]); // 登録した番号リスト
+    const [result, setResult] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setMessage("");
-        setAddedNumbers([]);
+
+        if (!window.confirm("この範囲の学生番号を登録しますか？")) return;
+
+        setLoading(true);
+        setResult(null);
 
         try {
         const res = await axiosPrivate.post("/api/users/student_number/add/", {
@@ -18,63 +21,73 @@ const StudentNumberAdd = () => {
             end_number: Number(endNumber),
         });
 
-        const count = res.data.created_count || 0;
-
-        // 登録番号リストを生成
-        const numbers = [];
-        for (let i = Number(startNumber); i <= Number(endNumber); i++) {
-            numbers.push(i);
-        }
-
-        setMessage(`${count} 件の学生番号を登録しました`);
-        setAddedNumbers(numbers);
+        setResult(res.data);
         setStartNumber("");
         setEndNumber("");
         } catch (err) {
         console.error(err);
-        setMessage(
-            err.response?.data?.non_field_errors?.[0] || "エラーが発生しました"
-        );
+        alert("登録に失敗しました");
         }
+
+        setLoading(false);
     };
 
     return (
         <div>
         <h3>学生番号登録</h3>
+
         <form onSubmit={handleSubmit}>
-            <div>
-            <label>開始番号:</label>
             <input
-                type="number"
-                value={startNumber}
-                onChange={(e) => setStartNumber(e.target.value)}
-                required
+            type="number"
+            placeholder="開始番号"
+            value={startNumber}
+            onChange={(e) => setStartNumber(e.target.value)}
+            required
             />
-            </div>
-            <div>
-            <label>終了番号:</label>
             <input
-                type="number"
-                value={endNumber}
-                onChange={(e) => setEndNumber(e.target.value)}
-                required
+            type="number"
+            placeholder="終了番号"
+            value={endNumber}
+            onChange={(e) => setEndNumber(e.target.value)}
+            required
             />
-            </div>
-            <button type="submit">登録</button>
+            <button disabled={loading}>登録</button>
         </form>
 
-        {/* 結果 */}
-        {message && <p>{message}</p>}
+        {result && (
+            <div style={{ marginTop: "16px" }}>
+            {result.created.length > 0 && (
+                <div>
+                <h4>新規登録</h4>
+                <ul>
+                    {result.created.map((n) => (
+                    <li key={n}>{n}</li>
+                    ))}
+                </ul>
+                </div>
+            )}
 
-        {/* 追加した番号リスト */}
-        {addedNumbers.length > 0 && (
-            <div>
-            <h4>追加した番号:</h4>
-            <ul>
-                {addedNumbers.map((num) => (
-                <li key={num}>{num}</li>
-                ))}
-            </ul>
+            {result.restored.length > 0 && (
+                <div>
+                <h4>復活</h4>
+                <ul>
+                    {result.restored.map((n) => (
+                    <li key={n}>{n}</li>
+                    ))}
+                </ul>
+                </div>
+            )}
+
+            {result.already_exists.length > 0 && (
+                <div>
+                <h4>既に存在</h4>
+                <ul>
+                    {result.already_exists.map((n) => (
+                    <li key={n}>{n}</li>
+                    ))}
+                </ul>
+                </div>
+            )}
             </div>
         )}
         </div>
@@ -82,4 +95,3 @@ const StudentNumberAdd = () => {
 };
 
 export default StudentNumberAdd;
-

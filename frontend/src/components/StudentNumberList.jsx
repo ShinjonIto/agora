@@ -1,46 +1,73 @@
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axiosPrivate from "@/api/axiosPrivate";
 
 const StudentNumberList = () => {
-    const [studentNumbers, setStudentNumbers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-
-    const fetchStudentNumbers = async () => {
-        setLoading(true);
-        try {
-        const res = await axiosPrivate.get("/api/users/student_number/list/");
-        setStudentNumbers(res.data || []); 
-        } catch (err) {
-        console.error(err);
-        setError("学生番号の取得に失敗しました");
-        }
-        setLoading(false);
-    };
+    const [list, setList] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetchStudentNumbers();
+        const fetchList = async () => {
+            try {
+                const res = await axiosPrivate.get("/api/users/student_number/list/");
+                setList(res.data);
+            } catch (err) {
+                console.error(err);
+                alert("学生番号一覧の取得に失敗しました");
+            }
+        };
+        fetchList();
     }, []);
 
-    if (loading) return <p>読み込み中...</p>;
-    if (error) return <p>{error}</p>;
+
 
     return (
         <div>
         <h3>学生番号一覧</h3>
 
-        {studentNumbers.length === 0 ? (
-            <p>登録されている学生番号はありません</p>
-        ) : (
-            <ul>
-            {studentNumbers.map((stu) => (
-                <li key={stu.management_id}>
-                {stu.student_number}
-                </li>
+        <table>
+            <thead>
+            <tr>
+                <th>学生番号</th>
+                <th>利用状況</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {list.map(item => (
+                <tr key={item.student_number}>
+                    {/* 学生番号をクリックするとマイページへ（user_id がある場合のみ） */}
+                    <td
+                        style={{
+                            cursor: item.user_id ? "pointer" : "default",       // user_id がない場合はクリック不可
+                            color: item.user_id ? "blue" : "black",             // 未登録は青にしない
+                            textDecoration: item.user_id ? "underline" : "none" // 未登録は下線なし
+                        }}
+                        onClick={() => {
+                            if (item.user_id) {
+                                navigate(`/mypage/${item.user_id}`);
+                            }
+                        }}
+                    >
+                        {item.student_number}
+                    </td>
+
+                    {/* 利用状況 */}
+                    <td>{item.status}</td>
+
+                    {/* 未登録の学生は「変更」を表示しない */}
+                    <td>
+                        {item.user_id && (                                    // user_id がある場合のみリンク表示
+                            <Link to={`/managements/student_number/${item.student_number}`}>
+                                変更
+                            </Link>
+                        )}
+                    </td>
+                    </tr>
             ))}
-            </ul>
-        )}
-    </div>
+            </tbody>
+        </table>
+        </div>
     );
 };
 
