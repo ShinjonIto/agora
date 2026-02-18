@@ -28,7 +28,8 @@ class PostListAPIView(APIView):
     def get(self, request):
         dept = request.query_params.get("department")
         
-        posts = Post.objects.filter(is_deleted = False).order_by("-created_at")
+        # 卒業した人の記事は取得・停止中の記事は取得しない
+        posts = Post.objects.filter(is_deleted = False, post_user__is_stopped=False).order_by("-created_at")
         
         if dept is not None:
             posts = posts.filter(department=dept)
@@ -153,7 +154,7 @@ class PostDeleteAPIView(APIView):
 
     def delete(self, request, post_id):
         # 自分の記事を取得
-        post = Post.objects.filter(post_id=post_id, post_user=request.user).first()
+        post = Post.objects.filter(post_id=post_id, post_user=request.user, is_deleted=False).first()
             
         if post:
             post.is_deleted = True

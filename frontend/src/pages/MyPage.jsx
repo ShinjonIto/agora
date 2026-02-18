@@ -20,7 +20,7 @@ const MyPage = () => {
         const fetchData = async () => {
             try {
                 if (activeTab === "mycomments") {
-                    const res = await axiosPrivate.get("/my_comments/"); // Django API
+                    const res = await axiosPrivate.get("/my_comments/"); 
                     setPosts(res.data);
                 }
             } catch (err) {
@@ -34,7 +34,6 @@ const MyPage = () => {
 
     return (
 
-      
             <div className="homeLayout">
 
                 <main>
