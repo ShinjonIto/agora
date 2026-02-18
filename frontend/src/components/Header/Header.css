@@ -26,6 +26,26 @@ header .header-oka {
     display: block;
     width: 100%;
     height: var(--oka);
+    animation: okaWave 6s ease-in-out infinite;
+}
+
+@keyframes okaWave {
+    0% {
+        transform: translateX(10px);
+    }
+
+    50% {
+        transform: translateX(60px);
+    }
+
+
+    100% {
+        transform: translateX(10px);
+    }
+
+    /* 100% {
+        transform: translateX(10px);
+    } */
 }
 
 header .flex {

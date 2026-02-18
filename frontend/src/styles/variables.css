@@ -8,7 +8,8 @@
     --main-black: #000000;
     --main-white: #ffffff;
     --main-text: #544F4A;
-    --main-shadow: #9CC095; */
+    --main-shadow: #9CC095; 
+     --button-color: #537293;*/
 
 
     /* --main-color: #FFF7E4;
@@ -19,7 +20,8 @@
     --main-black: #000000;
     --main-white: #ffffff;
     --main-text: #537293;
-    --main-shadow: #6295CC; */
+    --main-shadow: #6295CC;
+    --button-color: #537293;*/
 
     --main-color: #A3C8DB;
     --main-sub-color: #A3C8DB;
@@ -30,6 +32,7 @@
     --main-white: #ffffff;
     --main-text: #537293;
     --main-shadow: #A3C8DB;
+    --button-color: #e4e4e4;
 
 
 
