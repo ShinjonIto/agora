@@ -32,7 +32,7 @@ class LoginAPIView(ObtainAuthToken):
         if getattr(user, "is_stopped", False) or getattr(user, "is_deleted", False):
             return Response(
                 {"detail": "このアカウントは停止中または削除済みのためログインできません"},
-                status=drf_status.HTTP_403_FORBIDDEN
+                status=status.HTTP_403_FORBIDDEN
             )
 
         token, _ = Token.objects.get_or_create(user=user)
@@ -76,20 +76,23 @@ class MeView(APIView):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def user_profile(request, user_id):
-    user = User.objects.filter(id=user_id).first()
+    user = User.objects.filter(id=user_id, is_stopped=False).first()
     
     if not user:
-        return Response({"ユーザー情報が存在しません"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"detail": "ユーザー情報が存在しません"}, status=status.HTTP_404_NOT_FOUND)
         
     # フォロー数・フォロワー数を取得
     following_count = Follow.objects.filter(follower=user).count()  
     followers_count = Follow.objects.filter(following=user).count() 
+    
+    # 自分がこの人をフォローしているか
+    is_followed = Follow.objects.filter(following=user, follower=request.user).exists()
 
     return Response({
         "id": user.id,
         "user_name": user.user_name,
         "icon_image": request.build_absolute_uri(user.icon_image.url) if user.icon_image else None,
-        "is_followed": False,  
+        "is_followed": is_followed, 
         "self_introduction": user.self_introduction,
         "following_count": following_count,
         "followers_count": followers_count,
@@ -128,9 +131,9 @@ class UserProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request, user_id):
-        user = User.objects.filter(id=user_id).first()
+        user = User.objects.filter(id=user_id, is_stopped=False).first()
         if not user:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({"detail": "ユーザーが見つかりません"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = UserProfileSerializer(user, context={"request": request})
         return Response(serializer.data)
@@ -339,3 +342,35 @@ class AdminDeleteAPIView(APIView):
         user.save()
 
         return Response({"detail": "管理者を削除しました"})
+    
+    
+    
+    
+# アカウント削除
+class DeleteAccountAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        # 物理削除を実行（関連するデータも CASCADE 設定により削除されます）
+        user.delete() 
+        return Response({"message": "Account deleted"}, status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+# フォロー・フォロワー一覧
+class UserFollowListAPIView(APIView):
+    def get(self, request, user_id):
+        # その人がフォローしている人を取得
+        following = Follow.objects.filter(follower_id=user_id).select_related('following')
+        following_data = UserSimpleSerializer([f.following for f in following], many=True, context={'request': request}).data
+        
+        # その人をフォローしている人を取得
+        followers = Follow.objects.filter(following_id=user_id).select_related('follower')
+        followers_data = UserSimpleSerializer([f.follower for f in followers], many=True, context={'request': request}).data
+
+        return Response({
+            "following": following_data,
+            "followers": followers_data
+        })

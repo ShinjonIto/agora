@@ -20,6 +20,7 @@ import StudentNumberDelete from "./components/StudentNumberDelete";
 import AdminList from "./components/AdminList"
 import AdminAdd from "./components/AdminAdd"
 import NotificationList from "./pages/NotificationList"
+import DeleteAccount from "./pages/DeleteAccount"
 
 
 
@@ -89,7 +90,11 @@ function App() {
             <Route path="admin/add" element={<AdminAdd />} />
           </Route>
 
+          {/* 通知 */}
           <Route path="/notifications" element={<NotificationList />} />
+
+          {/* アカウント削除 */}
+          <Route path="/settings/:userId/delete_acount" element={<DeleteAccount />} />
         </Route>
       </Routes>
     </BrowserRouter>
