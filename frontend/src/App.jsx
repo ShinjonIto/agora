@@ -19,6 +19,7 @@ import StudentNumberDetail from "./components/StudentNumberDetail";
 import StudentNumberDelete from "./components/StudentNumberDelete";
 import AdminList from "./components/AdminList"
 import AdminAdd from "./components/AdminAdd"
+import NotificationList from "./pages/NotificationList"
 
 
 
@@ -87,6 +88,8 @@ function App() {
             <Route path="admin" element={<AdminList />} />
             <Route path="admin/add" element={<AdminAdd />} />
           </Route>
+
+          <Route path="/notifications" element={<NotificationList />} />
         </Route>
       </Routes>
     </BrowserRouter>

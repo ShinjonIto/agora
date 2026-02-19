@@ -3,6 +3,7 @@ from django.conf import settings
 from django.core.validators import MinValueValidator
 
 
+
 # 記事
 class Post(models.Model):
     MCH = 0
@@ -31,15 +32,6 @@ class Post(models.Model):
 
 
 
-# 記事画像
-class PostImage(models.Model):
-    post_img_id = models.AutoField(primary_key=True)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    post_img = models.ImageField(upload_to='posts/post_img/')
-    sort_order = models.IntegerField(validators=[MinValueValidator(1)])
-
-
-
 # 記事いいね
 class PostLike(models.Model):
     post_like_id = models.AutoField(primary_key=True)
@@ -49,4 +41,5 @@ class PostLike(models.Model):
     
     class Meta:
         unique_together = ('post_id', 'user_id')    # 同じ記事にいいねは一回しかできないように
+    
     

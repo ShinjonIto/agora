@@ -15,42 +15,12 @@ class DepartmentSerializer(serializers.Serializer):
 
 
 
-# 記事の画像・順番
-class PostImageSerializer(serializers.ModelSerializer):
-    post_img = serializers.SerializerMethodField()
-    
-    class Meta:
-        model = PostImage
-        fields = ["post_img", "sort_order", "post_img_id"]
-        
-    def get_post_img(self, obj):
-        request = self.context.get("request")
-
-        if obj.post_img:
-            if request:
-                return request.build_absolute_uri(obj.post_img.url)
-            return obj.post_img.url
-        
-        default_path = f"{settings.MEDIA_URL}users/icon_img/default.png"
-        if request:
-            return request.build_absolute_uri(default_path)
-        return default_path
-
-        
 
 # 記事
 class PostSerializer(serializers.ModelSerializer):
     is_followed = serializers.SerializerMethodField() 
     is_reported = serializers.SerializerMethodField()
-    
-    # 記事に紐づく画像
-    images = PostImageSerializer(
-        # source = どこから取るか
-        source="postimage_set",
-        many=True,
-        read_only=True
-    )
-    
+
     # ユーザーID
     post_user_id = serializers.IntegerField(source="post_user.id", read_only=True)
     
@@ -82,7 +52,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ["post_id","post_user", "post_user_id", "title", "content", "department_name", 
-                    "author_icon", "author_name", "images", "like_count", 
+                    "author_icon", "author_name", "like_count", 
                     "liked", "total_views", "is_followed", "is_reported", 
                     "comment_count", "created_at",
         ]
