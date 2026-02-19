@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, PostImage, PostLike
+from .models import Post, PostLike
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
@@ -7,9 +7,6 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('title', 'content', 'post_user__user_name')
     list_filter = ('is_deleted',)
 
-@admin.register(PostImage)
-class PostImageAdmin(admin.ModelAdmin):
-    list_display = ('post_img_id', 'post_id', 'sort_order')
 
 @admin.register(PostLike)
 class PostLikeAdmin(admin.ModelAdmin):

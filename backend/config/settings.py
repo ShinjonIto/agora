@@ -47,8 +47,9 @@ INSTALLED_APPS = [
     "apps.posts",
     "apps.comments",
     "apps.follows",
-    "apps.notifications",
     "apps.reports",
+    # 通知
+    "apps.notifications.apps.NotificationsConfig",
     
     # DRF とトークン認証
     'rest_framework',

@@ -58,7 +58,8 @@ const Login = () => {
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("userId", res.data.user_id);
 
-            navigate("/"); // ログイン成功したらHomeへ
+            // navigate("/"); // ログイン成功したらHomeへ
+            window.location.href = "/";
         } catch (err) {
             console.error(err);
 
