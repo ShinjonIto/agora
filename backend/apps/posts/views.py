@@ -24,17 +24,14 @@ class DepartmentAPIView(APIView):
 # home すべての作成
 class PostListAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    
     def get(self, request):
         dept = request.query_params.get("department")
+        # 利用停止中のユーザーの投稿は一切取得しない
+        posts = Post.objects.filter(is_deleted=False, post_user__is_stopped=False).order_by("-created_at")
         
-        # 卒業した人の記事は取得・停止中の記事は取得しない
-        posts = Post.objects.filter(is_deleted = False, post_user__is_stopped=False).order_by("-created_at")
-        
-        if dept is not None:
+        if dept:
             posts = posts.filter(department=dept)
         
-        # many = True   複数のデータであることを明示
         serializer = PostSerializer(posts, many=True, context={"request": request})
         return Response(serializer.data)
     
@@ -46,23 +43,24 @@ from django.db.models import F    # Django公式のF式
 class PostDetailAPIView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, post_id):
-        post = Post.objects.filter(post_id=post_id, is_deleted=False).first()
+        # 詳細でも利用停止ユーザーの記事は存在しないことにする
+        post = Post.objects.filter(
+            post_id=post_id, 
+            is_deleted=False, 
+            post_user__is_stopped=False
+        ).first()
         
         if not post:
-            return Response({"error": "記事が存在しません"}, status=404)
+            return Response({"error": "記事が存在しないか、閲覧できません"}, status=404)
         
-        # 閲覧数のところだけカウントアップしてそこだけ更新
+        from django.db.models import F
         post.total_views = F('total_views') + 1
         post.save(update_fields=['total_views'])
-        
-        # 最新の状態を反映させるためにリロード
         post.refresh_from_db()
-
-        if not post:
-            return Response({"error": "記事が存在しません"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = PostDetailSerializer(post, context={"request": request})
         return Response(serializer.data)
+
 
 
 
@@ -166,48 +164,41 @@ class PostDeleteAPIView(APIView):
 
 
 
+
 # マイページの自分の記事一覧
 class MyPostAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-    
     def get(self, request):
         user_id = request.query_params.get("user_id")
+        user = User.objects.filter(id=user_id).first() if user_id else request.user
         
-        # 他人のページ
-        if user_id:
-            try:
-                user = User.objects.get(id=user_id)
-            except User.DoesNotExist:
-                return Response({"error": "ユーザーが存在しません"}, status=404)
-        # 自分のページ
-        else: 
-            user = request.user
+        if not user or user.is_stopped:
+            return Response({"error": "ユーザーが存在しないか、停止されています"}, status=404)
 
         myposts = Post.objects.filter(post_user=user, is_deleted=False).order_by("-created_at")
         serializer = PostSerializer(myposts, many=True, context={'request': request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data)
 
             
             
-# 自分がいいねした記事一覧
+            
+
+# いいねした記事
 class MyLikeAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-    
     def get(self, request):
         user_id = request.query_params.get("user_id")
+        user = User.objects.filter(id=user_id).first() if user_id else request.user
         
-        if user_id:
-            try:
-                user = User.objects.get(id=user_id)
-            except User.DoesNotExist:
-                return Response({"error": "ユーザーが存在しません"}, status=404)
-        else:
-            user = request.user
+        if not user or user.is_stopped:
+            return Response({"error": "アクセスできません"}, status=404)
 
-        # いいねした順
-        mylikepost = Post.objects.filter(postlike__user=user, is_deleted=False).order_by("-postlike__created_at")
+        # いいねした記事
+        mylikepost = Post.objects.filter(postlike__user=user, is_deleted=False, post_user__is_stopped=False).order_by("-postlike__created_at")
+        
         serializer = PostSerializer(mylikepost, many=True, context={'request' : request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data)
+
+    
+    
     
     
 # 自分のコメント
@@ -216,15 +207,12 @@ class MyCommentPostAPIView(APIView):
     
     def get(self, request):
         user_id = request.query_params.get("user_id")
+        user = User.objects.filter(id=user_id).first() if user_id else request.user
         
-        if user_id:
-            try:
-                user = User.objects.get(id=user_id)
-            except User.DoesNotExist:
-                return Response({"error": "ユーザーが存在しません"}, status=404)
-        else:
-            user = request.user
+        if not user or user.is_stopped:
+            return Response({"error": "アクセスできません"}, status=404)
 
-        comment_posts = Post.objects.filter(comment__user=user, is_deleted=False).distinct().order_by("-created_at")
+        comment_posts = Post.objects.filter(comment__user=user, is_deleted=False,post_user__is_stopped=False).distinct().order_by("-created_at")
+        
         serializer = MyCommentedPostSerializer(comment_posts, many=True, context={'request' : request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data)

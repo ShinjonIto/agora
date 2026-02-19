@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from .models import *
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated
+from apps.users.models import User
+
 
 
 
@@ -13,12 +15,12 @@ class CommentAPIView(APIView):
 
     def get(self, request, post_id):
         # 記事取得
-        post = Post.objects.filter(post_id=post_id, is_deleted=False).first()
+        post = Post.objects.filter(post_id=post_id, is_deleted=False, post_user__is_stopped=False ).first()
         if not post:
             return Response({"error": "記事が存在しません"}, status=404)
 
         # コメント取得（親コメントのみ）
-        comments = Comment.objects.filter(post=post, parent_comment__isnull=True, is_deleted=False).order_by("created_at")
+        comments = Comment.objects.filter(post=post, parent_comment__isnull=True, is_deleted=False, user__is_stopped=False ).order_by("created_at")
 
         serializer = CommentSerializer(comments, many=True, context={"request": request})
         return Response(serializer.data)
@@ -136,8 +138,28 @@ class MyCommentedPostsAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # 自分がコメントした投稿を重複なしで取得
-        posts = Post.objects.filter(comment__user=request.user, is_deleted=False).distinct().order_by("-created_at")
+        # user_idがあればその人の、なければ自分の情報を取得
+        user_id = request.query_params.get("user_id")
+        if user_id:
+            user = User.objects.filter(id=user_id).first()
+        else:
+            user = request.user
 
-        serializer = MyCommentedPostSerializer(posts, many=True, context={"request": request})
+        if not user or user.is_stopped:
+            return Response({"error": "アクセスできません"}, status=404)
+
+        # 対象ユーザー(user)がコメントした投稿を重複なしで取得
+        posts = Post.objects.filter(
+            comment__user=user, 
+            is_deleted=False, 
+            comment__user__is_stopped=False,
+            post_user__is_stopped=False
+        ).distinct().order_by("-created_at")
+
+        # Serializerに「誰のコメントを表示するか(target_user)」を渡す
+        serializer = MyCommentedPostSerializer(
+            posts, 
+            many=True, 
+            context={"request": request, "target_user": user}
+        )
         return Response(serializer.data)

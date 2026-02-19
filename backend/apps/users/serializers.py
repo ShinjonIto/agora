@@ -74,6 +74,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(obj.icon_image.url)
         return None
         
+        
+        
+        
+# フォロー・フォロワー一覧表示用
+class UserSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "user_name", "icon_image", "self_introduction"]
+
 
 
 

@@ -18,6 +18,13 @@ const ProfileSettings = () => {
 
 
 
+    // 削除確認ページへ遷移
+    const DeleteAccount = () => {
+        navigate(`/settings/${userId}/delete_acount`);
+    };
+
+
+
     // アイコン用
     const [iconFile, setIconFile] = useState(null);
     const [iconPreview, setIconPreview] = useState(null);
@@ -221,6 +228,9 @@ const ProfileSettings = () => {
             <button onClick={handleProfileSave}>変更を保存</button>
 
             <button onClick={handlePasswordChange}>パスワード変更はこちら</button>
+
+            <button onClick={DeleteAccount}>アカウントの削除</button>
+
         </div>
     );
 };
