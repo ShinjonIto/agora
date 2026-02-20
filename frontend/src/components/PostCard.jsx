@@ -44,18 +44,24 @@ const PostCard = ({
 
     return (
         <div
-            className="post click_area"
-            onClick={() => {
-                if (isMenuOpen) return;
-                navigate(`/posts/${post.post_id}`);
-            }}
+            className={`post click_area ${isDetail ? "isDetail" : ""}`}
+            onClick={
+                isDetail
+                    ? undefined
+                    : () => {
+                        if (isMenuOpen) return;
+                        navigate(`/posts/${post.post_id}`);
+                    }
+            }
         >
             <div className={isDetail ? "full" : "preview"}>
                 <div className="dai_flex">
                     <div className="syo_flex">
-                        <div className="none">
+                        {isDetail && (<div className="none">
                             <Back_button />
                         </div>
+                        )}
+
 
                         {/* アイコン */}
                         <UserProfile
@@ -98,30 +104,29 @@ const PostCard = ({
                             <span className="dept">{post.department_name}</span>
                         )}
                     </div>
-                    {/* 1枚目だけ表示（あれば） */}
-                    {!isDetail && firstImg && (
-                        <img className="postThumb" src={firstImg} alt="" loading="lazy" />
-                    )}
-                    <div
-                        className="editor"
-                    // dangerouslySetInnerHTML={{ __html: post.content }}
-                    />
+
                     <RichContent html={post.content} stopClickPropagation />
                 </div>
+                {/* 1枚目だけ表示（あれば） */}
+                {!isDetail && firstImg && (
+                    <img className="postThumb" src={firstImg} alt="" loading="lazy" />
+                )}
                 <div className="comment_flex">
                     <button
                         onClick={(e) => { e.stopPropagation(); handleLike(post.post_id); }}
-                        style={{ color: post.liked ? "var(--accent-sub-color)" : "var(--main-text)", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px", backgroundColor: "var(--button-color)", padding: "5px 10px", borderRadius: "20px" }}
+                        className={`icon_flex ${post.liked ? "red" : "gray"}`}
                     >
-                        <Heart style={{ width: "18px" }} />
+                        <Heart />
                         {post.like_count}
                     </button>
-                    <div style={{ display: "flex", alignItems: "center", gap: "5px", backgroundColor: "var(--button-color)", padding: "5px 10px", borderRadius: "20px" }}>
-                        <CommentIcon style={{ width: "18px" }} />
+                    <div
+                        className="icon_flex"
+                    >
+                        <CommentIcon />
                         {post.comment_count}
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "5px", backgroundColor: "var(--button-color)", padding: "5px 10px", borderRadius: "20px" }}>
-                        <View style={{ width: "18px" }} />
+                    <div className="icon_flex">
+                        <View />
                         {post.total_views}
                     </div>
                     {/* <button onClick={(e) => e.stopPropagation()} style={{ background: "none", border: "none", cursor: "pointer" }}>
@@ -129,7 +134,7 @@ const PostCard = ({
                 </button> */}
                 </div>
             </div >
-        </div>
+        </div >
     );
 };
 

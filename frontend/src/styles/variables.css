@@ -1,6 +1,7 @@
 :root {
     /* カラー */
-    /* --main-color: #FFF7E4;
+    --main-color: #FFF7E4;
+    --header-color: #FF7272;
     --main-sub-color: #F4ECCF;
     --base-color: #B6D586;
     --accent-color: #9FC3D1;
@@ -8,8 +9,8 @@
     --main-black: #000000;
     --main-white: #ffffff;
     --main-text: #544F4A;
-    --main-shadow: #9CC095; 
-     --button-color: #537293;*/
+    --main-shadow: #9CC095;
+    --button-color: #c1c1c182;
 
 
     /* --main-color: #FFF7E4;
@@ -23,7 +24,7 @@
     --main-shadow: #6295CC;
     --button-color: #537293;*/
 
-    --main-color: #A3C8DB;
+    /* --main-color: #A3C8DB;
     --main-sub-color: #A3C8DB;
     --base-color: #FFF7E4;
     --accent-color: #027ACA;
@@ -32,19 +33,21 @@
     --main-white: #ffffff;
     --main-text: #537293;
     --main-shadow: #A3C8DB;
-    --button-color: #e4e4e4;
+    --button-color: #e4e4e4; */
 
 
 
 
 
     /* ログインパターン */
-    /* --login-base-color: #FCF2EB;
-    --login-accent-color: #F9E8D9; */
-
-    --login-base-color: #FFF7E4;
-    --login-accent-color: #FFF7E4;
+    --login-base-color: #FCF2EB;
+    --login-accent-color: #F9E8D9;
     --login-accent-sub-color: #6295CC;
+
+
+    /* --login-base-color: #FFF7E4;
+    --login-accent-color: #FFF7E4;
+    --login-accent-sub-color: #6295CC; */
 
     /* --login-base-color: #FFF7E4;
     --login-accent-color: #A3C8DB;

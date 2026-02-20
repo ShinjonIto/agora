@@ -1,0 +1,14 @@
+.mypage .mypage_link {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    justify-content: space-around;
+    background-color: var(--accent-color);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.mypage .mypage_link button {
+    /* width: 100%;
+    height: 100%; */
+}

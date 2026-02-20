@@ -1,14 +1,15 @@
 import { useState, useRef, useCallback } from "react";
 import Heart from "@/assets/images/icon/heart.svg?react";
 import CommentIcon from "@/assets/images/icon/comment.svg?react";
-import "./PostCard.css"; 
+
 import MenuButton from "./MenuButton";
 import UserProfile from "./UserProfile";
-import "quill/dist/quill.snow.css"; 
+import "quill/dist/quill.snow.css";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import axiosPrivate from "@/api/axiosPrivate";
 import { useCommentQuillModules, commentFormats } from "@/utils/commentQuillConfig";
+import "./commentItem.css"
 
 // 日付
 const formatCommentDate = (dateString) => {
@@ -31,7 +32,7 @@ const CommentItem = ({
     handleFollow,
     openReportModal,
     updateComment,
-    onReplyClick = () => {},
+    onReplyClick = () => { },
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -102,20 +103,20 @@ const CommentItem = ({
 
 
     return (
-        <div className="comment-item">
+        <div className="commentItem click_area">
             <div className="dai_flex">
                 <div className="syo_flex">
                     {/* コメントアイコン */}
                     <UserProfile
-                        user={{ 
-                            icon_image: comment.comment_author_icon, 
-                            id: comment.comment_author_id 
+                        user={{
+                            icon_image: comment.comment_author_icon,
+                            id: comment.comment_author_id
                         }}
                         onClick={(e) => {
                             e.stopPropagation(); // 親のクリックイベントを止める
                             navigate(`/mypage/${comment.comment_author_id}`);
                         }}
-                        />
+                    />
 
                     {/* ユーザー名 */}
                     <p>{comment.comment_author_name}</p>
@@ -123,6 +124,64 @@ const CommentItem = ({
                     {/* 作成日時 */}
                     <p>{formatCommentDate(comment.created_at)}</p>
                 </div>
+
+
+            </div>
+
+            {/* リッチテキスト表示・編集ボタン押されたらフォームに切り替え */}
+            <div className="honbun">
+                {isEditing ? (
+                    <div>
+                        {/* フォーム */}
+                        <ReactQuill
+                            ref={quillRef}
+                            theme="snow"
+                            value={editContent}
+                            onChange={setEditContent}
+                            modules={modules}
+                            formats={commentFormats}
+                            placeholder="コメントを入力..."
+                        />
+                        <div>
+                            <button onClick={handleEditSave}>保存</button>
+                            <button onClick={() => {
+                                setIsEditing(false);
+                                setEditContent(comment.content);
+                            }}>
+                                キャンセル
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <div
+                        className="ql-editor"
+                        dangerouslySetInnerHTML={{ __html: comment.content }}
+                    />
+                )}
+            </div>
+
+            <div className="comment_flex">
+                <button
+                    onClick={(e) => { e.stopPropagation(); handleLike(comment.comment_id); }}
+                    className={`icon_flex ${comment.liked ? "red" : "gray"}`}
+                >
+                    <Heart />
+                    <span>{comment.like_count}</span>
+                </button>
+
+                {/* 親コメント（parent_commentがnull）の時だけ表示 */}
+                {comment.parent_comment === null && (
+                    <button
+                        onClick={(e) => { e.stopPropagation(); onReplyClick(comment); }}
+                        className="icon_flex"
+
+                    >
+                        <CommentIcon />
+                        <span>返信</span>
+                    </button>
+
+
+                )}
 
                 <div onClick={(e) => e.stopPropagation()}>
                     <MenuButton
@@ -136,64 +195,12 @@ const CommentItem = ({
                             onEdit: () => setIsEditing(true),
                             onDelete: handleDelete,
                             onReport: openReportModal,
-                            onFollow: handleFollow, 
+                            onFollow: handleFollow,
                             isFollowed: comment.is_followed,
                             isReported: comment.is_reported,
                         }}
                     />
                 </div>
-            </div>
-
-            {/* リッチテキスト表示・編集ボタン押されたらフォームに切り替え */}
-            <div className="honbun">
-                {isEditing ? (
-                    <div>
-                    {/* フォーム */}
-                    <ReactQuill
-                        ref={quillRef}
-                        theme="snow"
-                        value={editContent}
-                        onChange={setEditContent}
-                        modules={modules}
-                        formats={commentFormats}
-                        placeholder="コメントを入力..."
-                        style={{ backgroundColor: "white", color: "black", borderRadius: "8px"}}
-                    />
-                    <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
-                        <button onClick={handleEditSave}>保存</button>
-                        <button onClick={() => {
-                        setIsEditing(false);
-                        setEditContent(comment.content);
-                        }}>
-                        キャンセル
-                        </button>
-                    </div>
-                    </div>
-                ) : (
-                    <div
-                    className="ql-editor"
-                    dangerouslySetInnerHTML={{ __html: comment.content }}
-                    style={{ padding: "10px 0" }}
-                    />
-                )}
-                </div>
-
-            <div className="comment_flex" style={{ display: "flex", gap: "15px", marginTop: "10px" }}>
-                <button onClick={(e) => { e.stopPropagation(); handleLike(comment.comment_id); }}>
-                    <Heart style={{ width: "16px" }} />
-                    {comment.like_count}
-                </button>
-
-                {/* 親コメント（parent_commentがnull）の時だけ表示 */}
-                {comment.parent_comment === null && (
-                    <button
-                        onClick={(e) => { e.stopPropagation(); onReplyClick(comment); }}
-                        style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px", color: "gray" }}
-                    >
-                        <CommentIcon style={{ width: "16px" }} />
-                        <span>返信</span>
-                    </button>
-                )}
             </div>
         </div>
     );

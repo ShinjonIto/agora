@@ -34,10 +34,10 @@ const CommentPost = ({ post, currentUserId, navigate, handleDelete, handleFollow
     if (!comments || comments.length === 0) return null;
 
     return (
-        <div style={{ borderBottom: "1px solid white", padding: "10px 0" }}>
+        <div>
             {/* 投稿情報 */}
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "5px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div >
+                <div >
                     <UserProfile
                         user={{ icon_image: post.author_icon }}
                         onClick={(e) => {
@@ -54,10 +54,10 @@ const CommentPost = ({ post, currentUserId, navigate, handleDelete, handleFollow
                     targetId={post.post_id}
                     ownerId={post.post_user}
                     currentUserId={currentUserId}
-                    handlers={{ 
+                    handlers={{
                         onEdit: (id) => navigate(`/posts/edit/${id}`),
-                        onDelete: handleDelete, 
-                        onReport: (id) => openReportModal(id, "post"), 
+                        onDelete: handleDelete,
+                        onReport: (id) => openReportModal(id, "post"),
                         onFollow: handleFollow,
                         isFollowed: post.is_followed,
                         isReported: post.is_reported
@@ -84,7 +84,7 @@ const CommentPost = ({ post, currentUserId, navigate, handleDelete, handleFollow
                             prev.map(com => (com.comment_id === updated.comment_id ? updated : com))
                         );
                     }}
-                    onReplyClick={() => {}}
+                    onReplyClick={() => { }}
                 />
             ))}
         </div>

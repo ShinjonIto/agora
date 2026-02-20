@@ -7,6 +7,7 @@ import CommentForm from "../components/CommentForm";    // コメントフォー
 import { usePostActions } from "@/hooks/usePostActions";
 import { useCommentActions } from "@/hooks/useCommentActions";
 import ReportModal from "@/components/ReportModal";
+import "./PostDetail.css"
 
 
 
@@ -47,7 +48,7 @@ const PostDetail = () => {
             ...prev,
             comment_count: Math.max((prev.comment_count || 1) - 1, 0)
         }));
-    };  
+    };
 
 
     useEffect(() => {
@@ -98,7 +99,7 @@ const PostDetail = () => {
 
 
     return (
-        <div>
+        <div className="postDetail">
             {/* 記事 */}
             <PostCard
                 post={post}
@@ -138,7 +139,7 @@ const PostDetail = () => {
 
                         {/* 2. 返信フォームの表示ロジック */}
                         {replyTarget && replyTarget.comment_id === comment.comment_id && (
-                            <div style={{ marginLeft: "40px", marginTop: "10px", borderLeft: "2px solid #ccc", paddingLeft: "10px" }}>
+                            <div>
                                 <CommentForm
                                     postId={postId}
                                     parentCommentId={comment.comment_id}
@@ -152,7 +153,6 @@ const PostDetail = () => {
                                 {/* 3. ボタンのタグ記述を修正 */}
                                 <button
                                     onClick={() => setReplyTarget(null)}
-                                    style={{ fontSize: "12px", color: "gray", background: "none", border: "none", cursor: "pointer", marginTop: "5px" }}
                                 >
                                     キャンセル
                                 </button>
@@ -160,22 +160,24 @@ const PostDetail = () => {
                         )}
 
                         {comment.children && comment.children.length > 0 && (
-                            <div style={{ marginLeft: "20px" }}>
+                            <div>
                                 {comment.children.map(child => (
-                                    <CommentItem
-                                        key={child.comment_id}
-                                        comment={child}
-                                        setComments={setComments}
-                                        postId={postId}
-                                        currentUserId={currentUserId}
-                                        navigate={navigate}
-                                        handleDelete={handleCommentDelete}
-                                        handleLike={commentActions.handleLike}
-                                        handleFollow={commentActions.handleFollow}
-                                        openReportModal={(id) => setReportTarget({ type: "comment", id })}
-                                        onReplyClick={(c) => setReplyTarget(c)}
-                                        updateComment={(updated) => setComments(prev => updateCommentInTree(prev, updated))}
-                                    />
+                                    <div>
+                                        <CommentItem
+                                            key={child.comment_id}
+                                            comment={child}
+                                            setComments={setComments}
+                                            postId={postId}
+                                            currentUserId={currentUserId}
+                                            navigate={navigate}
+                                            handleDelete={handleCommentDelete}
+                                            handleLike={commentActions.handleLike}
+                                            handleFollow={commentActions.handleFollow}
+                                            openReportModal={(id) => setReportTarget({ type: "comment", id })}
+                                            onReplyClick={(c) => setReplyTarget(c)}
+                                            updateComment={(updated) => setComments(prev => updateCommentInTree(prev, updated))}
+                                        />
+                                    </div>
                                 ))}
                             </div>
                         )}
@@ -187,14 +189,16 @@ const PostDetail = () => {
             <CommentForm postId={postId} setComments={setComments} onSuccess={handleCommentSuccess} />
 
             {/* 通報モーダル */}
-            {reportTarget && (
-                <ReportModal
-                    type={reportTarget.type}
-                    targetId={reportTarget.id}
-                    onClose={() => setReportTarget(null)}
-                />
-            )}
-        </div>
+            {
+                reportTarget && (
+                    <ReportModal
+                        type={reportTarget.type}
+                        targetId={reportTarget.id}
+                        onClose={() => setReportTarget(null)}
+                    />
+                )
+            }
+        </div >
     );
 };
 

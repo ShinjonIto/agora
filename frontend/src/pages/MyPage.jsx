@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import MyPostList from "../components/MyPostList";
 import MyPageInformation from "../components/MyPageInformation";
 
+import "./Mypage.css"
 
 
 const MyPage = () => {
@@ -34,24 +35,27 @@ const MyPage = () => {
 
     return (
 
-      
-            <div className="homeLayout">
 
-                <main>
-                    {/* ログインユーザー情報 */}
-                    <MyPageInformation userId={pageUserId} />
-                    
-                    {/* タブボタン */}
-                    <div style={{ display: "flex", gap: "20px", marginBottom: "20px", borderBottom: "1px solid #ddd" }}>
-                        <button onClick={() => setActiveTab("myposts")}>投稿</button>
-                        <button onClick={() => setActiveTab("mylikes")}>いいね</button>
-                        <button onClick={() => setActiveTab("mycomments")}>コメント</button>
-                    </div>
+        <div className="mypage">
 
-                    {/* fetchTypeを渡して、これ1つでいいねした記事・自分の記事を表示する */}
-                    <MyPostList fetchType={activeTab} pageUserId={pageUserId} />
-                </main>
+
+            {/* ログインユーザー情報 */}
+            <MyPageInformation userId={pageUserId} />
+
+            {/* タブボタン */}
+            <div className="mypage_link">
+                <button className="click_area" onClick={() => setActiveTab("myposts")}>投稿</button>
+                <button className="click_area" onClick={() => setActiveTab("mylikes")}>いいね</button>
+                <button className="click_area" onClick={() => setActiveTab("mycomments")}>コメント</button>
             </div>
+            <div>
+                {/* fetchTypeを渡して、これ1つでいいねした記事・自分の記事を表示する */}
+                <MyPostList fetchType={activeTab} pageUserId={pageUserId} />
+            </div>
+
+
+
+        </div>
 
 
     )

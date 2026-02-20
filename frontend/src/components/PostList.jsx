@@ -7,6 +7,8 @@ import PostCard from "./PostCard";
 import ReportModal from "./ReportModal";
 import { usePostActions } from "@/hooks/usePostActions";
 
+
+
 const deptMap = { mch: 0, cyc: 1, sys: 2 };
 
 const PostList = () => {

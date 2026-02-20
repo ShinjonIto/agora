@@ -1,0 +1,29 @@
+.follow {
+    background-color: var(--accent-color);
+    color: var(--main-white);
+}
+
+.notFollow {
+    background-color: var(--button-color);
+}
+
+.MyPageInfo .flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.MyPageInfo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.mypage_button {
+    position: absolute;
+    top: 10%;
+    right: 10%;
+}
