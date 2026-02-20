@@ -1,0 +1,7 @@
+.postDetail {
+    background-color: var(--main-white);
+}
+
+.commentFlex {
+    display: flex;
+}

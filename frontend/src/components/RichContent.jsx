@@ -7,6 +7,15 @@ const RichContent = ({ html, stopClickPropagation = false }) => {
         const root = rootRef.current;
         if (!root) return;
 
+        console.log("RichContent html length:", html?.length);
+        console.log("pre count:", root.querySelectorAll("pre").length);
+        console.log("ql-code-block count:", root.querySelectorAll(".ql-code-block").length);
+    }, [html]);
+
+    useEffect(() => {
+        const root = rootRef.current;
+        if (!root) return;
+
         // すでにボタン付いてるpreには二重で付けない
         const pres = root.querySelectorAll("pre");
         pres.forEach((pre) => {

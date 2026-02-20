@@ -1,13 +1,13 @@
 import axiosPrivate from "@/api/axiosPrivate";
-import React, { useState, useMemo, useRef, useCallback } from "react"; 
+import React, { useState, useMemo, useRef, useCallback } from "react";
 import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css"; 
+import "react-quill-new/dist/quill.snow.css";
 import { useCommentQuillModules, commentFormats } from "@/utils/commentQuillConfig";
 
 const CommentForm = ({ postId, parentCommentId = null, replyTargetName = null, setComments, onSuccess }) => {
     const [content, setContent] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null); 
+    const [error, setError] = useState(null);
     const quillRef = useRef(null);
 
 
@@ -63,7 +63,7 @@ const CommentForm = ({ postId, parentCommentId = null, replyTargetName = null, s
             setError("コメントを入力してください");
             return;
         }
-        
+
         try {
             setLoading(true);
             setError(null);
@@ -72,7 +72,7 @@ const CommentForm = ({ postId, parentCommentId = null, replyTargetName = null, s
                 parent_comment: parentCommentId,
             });
 
-            const newComment = {...res.data, children: []};
+            const newComment = { ...res.data, children: [] };
 
             // ステートを更新
             if (!parentCommentId) {
@@ -99,8 +99,8 @@ const CommentForm = ({ postId, parentCommentId = null, replyTargetName = null, s
                 });
             }
 
-            setContent(""); 
-            if (onSuccess) onSuccess(); 
+            setContent("");
+            if (onSuccess) onSuccess();
 
         } catch (err) {
             console.error("投稿エラー:", err);
@@ -116,27 +116,27 @@ const CommentForm = ({ postId, parentCommentId = null, replyTargetName = null, s
         <div className="comment-form-container">
             {/* 返信の時だけ宛先を表示 */}
             {parentCommentId && replyTargetName && (
-                <p style={{ fontSize: "14px", color: "#666", marginBottom: "5px" }}>
+                <p>
                     <strong>@{replyTargetName}</strong> さんへの返信
                 </p>
             )}
-            
+
             <form onSubmit={handleSubmit}>
-                <ReactQuill 
+                <ReactQuill
                     ref={quillRef}
                     theme="snow"
-                    value={content} 
-                    onChange={setContent} 
+                    value={content}
+                    onChange={setContent}
                     modules={modules}
                     formats={commentFormats}
                     placeholder="コメントを入力..."
-                    style={{ backgroundColor: "white", color: "black", borderRadius: "8px"}}
+                    style={{ backgroundColor: "white", color: "black", borderRadius: "8px" }}
                 />
-                {error && <p style={{ color: "red", fontSize: "12px", marginTop: "5px" }}>{error}</p>}
-                <button 
-                    type="submit" 
+                {error && <p style={{ color: "var(--accent-sub-color)", fontSize: "12px", marginTop: "5px" }}>{error}</p>}
+                <button
+                    type="submit"
                     disabled={loading}
-                    style={{ marginTop: "10px" }}
+
                 >
                     {loading ? "送信中..." : parentCommentId ? "返信する" : "コメントする"}
                 </button>

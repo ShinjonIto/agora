@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import MyPostList from "../components/MyPostList";
 import MyPageInformation from "../components/MyPageInformation";
 
+import "./Mypage.css"
 
 
 const MyPage = () => {
@@ -81,20 +82,19 @@ const MyPage = () => {
 
 
     return (
-
-            <div className="homeLayout">
+            <div className="mypage">
 
                 <main>
                     {/* ログインユーザー情報 */}
                     <MyPageInformation key={pageUserId} userId={pageUserId} />
                     
                     {/* タブボタン */}
-                    <div style={{ display: "flex", gap: "20px", marginBottom: "20px", borderBottom: "1px solid #ddd" }}>
-                        <button onClick={() => setActiveTab("myposts")}>投稿</button>
-                        <button onClick={() => setActiveTab("mylikes")}>いいね</button>
-                        <button onClick={() => setActiveTab("mycomments")}>コメント</button>
-                        <button onClick={() => setActiveTab("following")}>フォロー</button>
-                        <button onClick={() => setActiveTab("followers")}>フォロワー</button>
+                    <div className="mypage_link">
+                        <button className="click_area" onClick={() => setActiveTab("myposts")}>投稿</button>
+                        <button className="click_area" onClick={() => setActiveTab("mylikes")}>いいね</button>
+                        <button className="click_area" onClick={() => setActiveTab("mycomments")}>コメント</button>
+                        <butto className="click_area"n onClick={() => setActiveTab("following")}>フォロー</button>
+                        <button className="click_area" onClick={() => setActiveTab("followers")}>フォロワー</button>
                     </div>
 
 
@@ -110,6 +110,14 @@ const MyPage = () => {
                     
                 </main>
             </div>
+            <div>
+                {/* fetchTypeを渡して、これ1つでいいねした記事・自分の記事を表示する */}
+                <MyPostList fetchType={activeTab} pageUserId={pageUserId} />
+            </div>
+
+
+
+        </div>
 
 
     )

@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axiosPrivate from "@/api/axiosPrivate";
 import UserProfile from "./UserProfile";
 import { useFollow } from "@/hooks/useFollow";
+import "./MyPageInformation.css";
 
-const MyPageInformation = ({userId}) => {
+const MyPageInformation = ({ userId }) => {
     const [user, setUser] = useState(null);
     const [isFollowed, setIsFollowed] = useState(false);
     const navigate = useNavigate();
@@ -35,26 +36,16 @@ const MyPageInformation = ({userId}) => {
         // フォロー数・フォロワー数を更新
         setUser(prevUser => ({
             ...prevUser,
-            following_count: newFollowed
-                ? prevUser.following_count + 1
-                : prevUser.following_count - 1,
-            // フォロワー数は自分のページか他人のページかで変わる
-            followers_count: prevUser.followers_count, // 他人のページなら変えない
+            followers_count: prevUser.followers_count + (newFollowed ? 1 : -1),
         }));
 
-        // アラート表示
-        if (newFollowed) {
-            alert(`フォローしました`);
-        } else {
-            alert(`フォローを解除しました`);
-        }
     };
 
     return (
-        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "20px" }}>
+        <div className="MyPageInfo">
             {/* アイコン */}
-            <UserProfile 
-                user={user} 
+            <UserProfile
+                user={user}
                 onClick={() => {
                     navigate(`/mypage/${user.id}`);
                 }}
@@ -62,36 +53,42 @@ const MyPageInformation = ({userId}) => {
             {/* 名前 */}
             {user.user_name}
 
-            {/* フォローボタン */}
-            {user.id !== currentUserId && (
-                <button
-                    onClick={handleFollowClick}
-                    style={{
-                        padding: "4px 10px",
-                        borderRadius: "6px",
-                        border: "1px solid #888",
-                        background: isFollowed ? "#eee" : "#007bff",
-                        color: isFollowed ? "#333" : "#fff",
-                        cursor: "pointer",
-                    }}
-                >
-                    {isFollowed ? "フォロー中" : "フォロー"}
-                </button>
-            )}
 
             {/* 自己紹介文 */}
             <p>自己紹介文：{user.self_introduction}</p>
 
-            {/* フォロー数 */}
-            <p>フォロー: {user.following_count}</p>
 
-            {/* フォロワー数 */}
-            <p>フォロワー: {user.followers_count}</p>
+
+
+
+
+
+            <div className="flex">
+                {/* フォロー数 */}
+                <p>フォロー: {user.following_count}</p>
+
+                {/* フォロワー数 */}
+                <p>フォロワー: {user.followers_count}</p>
+            </div>
+
+
+            {/* フォローボタン */}
+            {user.id !== currentUserId && (
+                <button
+                    className={`button  mypage_button ${isFollowed ? "follow" : "notFollow"}`}
+                    onClick={handleFollowClick}
+                >
+
+                    {isFollowed ? "フォロー中" : "フォロー"}
+                </button>
+            )}
 
             {/* 設定 */}
             {user.id === currentUserId && (
-                <button onClick={() => navigate(`/settings/${currentUserId}`)}>設定</button>
+                <button className="config mypage_button" onClick={() => navigate(`/settings/${currentUserId}`)}>設定</button>
             )}
+
+
         </div>
     );
 };

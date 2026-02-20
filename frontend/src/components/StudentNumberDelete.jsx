@@ -17,24 +17,27 @@ const StudentNumberDelete = () => {
         setResult(null);
 
         try {
-        const res = await axiosPrivate.patch("/api/users/student_number/delete/", {
-            start_number: Number(startNumber),
-            end_number: Number(endNumber),
-        });
+          const res = await axiosPrivate.patch("/api/users/student_number/delete/", {
+              start_number: Number(startNumber),
+              end_number: Number(endNumber),
+          });
 
-        setResult(res.data);
-        } catch (err) {
-        console.error(err);
-        alert(
-            err.response?.data?.detail || "削除に失敗しました。範囲や権限を確認してください"
-        );
-        } finally {
+          setResult(res.data);
+          } catch (err) {
+          console.error(err);
+          alert(
+              err.response?.data?.detail || "削除に失敗しました。範囲や権限を確認してください"
+          );
+          } finally {
+
+            
         setLoading(false);
         }
     };
 
     return (
         <div>
+
         <h3>学生番号一括削除</h3>
 
         <div style={{ marginBottom: "10px" }}>

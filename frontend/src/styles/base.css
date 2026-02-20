@@ -64,6 +64,11 @@ select {
     align-items: center;
 }
 
+.button {
+    padding: 0 10px;
+    border-radius: 10px;
+}
+
 .click_button:hover {
     background-color: rgba(157, 157, 157, 0.251);
 }
@@ -111,12 +116,12 @@ select {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #276976;
+    background: var(--main-text);
     border-radius: 5px;
     /* ハンドルの色 */
 }
 
 ::-webkit-scrollbar-track {
-    background: #ffffff0e;
+    background: #ffffff5b;
     /* 背景色 */
 }

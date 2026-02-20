@@ -1,9 +1,5 @@
 import { useEffect, useRef } from "react";
 
-/**
- * 独自スクロール領域の scrollTop を保存 & 復元する
- * @param {string} key sessionStorageに保存するキー（例: "home", "dept:mch"）
- */
 export default function useScrollRestoration(key) {
     const ref = useRef(null);
 

@@ -68,7 +68,7 @@ const Header = ({ user }) => {
             <div className="flex">
                 <div onClick={handleLogoClick}>
                     <hgroup>
-                        <p>ちょっと話そう。話題を持ち寄ろう。</p>
+                        <p>MIEコミュニティサイト</p>
                         <h1>AGORA</h1>
                     </hgroup>
                 </div>

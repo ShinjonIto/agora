@@ -1,28 +1,28 @@
-.post {
+.commentItem {
     background-color: var(--main-white);
-    flex: 1;
 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
-    padding: 5%;
-    margin: 0 auto 20px auto;
+    padding: 2%;
+    /* margin: 0 auto 20px auto; */
     border-radius: var(--radius);
-    /* border: 1px solid black; */
+    border: 1px solid black;
 }
 
 
 
 
-.post .honbun {
-    margin: 10px 30px;
+.commentItem .honbun {
+    /* margin: 10px 30px; */
     line-height: 2.5rem;
+
 }
 
 
 
-.titleBlock {
+.commentItem .titleBlock {
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -31,44 +31,26 @@
 
 
 
-.dept {
-    opacity: 0.7;
-}
 
-/* 1枚目サムネ */
-.postThumb {
-    width: 90%;
 
-    object-fit: cover;
-    border-radius: var(--radius);
-    margin: 10px auto;
-}
 
-/* 共通: 長い英数字対策 */
-.post .editor {
-    overflow-wrap: anywhere;
-    word-break: break-word;
-}
 
-.editor .codeblock-wrap {
-    position: relative;
-    margin: 12px 0;
-}
+
 
 /* Quillのpre（ql-syntax）の見た目はお好みで */
-.editor pre {
+.commentItem pre {
     overflow-x: auto;
     /* 折り返さず横スクロール派 */
     max-width: 100%;
-    padding: 12px;
+    padding: 4px;
     border-radius: 10px;
 }
 
 /* 右上コピー */
-.editor .codeblock-copy {
+.commentItem .codeblock-copy {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 0px;
+    right: 0px;
     font-size: 12px;
     padding: 6px 10px;
     border-radius: 5px;
@@ -80,13 +62,13 @@
 }
 
 /* 押した後 */
-.editor .codeblock-copy:disabled {
+.commentItem .codeblock-copy:disabled {
     opacity: 0.7;
     cursor: default;
 }
 
 
-.post .editor pre {
+.commentItem .editor pre {
     white-space: pre;
     overflow-x: auto;
     max-width: 100%;
@@ -96,44 +78,20 @@
 }
 
 /* 一覧: 3行で省略 */
-.preview .honbun {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-}
 
-/* 一覧: 本文内の画像は隠す（上に1枚目を出してるから） */
-.preview .honbun .editor img {
-    display: none;
-}
+
+
 
 /* 詳細: 全文（制限なし） */
-.full .honbun {
-    overflow: visible;
-    display: block;
-}
+
 
 /* プレビュー時：本文は最初のブロックだけ表示 */
 
 
-.preview .honbun .editor> :first-child {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-}
-
-.preview .titleBlock h3 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-}
 
 
 
-.post .dai_flex {
+.commentItem .dai_flex {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -141,39 +99,34 @@
 
 
 
-.post .syo_flex {
+.commentItem .syo_flex {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
 }
 
-.post .full {
-    overflow: visible;
-}
 
-.comment_flex {
+
+.commentItem .comment_flex {
     gap: 10px;
 }
 
-.post .titleBlock {
+.commentItem .titleBlock {
 
     flex: 1;
     /* ← 右の「…ボタン」に押されて縮む */
 
 }
 
-.post .titleBlock h3,
-.post .titleBlock .title {
-    word-break: break-word;
-}
 
-.post .comment_flex {
+
+.commentItem .comment_flex {
     display: flex;
     gap: 15px;
 }
 
-.icon_flex {
+.commentItem .icon_flex {
     background: none;
     border: none;
     cursor: pointer;
@@ -185,6 +138,6 @@
     border-radius: 20px;
 }
 
-.red {
+.commentItem .red {
     color: var(--accent-sub-color);
 }
