@@ -13,6 +13,14 @@ import ProfileSettings from "./pages/ProfileSettings";
 import PostList from "./components/PostList";
 import PasswordChange from "./pages/PasswordChange";
 import AdminDashboard from "./pages/AdminDashboard";
+import StudentNumberList from "./components/StudentNumberList";
+import StudentNumberAdd from "./components/StudentNumberAdd";
+import StudentNumberDetail from "./components/StudentNumberDetail";
+import StudentNumberDelete from "./components/StudentNumberDelete";
+import AdminList from "./components/AdminList"
+import AdminAdd from "./components/AdminAdd"
+import NotificationList from "./pages/NotificationList"
+import DeleteAccount from "./pages/DeleteAccount"
 
 
 
@@ -66,8 +74,27 @@ function App() {
           {/* パスワード変更 */}
           <Route path="/settings/:userId/password" element={<PasswordChange />} />
 
+
           {/* 管理画面 */}
-          <Route path="/managements" element={<AdminDashboard />} />
+          <Route path="/managements" element={<AdminDashboard />}>
+            {/* デフォルト：学生番号一覧 */}
+            <Route path="student_number" element={<StudentNumberList />} />
+
+            {/* 学生番号管理 */}
+            <Route path="student_number/add" element={<StudentNumberAdd />} />
+            <Route path="student_number/delete" element={<StudentNumberDelete />} />
+            <Route path="student_number/:studentNumber" element={<StudentNumberDetail />} />
+
+            {/* 管理者編集 */}
+            <Route path="admin" element={<AdminList />} />
+            <Route path="admin/add" element={<AdminAdd />} />
+          </Route>
+
+          {/* 通知 */}
+          <Route path="/notifications" element={<NotificationList />} />
+
+          {/* アカウント削除 */}
+          <Route path="/settings/:userId/delete_acount" element={<DeleteAccount />} />
         </Route>
       </Routes>
     </BrowserRouter>

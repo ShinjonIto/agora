@@ -60,7 +60,9 @@ const PostDetail = () => {
 
                 // コメント取得
                 const commentRes = await axiosPrivate.get(`/api/comments/${postId}/`);
+                const data = commentRes.data;
                 setComments(commentRes.data);
+
 
             } catch (err) {
                 console.error(err);

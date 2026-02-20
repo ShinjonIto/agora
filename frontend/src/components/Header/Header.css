@@ -27,6 +27,9 @@ header .header-oka {
     width: 100%;
     height: var(--oka);
     /* animation: okaWave 6s ease-in-out infinite; */
+
+    /* しんじょん編集 */
+    pointer-events: none;
 }
 
 @keyframes okaWave {

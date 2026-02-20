@@ -1,32 +1,12 @@
-import React, { useState, useEffect } from "react";
-import axiosPrivate from "../api/axiosPrivate";
-import Header from "../components/Header/Header";
-import CreatePostButton from "../components/CreatePostButton";
-import "./MainLayout.css"
-
+import { useAuth } from "@/contexts/AuthContext";
+import Header from "@/components/Header/Header";
+import CreatePostButton from "@/components/CreatePostButton";
 
 const MainLayout = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [error, setError] = useState(null);
-    const currentUserId = localStorage.getItem("userId");
+    const { user, loading } = useAuth();
 
-    useEffect(() => {
-        const fetchMe = async () => {
-
-            try {
-                const response = await axiosPrivate.get(`/api/users/${currentUserId}/`);
-                setUser(response.data);
-            } catch (err) {
-                console.error(err);
-                setError("ユーザー情報の取得に失敗しました");
-            }
-        };
-
-        fetchMe();
-    }, []);
-
-    if (error) return <p>{error}</p>;
-    if (!user) return <p>Loading...</p>;
+    if (loading) return <p>Loading...</p>;
+    if (!user) return null;
 
     return (
         <div className="layout">
@@ -34,14 +14,13 @@ const MainLayout = ({ children }) => {
                 <Header user={user} />
             </div>
 
-
-            {/* 各ページの中身 */}
             <main className="main">
                 {children}
             </main>
+
             <CreatePostButton />
         </div>
-    )
-}
+    );
+};
 
-export default MainLayout
+export default MainLayout;

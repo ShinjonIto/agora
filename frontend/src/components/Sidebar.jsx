@@ -77,7 +77,7 @@ const Sidebar = () => {
             {/* 管理画面 */}
             {user?.permission === 0 && (
                 <NavLink
-                    to="/managements"
+                    to="/managements/student_number"
                     className={({ isActive }) =>
                         `aside_button ${isActive ? "active" : ""}`
                     }

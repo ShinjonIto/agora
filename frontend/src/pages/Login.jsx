@@ -34,6 +34,8 @@ const Login = () => {
         }));
     };
 
+
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitErrors("");
@@ -49,19 +51,24 @@ const Login = () => {
 
         try {
             const res = await axiosPublic.post("/api/users/login/", {
-                username: form.student_number, // ← Signup と違うのはここだけ
+                username: form.student_number,
                 password: form.password,
             });
 
             localStorage.setItem("token", res.data.token);
-
-            // ユーザーIDも保存
             localStorage.setItem("userId", res.data.user_id);
 
-            navigate("/");         // ログイン成功したらHomeへ
+            // navigate("/"); // ログイン成功したらHomeへ
+            window.location.href = "/";
         } catch (err) {
             console.error(err);
-            setSubmitErrors("ログインに失敗しました");
+
+            // ここを変更：バックエンドからの detail メッセージを表示
+            if (err.response && err.response.data && err.response.data.detail) {
+                setSubmitErrors(err.response.data.detail);
+            } else {
+                setSubmitErrors("ログインに失敗しました");
+            }
         }
     };
 

@@ -73,7 +73,7 @@ class CommentSerializer(serializers.ModelSerializer):
     # 子コメント
     def get_children(self, obj):
         request = self.context.get("request")
-        children = Comment.objects.filter(parent_comment=obj, is_deleted=False).order_by("created_at")
+        children = Comment.objects.filter(parent_comment=obj, is_deleted=False, user__is_stopped=False).order_by("created_at")
         
         return CommentSerializer(children, many=True, context={"request": request}).data
     
@@ -99,25 +99,23 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 # 自分のコメント
 class MyCommentedPostSerializer(PostSerializer):
     my_comments = serializers.SerializerMethodField()
-    author_name = serializers.CharField(source="post_user.user_name", read_only=True)
-    author_icon = serializers.SerializerMethodField()
 
     class Meta(PostSerializer.Meta):
-        fields = PostSerializer.Meta.fields + ["my_comments", "author_name", "author_icon"]
+        fields = PostSerializer.Meta.fields + ["my_comments"]
 
-    # 投稿者のアイコン
-    def get_author_icon(self, obj):
-        request = self.context.get("request")
-        if obj.post_user and obj.post_user.icon_image:
-            return request.build_absolute_uri(obj.post_user.icon_image.url)
-        return None
-
-    # 自分のコメントを取得
     def get_my_comments(self, obj):
         request = self.context.get("request")
-        if not request or not request.user.is_authenticated:
+        # Viewから渡された target_user を使う いなければ自分のを出す
+        target_user = self.context.get("target_user") or request.user
+        
+        if not target_user or not target_user.is_authenticated:
             return []
-
-        user = request.user
-        comments = Comment.objects.filter(post=obj, user=user, is_deleted=False).order_by("created_at")
+        
+        # ログイン者ではなく、表示対象ユーザー(target_user)のコメントを取得
+        comments = Comment.objects.filter(
+            post=obj, 
+            user=target_user, 
+            is_deleted=False
+        ).order_by("created_at")
+        
         return CommentSerializer(comments, many=True, context={"request": request}).data
