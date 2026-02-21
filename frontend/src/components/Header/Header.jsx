@@ -14,6 +14,8 @@ const Header = ({ user }) => {
     const [showMenu, setShowMenu] = useState(false);
     const [unread, setUnread] = useState(false);
     const [unreadCount, setUnreadCount] = useState(0); 
+    const [keyword, setKeyword] = useState("");
+
 
     // ロゴ
     const handleLogoClick = () => navigate("/");
@@ -32,6 +34,13 @@ const Header = ({ user }) => {
     }, []);
 
 
+    // 検索
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!keyword.trim()) return;
+
+        navigate(`/search?keyword=${encodeURIComponent(keyword)}`);
+    };
 
 
     // 未読通知
@@ -46,8 +55,8 @@ const Header = ({ user }) => {
         };
         fetchUnread(); // 初回読み込み時
 
-        // 5秒ごとに通知があるか確認
-        const interval = setInterval(fetchUnread, 5000);
+        // 30秒ごとに通知があるか確認
+        const interval = setInterval(fetchUnread, 30000);
         // ページを離れたらタイマーを止める
         return () => clearInterval(interval);
     }, []);
@@ -73,7 +82,16 @@ const Header = ({ user }) => {
                     </hgroup>
                 </div>
 
-                <p>search</p>
+                {/* 検索フォーム */}
+                <form className="header-search" onSubmit={handleSearch}>
+                    <input
+                        type="text"
+                        placeholder="検索"
+                        value={keyword}
+                        onChange={(e) => setKeyword(e.target.value)}
+                    />
+                    <button type="submit">検索</button>
+                </form>
 
                 <div onClick={handleNotificationClick}>
                     通知
@@ -101,7 +119,13 @@ const Header = ({ user }) => {
                                 マイページ
                             </Link>
                             <LogoutButton />
-                            <Link>このサイトについて</Link>
+                            <Link
+                                to="/about"
+                                className="HeaderModalLink"
+                                onClick={() => setShowMenu(false)}
+                            >
+                                このサイトについて
+                            </Link>
                         </div>
                     )}
                 </div>

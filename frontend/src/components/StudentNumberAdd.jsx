@@ -36,6 +36,9 @@ const StudentNumberAdd = () => {
         <div>
         <h3>学生番号登録</h3>
 
+        <p>登録してもいい学生番号の範囲を入力してください。<br />
+            登録された範囲の学生は会員登録・ログインができるようになります。</p>
+
         <form onSubmit={handleSubmit}>
             <input
             type="number"

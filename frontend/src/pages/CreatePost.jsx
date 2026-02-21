@@ -8,7 +8,7 @@ const CreatePost = () => {
 
     const handleSuccess = (post) => {
         alert("投稿完了！");
-        navigate(`/posts/${post.post_id}`);
+        navigate(-1); 
     };
 
     return (

@@ -88,18 +88,89 @@ class PostLikeToggleAPIView(APIView):
         
         
         
+        
+        
+# ModerationAPIでバリデーションチェック
+import requests
+from django.conf import settings
+from django.core.cache import cache
+import hashlib
 class CreatePostAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    # 記事作成
     def post(self, request):
         serializer = PostCreateSerializer(data=request.data)
-        
-        # バリデーション
+
         if serializer.is_valid():
+            title = serializer.validated_data.get("title", "")
+            content = serializer.validated_data.get("content", "")
+            combined_text = f"{title} {content}"
+
+            # テキストをハッシュ化（キャッシュキー）
+            cache_key = "moderation_" + hashlib.sha256(
+                combined_text.encode()
+            ).hexdigest()
+
+            # まずキャッシュを見る
+            cached_flag = cache.get(cache_key)
+
+            if cached_flag is not None:
+                flagged = cached_flag
+                print("キャッシュ使用:", flagged)
+
+            else:
+                flagged = False
+
+                try:
+                    response = requests.post(
+                        "https://api.openai.com/v1/moderations",
+                        headers={
+                            "Authorization": f"Bearer {settings.OPENAI_API_KEY}"
+                        },
+                        json={
+                            "model": "omni-moderation-latest",
+                            "input": combined_text
+                        },
+                        timeout=5
+                    )
+
+                    response.raise_for_status()
+
+                    moderation_result = response.json()
+                    print("MODERATION RESULT:", moderation_result)
+
+                    flagged = moderation_result["results"][0]["flagged"]
+
+                    # 5分キャッシュ
+                    cache.set(cache_key, flagged, timeout=60 * 5)
+
+                # 制限越えた場合通す
+                except Exception as e:
+                    print("Moderation failed:", e)
+                    flagged = False
+                
+                # 制限越えた場合通さない
+                # except requests.exceptions.HTTPError as e:
+                #     if response.status_code == 429:
+                #         return Response(
+                #             {"error": "現在投稿が混み合っています。少し待ってください。"},
+                #             status=429
+                #         )
+                #     else:
+                #         flagged = False
+            # あとでけす
+            print("STATUS:", response.status_code)
+            print("RAW:", response.text)
+
+            if flagged:
+                return Response(
+                    {"error": "AIチェックの結果、不適切な内容が含まれているため投稿できません。"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
             serializer.save(post_user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
@@ -119,6 +190,8 @@ class ImageUploadAPIView(APIView):
         file_url = request.build_absolute_uri(default_storage.url(file_name))
 
         return Response({'url': file_url})
+    
+    
     
     
     
@@ -215,4 +288,32 @@ class MyCommentPostAPIView(APIView):
         comment_posts = Post.objects.filter(comment__user=user, is_deleted=False,post_user__is_stopped=False).distinct().order_by("-created_at")
         
         serializer = MyCommentedPostSerializer(comment_posts, many=True, context={'request' : request})
+        return Response(serializer.data)
+    
+    
+    
+    
+    
+# search
+from django.db.models import Q
+class SearchAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        keyword = request.query_params.get("keyword", "")
+
+        if not keyword:
+            return Response([])
+
+        posts = Post.objects.filter(
+            Q(title__icontains=keyword) |
+            Q(content__icontains=keyword) | 
+            Q(post_user__user_name__icontains=keyword) 
+        ).filter(
+            is_deleted=False,
+            post_user__is_stopped=False
+        ).order_by(
+            "-created_at")
+
+        serializer = PostSerializer(posts, many=True, context={"request" : request})
         return Response(serializer.data)

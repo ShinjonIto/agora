@@ -302,8 +302,12 @@ class StudentNumberDeleteAPIView(APIView):
 class AdminListAPIView(APIView):
     permission_classes = [IsAdminPermission]
     
+    # 非表示にしたい管理者IDのリスト
+    exclude_ids = [1, 2]
+    
     def get(self, request):
-        admin_list = User.objects.filter(permission=0, is_deleted=False)
+        admin_list = User.objects.filter(permission=0, is_deleted=False).exclude(id__in=self.exclude_ids)
+        #
         serializer = AdminListSerializer(admin_list, many=True)
         return Response(serializer.data)
     

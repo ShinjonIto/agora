@@ -5,4 +5,5 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("<int:post_user>/", FollowAPIView.as_view()),
+    path("<int:post_user>/follow_list/", FollowAPIView.as_view()),
 ]

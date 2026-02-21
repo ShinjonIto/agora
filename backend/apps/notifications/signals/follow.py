@@ -3,19 +3,18 @@ from django.dispatch import receiver
 from apps.follows.models import Follow
 from apps.notifications.models import Notification
 
-
-
 # フォロー通知
 @receiver(post_save, sender=Follow)
 def create_follow_notification(sender, instance, created, **kwargs):
     if not created:
         return
 
-    if instance.to_user == instance.from_user:
+    # 自分自身をフォローした場合（通常はViewで弾くが安全策として）
+    if instance.following == instance.follower:
         return
 
     Notification.objects.create(
-        user=instance.to_user,
-        actor=instance.from_user,
+        user=instance.following,    # 通知先
+        actor=instance.follower,    # 行動した人
         notification_type=Notification.FOLLOW
     )

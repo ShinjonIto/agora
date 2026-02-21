@@ -17,12 +17,12 @@ const NotificationList = () => {
                 if (isMounted) {
                     setNotifications(res.data);
                     
-                    // 3秒待ってから既読にする（これで「＊」を確実に見せる）
+                    // 既読にする
                     setTimeout(async () => {
                         if (isMounted) {
                             await axiosPrivate.patch("/api/notifications/read/");
                         }
-                    }, 3000);
+                    });
                 }
             } catch (err) {
                 console.error(err);
@@ -40,11 +40,19 @@ const NotificationList = () => {
 
     // 通知内容
     const renderText = (n) => {
-        const names = { 0: "フォロー", 1: "投稿にいいね", 2: "コメント", 3: "コメントにいいね" };
-        const action = names[n.notification_type] || "通知";
-        return `${n.actor_name} さんが${action}しました`;
+        switch (n.notification_type) {
+            case 0: // フォロー
+                return `${n.actor_name} さんがあなたをフォローしました。`;
+            case 1: // 投稿にいいね
+                return `${n.actor_name} さんがあなたの記事にいいねしました。`;
+            case 2: // コメント
+                return `${n.actor_name} さんがあなたの記事にコメントしました。`;
+            case 3: // コメントにいいね
+                return `${n.actor_name} さんがあなたのコメントにいいねしました。`;
+            default:
+                return "通知があります";
+        }
     };
-
 
     // 日付
     const formatDate = (dateString) => {
