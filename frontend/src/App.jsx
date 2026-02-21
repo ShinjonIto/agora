@@ -21,6 +21,8 @@ import AdminList from "./components/AdminList"
 import AdminAdd from "./components/AdminAdd"
 import NotificationList from "./pages/NotificationList"
 import DeleteAccount from "./pages/DeleteAccount"
+import SearchResult from "./components/SearchResult";
+import About from "./pages/About";
 
 
 
@@ -37,6 +39,9 @@ function App() {
           {/* 会員登録 */}
           <Route path="/signup" element={<Signup />} />
           <Route path="/password" element={<Password />} />
+
+          {/* このサイトについて */}
+          <Route path="/about" element={<About />} />
         </Route>
 
 
@@ -56,6 +61,9 @@ function App() {
           {/* 学科別一覧 */}
           <Route path="department/:dept" element={<PostList />} />
 
+          {/* 検索 */}
+          <Route path="search" element={<SearchResult />} />
+
           {/* 記事詳細 */}
           <Route path="posts/:postId" element={<PostDetail />} />
 
@@ -73,6 +81,7 @@ function App() {
 
           {/* パスワード変更 */}
           <Route path="/settings/:userId/password" element={<PasswordChange />} />
+
 
 
           {/* 管理画面 */}

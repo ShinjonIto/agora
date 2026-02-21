@@ -24,6 +24,8 @@ const StudentNumberList = () => {
     return (
         <div>
         <h3>学生番号一覧</h3>
+        <p>現在利用中、停止中のユーザーが表示されます。<br />
+        （削除された学生は表示されません。）</p>
 
         <table>
             <thead>

@@ -21,6 +21,8 @@ const MyPage = () => {
 
     useEffect(() => {
         setActiveTab("myposts");
+        // 他の人のマイページに飛んだら、スクロール上に戻る
+        window.scrollTo(0, 0);
     }, [pageUserId]);  
 
 
@@ -31,10 +33,7 @@ const MyPage = () => {
                 <div 
                     key={user.id} 
                     onClick={() => navigate(`/mypage/${user.id}`)}
-                    style={{ 
-                        display: "flex", alignItems: "center", gap: "15px", 
-                        padding: "10px", border: "1px solid #eee", borderRadius: "8px", cursor: "pointer" 
-                    }}
+                    style={{ display: "flex", alignItems: "center"}}
                 >
                     <img src={user.icon_image} alt="" style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover" }} />
                     <div>
@@ -93,7 +92,7 @@ const MyPage = () => {
                         <button className="click_area" onClick={() => setActiveTab("myposts")}>投稿</button>
                         <button className="click_area" onClick={() => setActiveTab("mylikes")}>いいね</button>
                         <button className="click_area" onClick={() => setActiveTab("mycomments")}>コメント</button>
-                        <butto className="click_area"n onClick={() => setActiveTab("following")}>フォロー</button>
+                        <button className="click_area" onClick={() => setActiveTab("following")}>フォロー</button>
                         <button className="click_area" onClick={() => setActiveTab("followers")}>フォロワー</button>
                     </div>
 
@@ -103,17 +102,12 @@ const MyPage = () => {
                         <div key={`follow-${pageUserId}`}>{renderUserList(followData.following)}</div>
                     ) : activeTab === "followers" ? (
                         <div key={`follower-${pageUserId}`}>{renderUserList(followData.followers)}</div>
-                    ) : (
+                    ) : (   // 自分の投稿・いいねした記事
                         <MyPostList key={`${pageUserId}-${activeTab}`} fetchType={activeTab} pageUserId={pageUserId} />
                     )}
 
                     
                 </main>
-            </div>
-            <div>
-                {/* fetchTypeを渡して、これ1つでいいねした記事・自分の記事を表示する */}
-                <MyPostList fetchType={activeTab} pageUserId={pageUserId} />
-            </div>
 
 
 

@@ -68,6 +68,7 @@ const AdminAdd = () => {
     return (
         <div>
             <h3>管理者追加</h3>
+            <p>以下の情報を入力して、管理者を追加してください。</p>
 
             <form onSubmit={handleSubmit}>
                 <FormInput

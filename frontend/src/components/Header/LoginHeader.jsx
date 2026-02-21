@@ -47,7 +47,7 @@ const Header = ({ user }) => {
                     </hgroup>
                 </div>
 
-                <Link >このサイトについて</Link>
+                <Link to="/about">このサイトについて</Link>
 
 
 

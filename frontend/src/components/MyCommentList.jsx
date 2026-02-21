@@ -4,13 +4,22 @@ import UserProfile from "./UserProfile";
 import MenuButton from "./MenuButton";
 import { useCommentActions } from "@/hooks/useCommentActions";
 
-const MyCommentList = ({ posts, currentUserId, navigate, handleDelete, handleFollow, openReportModal }) => {
+const MyCommentList = ({
+    posts,
+    sortType,
+    currentUserId,
+    navigate,
+    handleDelete,
+    handleFollow,
+    openReportModal
+}) => {
     return (
-        <>
+        <div>
             {posts.map(post => (
                 <CommentPost
                     key={`${post.post_user}-${post.post_id}`}
                     post={post}
+                    sortType={sortType}
                     currentUserId={currentUserId}
                     navigate={navigate}
                     handleDelete={handleDelete}
@@ -18,14 +27,23 @@ const MyCommentList = ({ posts, currentUserId, navigate, handleDelete, handleFol
                     openReportModal={openReportModal}
                 />
             ))}
-        </>
+        </div>
     );
 };
 
 // 投稿ごとのコメントリスト
-const CommentPost = ({ post, currentUserId, navigate, handleDelete, handleFollow, openReportModal }) => {
+const CommentPost = ({
+    post,
+    sortType,
+    currentUserId,
+    navigate,
+    handleDelete,
+    handleFollow,
+    openReportModal
+}) => {
     const [comments, setComments] = useState(post.my_comments || []);
-    const { handleEdit, handleDelete: handleCommentDelete, handleLike } = useCommentActions(setComments, navigate);
+    const { handleDelete: handleCommentDelete, handleLike } =
+        useCommentActions(setComments, navigate);
 
     useEffect(() => {
         setComments(post.my_comments || []);
@@ -33,11 +51,26 @@ const CommentPost = ({ post, currentUserId, navigate, handleDelete, handleFollow
 
     if (!comments || comments.length === 0) return null;
 
+    // コメントの並び替え（内部仕様）
+    const sortedComments = [...comments].sort((a, b) => {
+        if (sortType === "like") {
+            return (b.like_count ?? 0) - (a.like_count ?? 0);
+        }
+
+        if (sortType === "comment") {
+            const aReplies = a.children?.length ?? 0;
+            const bReplies = b.children?.length ?? 0;
+            return bReplies - aReplies;
+        }
+
+        return new Date(b.created_at) - new Date(a.created_at);
+    });
+
     return (
         <div>
             {/* 投稿情報 */}
-            <div >
-                <div >
+            <div>
+                <div>
                     <UserProfile
                         user={{ icon_image: post.author_icon }}
                         onClick={(e) => {
@@ -46,9 +79,12 @@ const CommentPost = ({ post, currentUserId, navigate, handleDelete, handleFollow
                         }}
                     />
                     <div>
-                        <div style={{ fontWeight: "bold", color: "white" }}>{post.author_name}</div>
+                        <div style={{ fontWeight: "bold", color: "white" }}>
+                            {post.author_name}
+                        </div>
                     </div>
                 </div>
+
                 <MenuButton
                     type="post"
                     targetId={post.post_id}
@@ -66,25 +102,33 @@ const CommentPost = ({ post, currentUserId, navigate, handleDelete, handleFollow
             </div>
 
             {/* 投稿タイトル */}
-            <div style={{ color: "white", fontSize: "1rem", marginBottom: "5px" }}>{post.title}</div>
+            <div style={{ color: "white", fontSize: "1rem", marginBottom: "5px" }}>
+                {post.title}
+            </div>
 
-            {/* コメント部分 */}
-            {comments.filter(c => c).map(c => (
+            {/* コメント一覧 */}
+            {sortedComments.map(c => (
                 <CommentItem
-                    key={c.comment_id ?? Math.random()}
+                    key={c.comment_id}
                     comment={c}
                     currentUserId={currentUserId}
                     navigate={navigate}
                     handleDelete={() => handleCommentDelete(c.comment_id)}
                     handleLike={() => handleLike(c.comment_id)}
                     handleFollow={() => handleFollow(c.user)}
-                    openReportModal={() => openReportModal(c.comment_id, "comment")}
+                    openReportModal={() =>
+                        openReportModal(c.comment_id, "comment")
+                    }
                     updateComment={(updated) => {
                         setComments(prev =>
-                            prev.map(com => (com.comment_id === updated.comment_id ? updated : com))
+                            prev.map(com =>
+                                com.comment_id === updated.comment_id
+                                    ? updated
+                                    : com
+                            )
                         );
                     }}
-                    onReplyClick={() => { }}
+                    onReplyClick={() => {}}
                 />
             ))}
         </div>

@@ -26,8 +26,13 @@ const MyPageInformation = ({ userId }) => {
         fetchUser();
     }, [userId, currentUserId]);
 
+
+
     if (!user) return null; // ロード中は何も表示しない
 
+
+
+    
     // フォロー処理
     const handleFollowClick = async () => {
         const newFollowed = await toggleFollow(user.id);
