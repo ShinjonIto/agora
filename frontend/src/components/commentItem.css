@@ -16,18 +16,13 @@
 
 .commentItem .honbun {
     /* margin: 10px 30px; */
-    line-height: 2.5rem;
+    line-height: 2rem;
 
 }
 
 
 
-.commentItem .titleBlock {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    /* タイトル内だけ詰める */
-}
+
 
 
 

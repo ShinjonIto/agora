@@ -100,6 +100,7 @@ const PostDetail = () => {
     if (!post) return <p>Loading...</p>;
 
 
+
     return (
         <div className="postDetail">
             {/* 記事 */}
@@ -164,7 +165,8 @@ const PostDetail = () => {
                         {comment.children && comment.children.length > 0 && (
                             <div>
                                 {comment.children.map(child => (
-                                    <div>
+                                    <div key={child.comment_id}>
+
                                         <CommentItem
                                             key={child.comment_id}
                                             comment={child}
@@ -180,6 +182,7 @@ const PostDetail = () => {
                                             updateComment={(updated) => setComments(prev => updateCommentInTree(prev, updated))}
                                         />
                                     </div>
+
                                 ))}
                             </div>
                         )}

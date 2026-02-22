@@ -2,6 +2,10 @@
 /* デフォルト */
 :root {
     /* カラー */
+
+    --toumei: 0.6;
+    --toumei2: 0.7;
+  
     /* --main-color: #FFF7E4;
     --header-color: #FF7272;
     --main-sub-color: #F4ECCF;
@@ -14,9 +18,8 @@
     --main-shadow: #9CC095;
     --button-color: #c1c1c182; */
 
-
-    --main-color: #efefef;
-    --main-sub-color: #efefef;
+    /* --main-color: #FFF7E4;
+    --main-sub-color: #FFF7E4;
     --base-color: #efefef;
     --accent-color: #6295CC;
     --accent-sub-color: #FF7272;
@@ -24,23 +27,55 @@
     --main-white: #ffffff;
     --main-text: #537293;
     --main-shadow: #6295CC;
-    --button-color: #537293;
+    --button-color: #537293; */
 
 
+    /* --main-color: #FFF7E4;
+    --main-sub-color: #FFF7E4;
+    --base-color: #efefef;
+    --accent-color: #6295CC;
+    --accent-sub-color: #FF7272;
+    --main-black: #000000;
+    --main-white: #ffffff;
+    --main-text: #537293;
+    --main-shadow: #6295CC;
+    --button-color: #537293; */
 
+    /* --main-color: rgb(163, 200, 219);
+    --main-sub-color: rgb(163, 200, 219);
+    --base-color: rgb(255, 247, 228);
+    --base-color-rgb: 255, 247, 228;
+    --accent-color: rgb(2, 122, 202);
+    --accent-sub-color: rgb(255, 114, 114);
+    --main-black: rgb(0, 0, 0);
+    --main-white: rgb(255, 255, 255);
+    --main-text: rgb(83, 114, 147);
+    --main-shadow: rgb(163, 200, 219);
+    --button-color: rgb(228, 228, 228); */
 
-
-
+    /* --main-color: #6295CC;
+    --main-sub-color: #6295CC;
+    --base-color: #FFF7E4;
+    --accent-color: #027ACA;
+    --accent-sub-color: #FF7272;
+    --main-black: #000000;
+    --main-white: #ffffff;
+    --main-text: #537293;
+    --main-shadow: #A3C8DB;
+    --button-color: #e4e4e4; */
 
     /* ログインパターン */
     /* --login-base-color: #FCF2EB;
     --login-accent-color: #F9E8D9;
+    --login-accent-sub-color: #F9E8D9;
+
+
+    /* --login-base-color: #FFF7E4;
+    --login-accent-color: #FFF7E4;
     --login-accent-sub-color: #6295CC; */
 
-
-    --login-base-color: #efefef;
-    --login-accent-color: #efefef;
-    --login-accent-sub-color: #6295CC;
+    /* --login-base-color: #FFF7E4;
+    --login-accent-color: #A3C8DB; */
 
 
     /* --login-base-color: #FCF2EB;
@@ -63,15 +98,28 @@
     --font-heading-weight: var(--font-weight-bold);
 
     /* サイズ */
+    --icon-ss: clamp(18px, 2vw, 26px);
+    --icon-s: clamp(22px, 2.5vw, 32px);
+    --icon-m: clamp(32px, 4vw, 44px);
+    --icon-l: clamp(44px, 5vw, 56px);
 
-    --icon-m: clamp(16px, 1.2vw, 20px);
-    --icon-l: clamp(50px, 1.6vw, 60px);
+    --space-xs: clamp(4px, 0.6vw, 8px);
+    --space-s: clamp(8px, 1vw, 12px);
+    --space-m: clamp(12px, 1.4vw, 20px);
+    --space-l: clamp(20px, 2vw, 32px);
+
+
+    --bp-pc: 1024px;
+    --bp-tablet: 768px;
+    --bp-mobile: 480px;
 
     --radius: 10px;
+    --scroll: 12px;
     --oka: 70px;
     --login-padding: 8%;
     --media-m: 700px;
-    --media-s: 300px
+    --media-s: 300px;
+    --header-space: 20px;
 }
 
 

@@ -1,0 +1,292 @@
+/**/
+
+:root {
+    --main: rgb(255, 244, 223);
+    --sora: #71a1d1;
+}
+
+
+
+
+
+body {
+    background-color: var(--sora);
+    overflow: hidden;
+    user-select: none;
+    font-size: clamp( 0.5rem, calc( 0rem + 100vw ), 2rem )
+}
+
+.setumei {
+    font-size: 0.5em;
+    color: #000000;
+    z-index: 2;
+}
+
+
+/* 縦スマホ */
+@media (max-width:600px) {
+    #gamecanvas {
+        width: 130vw;
+        object-fit: cover;
+        position: absolute;
+    }
+
+    .flex {
+        position: relative;
+    }
+
+    #text {
+        position:fixed;
+        left: 50%;
+        top: 15%;
+        transform: translate(-50%, -50%);
+        font-size: 1em;
+        font-weight: bold;
+        max-width: 100%;
+        text-align: center;
+        color: white;
+        z-index: 100;
+        display: block; 
+    }
+
+    .setumeibun h3 {
+        font-size: 2rem;
+        color: #000000
+    }
+
+        .setumeibun p {
+        font-size: 1rem;
+        color: rgb(255, 255, 255);
+        margin: 0 auto;
+        border-radius: 10px;
+        background-color: #cfc9b5e9;
+        padding: 10px 10px;
+    }
+
+    #btn {
+        position: fixed;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1em;
+        font-weight: bold;
+        color: rgb(255, 255, 255);
+        z-index: 100;
+        display: block; 
+    }
+    .setumei {
+        position: absolute;
+        top: 5%;
+        right: 5%;
+        color: white;
+    }
+
+    .title img {
+        width: 30vw; 
+        z-index: 5;
+        position: fixed;
+
+
+    }
+
+    .rule {
+        text-align: center;
+    }
+    .setumei2 {
+        text-align: left;
+
+    }
+
+    .kazari1 {
+        z-index: 3;
+        position: absolute;
+        bottom: 30vh;
+        left: -2vw;
+    }
+
+    .kazari2 {
+        z-index: 4;
+        position: absolute;
+        bottom: 30vh;
+        left: 10vw;
+    }
+
+    .kazari3 {
+        z-index: 5;
+        position: absolute;
+        bottom: 30vh;
+        right: 10vw;
+    }
+
+    .kazari4 {
+        z-index: 4;
+        position: absolute;
+        bottom: 30vh;
+        right: 0vw;
+    }
+
+    .kazari1,
+    .kazari4 {
+        width: 15vw;
+    }
+
+    .kazari2,
+    .kazari3 {
+        width: 10vw;
+    }
+
+    button {
+        font-size: 0.8rem;
+        color: #f0ead4;
+        background-color: rgb(89, 89, 89);
+        padding: 10px 15px;
+        border-radius: 20px;
+        border: none;
+    }
+}
+
+/* 横スマホ */
+@media (min-width:600px) {
+    .flex {
+        width: 100vw;
+        max-height: 100vh;
+        aspect-ratio: 8/5;
+        position: relative;
+    }
+    #gamecanvas {
+        position: absolute;
+        object-fit: contain;
+        width: 100%;
+        /* max-height: 130%; */
+        bottom: 0;
+        left: 0;
+        z-index: -10;
+    }
+
+    #text {
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1em;
+        font-weight: bold;
+        color: rgb(255, 255, 255);
+        z-index: 10;
+        display: block; 
+    }
+
+
+
+    #btn {
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1em;
+        font-weight: bold;
+        color: rgb(255, 255, 255);
+        z-index: 10;
+        display: block; 
+    }
+
+    .setumeibun {
+
+        text-align: center;
+        border-radius: 10px;
+        padding: 10px;
+        
+    }
+    .setumeibun h3 {
+        font-size: 2rem;
+        color: #444444;
+        margin: 5vw 0 10px 0;
+    }
+
+    .setumeibun p {
+        font-size: 1.5rem;
+        padding: 50px;
+        width: 75%;
+        margin: 0 auto;
+        border-radius: 10px;
+        background-color: #cfc9b5e9;
+    }
+
+
+    button {
+        font-size: 1.5rem;
+        color: #f0ead4;
+        background-color: rgb(89, 89, 89);
+        padding: 20px 30px;
+        border-radius: 20px;
+        border: none;
+    }
+
+
+    /* パソコンバージョンで消すために設置 */
+    .setumei,
+    .rule {
+        display: none;
+        height: 0px;
+    }
+
+    .title img{
+        position: fixed;
+        top: 1vw;
+        left: 1vw;
+        width: 22%;
+        transform: rotate(-6deg);
+        z-index: 11;
+    }
+
+    .kazari1 {
+        z-index: 4;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+    .kazari2 {
+        z-index: 5;
+        position: absolute;
+        bottom: 0;
+        left: 10%;
+    }
+
+    .kazari3 {
+        z-index: 5;
+        position: absolute;
+        bottom: 0;
+        right: 10%;
+    }
+
+    .kazari4 {
+        z-index: 4;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
+    .sun {
+        z-index: 5;
+        width: 15vw;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        right: 2vw;
+    }
+
+
+
+    .kazari1,
+    .kazari4 {
+        width: 15vw;
+        object-fit: cover;
+    }
+
+    .kazari2,
+    .kazari3 {
+        width: 9vw;
+        object-fit: cover;
+    }
+
+}

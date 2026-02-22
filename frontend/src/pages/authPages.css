@@ -118,20 +118,7 @@
 
 
 /* Chrome / Edge autofill 対策（全部の状態を押さえる） */
-.authPages input:-webkit-autofill,
-.authPages input:-webkit-autofill:hover,
-.authPages input:-webkit-autofill:focus,
-.authPages input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px var(--login-base-color) inset !important;
-    box-shadow: 0 0 0 1000px var(--login-base-color) inset !important;
 
-    -webkit-text-fill-color: var(--main-text) !important;
-    /* ←文字色も固定 */
-    caret-color: var(--main-text) !important;
-    /* ←カーソル色も */
-    transition: background-color 9999s ease-in-out 0s;
-    /* ←色戻り対策 */
-}
 
 
 

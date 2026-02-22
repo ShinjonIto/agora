@@ -29,8 +29,6 @@ const Sidebar = () => {
     return (
         <aside className="sidebar">
 
-
-
             <NavLink
                 to="/"
                 end

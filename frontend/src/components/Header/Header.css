@@ -1,16 +1,127 @@
 header {
-    background-color: var(--main-color);
+
     height: 100%;
     width: 100vw;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
     height: calc(50px + var(--oka));
+}
+
+.HeaderRoot hgroup {
+    transform: translateY(10px);
 }
 
 header h1 {
     color: var(--header-color);
-    font-size: 2.5rem;
+    font-size: 3.5rem;
+}
+
+.HeaderLogo:hover h1 {
+    transform: scale(1.08);
+    filter: brightness(1.15);
+}
+
+.HeaderLogo:active h1 {
+    filter: brightness(1.25);
+    transform: scale(1.05);
+}
+
+
+
+/* .fx-dot {
+    background: var(--header-color);
+} */
+
+.HeaderLogoFx {
+    /* 色はこの親の color を使う */
+    color: var(--header-color);
+
+    /* 横長リップルのサイズ調整 */
+    --ripple-inset-x: -42px;
+    /* 横を広げるほど“横長” */
+    --ripple-inset-y: -16px;
+    /* 縦は控えめ */
+
+    /* ついでに発火の見栄え */
+    --ripple-start: 0.55;
+    --ripple-scale: 1.6;
+    --ripple-opacity: 0.18;
+}
+
+.HeaderRoot hgroup p {
+    margin: 0;
+    opacity: 0.7;
+    line-height: 1.1;
+    color: var(--main-text);
+}
+
+.HeaderRoot hgroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.logoBtn {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.HeaderRoot {
+    position: relative;
+    /* overflow: hidden; */
+    width: 100vw;
+    height: calc(50px + var(--oka));
+    padding: 0 20px;
+}
+
+/* 文字・アイコンの帯を oka の高さにして、その中で中央寄せ */
+.HeaderRoot .flex {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* transform: translateY(-4px); */
+    height: var(--oka);
+    display: flex;
+    align-items: center;
+    /* ← 縦中央 */
+    justify-content: space-between;
+
+    z-index: 2;
+    /* okaより前 */
+}
+
+.HeaderRoot .flex2 {
+    /* background-color: red; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--header-space);
+}
+
+.HeaderRoot .header-inner {
+    width: 100%;
+    padding: 0 var(--header-space);
+    /* ← 左右だけ20px */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* oka は一番上に固定して背面へ */
+.HeaderRoot .header-oka {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100px;
+    color: var(--main-color);
+    transform: translateY(-1px);
+
+    pointer-events: none;
+    z-index: 1;
 }
 
 
@@ -25,7 +136,6 @@ header .header-oka {
     color: var(--base-color);
     display: block;
     width: 100%;
-    height: var(--oka);
     /* animation: okaWave 6s ease-in-out infinite; */
 
     /* しんじょん編集 */
@@ -53,9 +163,7 @@ header .header-oka {
 
 header .flex {
     display: flex;
-    height: 50px;
-    align-items: center;
-    justify-content: space-around;
+
 }
 
 header .icon {
@@ -65,6 +173,14 @@ header .icon {
     height: 100%;
 }
 
+.aside_icon {
+    width: var(--icon-ss);
+    height: var(--icon-ss);
+    flex: 0 0 var(--icon-ss);
+
+    min-width: 24px;
+    min-height: 24px;
+}
 
 /* Header.css */
 header .HeaderModal {
@@ -73,7 +189,7 @@ header .HeaderModal {
     transform: translateY(-3px);
     /* アイコンの下に出す */
     right: 0;
-    width: 200px;
+    min-width: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -87,4 +203,40 @@ header .HeaderModal {
     padding: 20px;
 
     z-index: 1000;
+}
+
+/* Bellボタン */
+.bellBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    display: grid;
+    place-items: center;
+    padding: 6px;
+    border-radius: 999px;
+    transition: transform 0.2s, filter 0.2s;
+}
+
+/* hoverで“生きる” */
+.bellBtn:hover {
+    transform: scale(1.08);
+    filter: brightness(1.08);
+}
+
+/* クリック時 */
+.bellBtn:active {
+    transform: scale(0.92);
+}
+
+/* 未読バッジ */
+.bellBadge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--accent-color);
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 999px;
 }

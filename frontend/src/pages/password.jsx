@@ -33,9 +33,12 @@ const Password = () => {
         <div className="authPages">
 
 
-            <Link to="/login" >
-                ✕
-            </Link>
+            {/* ✕ボタン */}
+            <div className="batu">
+                <Link to="/login" >
+                    ×
+                </Link>
+            </div>
 
             <h1>パスワードを変更する</h1>
 
@@ -47,6 +50,7 @@ const Password = () => {
                     error={errors.student_number}
                     onChange={handleChange}
                 />
+
                 <button>変更</button>
 
             </form>

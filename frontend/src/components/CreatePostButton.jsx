@@ -3,21 +3,35 @@ import { useNavigate } from "react-router-dom";
 import "./CreatePostButton.css";
 // 画像
 import Create from "@/assets/images/icon/create.svg?react";
+// エフェクト
+import { useFxKey } from "@/hooks/useFxKey";
+import Ripple from "@/components/effects/Ripple";
+import Burst from "@/components/effects/Burst";
 const CreatePostButton = () => {
     const navigate = useNavigate();
-
+    const { fxKey, showFx, triggerFx } = useFxKey();
     // クリックされたら記事作成画面へ
     const handleClick = () => {
         navigate("/posts/create");
     };
 
     return (
-        // <button >
-        //     記事を作成
-        // </button>
+        <div className="createPostButton">
+            <button
+                className="likeBtn"
+                onClick={() => {
+                    triggerFx(600);
+                    setTimeout(() => navigate("/posts/create"), 80);
+                }}>
+                {showFx && (
 
-        <Create onClick={handleClick} className="create icon" />
+                    <Ripple fxKey={fxKey} />
 
+
+                )}
+                <Create className="create fx-foreground" />
+            </button>
+        </div>
 
     )
 }

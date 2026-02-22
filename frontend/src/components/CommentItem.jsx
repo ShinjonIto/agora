@@ -9,6 +9,12 @@ import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import axiosPrivate from "@/api/axiosPrivate";
 import { useCommentQuillModules, commentFormats } from "@/utils/commentQuillConfig";
+
+import { useFxKey } from "@/hooks/useFxKey";
+import Ripple from "@/components/effects/Ripple";
+import Burst from "@/components/effects/Burst";
+
+
 import "./commentItem.css"
 
 // 日付
@@ -38,7 +44,7 @@ const CommentItem = ({
     const [isEditing, setIsEditing] = useState(false);
     const [editContent, setEditContent] = useState(comment.content);
     const quillRef = useRef(null);
-
+    const { fxKey, showFx, triggerFx } = useFxKey();
 
     // 画像アップロード
     const imageHandler = useCallback(() => {
@@ -102,30 +108,52 @@ const CommentItem = ({
     };
 
 
+
+
     return (
         <div className="commentItem click_area">
             <div className="dai_flex">
                 <div className="syo_flex">
                     {/* コメントアイコン */}
-                    <UserProfile
-                        user={{
-                            icon_image: comment.comment_author_icon,
-                            id: comment.comment_author_id
-                        }}
-                        onClick={(e) => {
-                            e.stopPropagation(); // 親のクリックイベントを止める
-                            navigate(`/mypage/${comment.comment_author_id}`);
-                        }}
-                    />
+                    <div className="icon-ss">
+                        <UserProfile
+                            user={{
+                                icon_image: comment.comment_author_icon,
+                                id: comment.comment_author_id
+                            }}
+                            onClick={(e) => {
+                                e.stopPropagation(); // 親のクリックイベントを止める
+                                navigate(`/mypage/${comment.comment_author_id}`);
+                            }}
+                        />
+                    </div>
 
                     {/* ユーザー名 */}
                     <p>{comment.comment_author_name}</p>
 
                     {/* 作成日時 */}
                     <p>{formatCommentDate(comment.created_at)}</p>
+
                 </div>
 
-
+                <div onClick={(e) => e.stopPropagation()}>
+                    <MenuButton
+                        type="comment"
+                        targetId={comment.comment_id}
+                        ownerId={comment.user}
+                        currentUserId={currentUserId}
+                        setIsMenuOpen={setIsMenuOpen}
+                        handlers={{
+                            // 編集押されたら
+                            onEdit: () => setIsEditing(true),
+                            onDelete: handleDelete,
+                            onReport: openReportModal,
+                            onFollow: handleFollow,
+                            isFollowed: comment.is_followed,
+                            isReported: comment.is_reported,
+                        }}
+                    />
+                </div>
             </div>
 
             {/* リッチテキスト表示・編集ボタン押されたらフォームに切り替え */}
@@ -161,11 +189,33 @@ const CommentItem = ({
             </div>
 
             <div className="comment_flex">
-                <button
+                {/* <button
                     onClick={(e) => { e.stopPropagation(); handleLike(comment.comment_id); }}
                     className={`icon_flex ${comment.liked ? "red" : "gray"}`}
                 >
                     <Heart />
+                    <span>{comment.like_count}</span>
+                </button> */}
+
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+
+                        // 未いいね → いいね の時だけ発火（redになる瞬間だけ）
+                        if (!comment.liked) triggerFx(450);
+
+                        handleLike(comment.comment_id);
+                    }}
+                    className={`icon_flex likeBtn ${comment.liked ? "red" : "gray"}`}
+                    style={{
+                        "--ripple-inset": "-10px",
+                        "--ripple-scale": "1.2",
+                        "--ripple-opacity": "0.18",
+                    }}
+                >
+                    {showFx && <><Ripple fxKey={fxKey} /><Burst fxKey={fxKey} spread={34} size={4} duration={520} /></>}
+
+                    <Heart className="fx-foreground" />
                     <span>{comment.like_count}</span>
                 </button>
 
@@ -173,34 +223,17 @@ const CommentItem = ({
                 {comment.parent_comment === null && (
                     <button
                         onClick={(e) => { e.stopPropagation(); onReplyClick(comment); }}
-                        className="icon_flex"
+                        className="icon_flex icon"
 
                     >
-                        <CommentIcon />
+                        <CommentIcon className="icon" />
                         <span>返信</span>
                     </button>
 
 
                 )}
 
-                <div onClick={(e) => e.stopPropagation()}>
-                    <MenuButton
-                        type="comment"
-                        targetId={comment.comment_id}
-                        ownerId={comment.user}
-                        currentUserId={currentUserId}
-                        setIsMenuOpen={setIsMenuOpen}
-                        handlers={{
-                            // 編集押されたら
-                            onEdit: () => setIsEditing(true),
-                            onDelete: handleDelete,
-                            onReport: openReportModal,
-                            onFollow: handleFollow,
-                            isFollowed: comment.is_followed,
-                            isReported: comment.is_reported,
-                        }}
-                    />
-                </div>
+
             </div>
         </div>
     );

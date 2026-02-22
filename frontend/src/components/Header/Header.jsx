@@ -3,22 +3,35 @@ import { useNavigate, Link } from "react-router-dom";
 import UserProfile from "../UserProfile";
 import LogoutButton from "../LogoutButton";
 import axiosPrivate from "@/api/axiosPrivate";
-
 import "./Header.css";
 import HeaderOka from "@/assets/images/header/header_oka.svg?react";
+import Bell from "@/assets/images/icon/bell.svg?react"
+
+// エフェクト
+import { useFxKey } from "@/hooks/useFxKey";
+import Ripple from "@/components/effects/Ripple";
+import Burst from "@/components/effects/Burst";
 
 const Header = ({ user }) => {
     const navigate = useNavigate();
-    const currentUserId = user.id;
+    const isAuthed = !!user?.id;
+    const currentUserId = user?.id;
 
     const [showMenu, setShowMenu] = useState(false);
     const [unread, setUnread] = useState(false);
+    const [unreadCount, setUnreadCount] = useState(0);
+    const logoFx = useFxKey();
+    const bellFx = useFxKey();
     const [unreadCount, setUnreadCount] = useState(0); 
     const [keyword, setKeyword] = useState("");
 
 
     // ロゴ
-    const handleLogoClick = () => navigate("/");
+    const handleLogoClick = (e) => {
+        e.stopPropagation();
+        logoFx.triggerFx(500);
+        setTimeout(() => navigate("/"), 80);
+    };
 
     // メニュー開閉
     const toggleMenu = (e) => {
@@ -45,6 +58,7 @@ const Header = ({ user }) => {
 
     // 未読通知
     useEffect(() => {
+        if (!isAuthed) return;
         const fetchUnread = async () => {
             try {
                 const res = await axiosPrivate.get("/api/notifications/unread/");
@@ -59,7 +73,7 @@ const Header = ({ user }) => {
         const interval = setInterval(fetchUnread, 30000);
         // ページを離れたらタイマーを止める
         return () => clearInterval(interval);
-    }, []);
+    }, [isAuthed]);
 
 
 
@@ -73,63 +87,97 @@ const Header = ({ user }) => {
 
 
     return (
-        <header>
+        <header className="HeaderRoot">
             <div className="flex">
-                <div onClick={handleLogoClick}>
-                    <hgroup>
-                        <p>MIEコミュニティサイト</p>
-                        <h1>AGORA</h1>
-                    </hgroup>
-                </div>
+                <div className="header-inner">
+                    <div onClick={handleLogoClick}>
+                        <hgroup className="HeaderLogo fxBtn HeaderLogoFx">
+                            {logoFx.showFx && (
+                                <>
 
-                {/* 検索フォーム */}
-                <form className="header-search" onSubmit={handleSearch}>
-                    <input
-                        type="text"
-                        placeholder="検索"
-                        value={keyword}
-                        onChange={(e) => setKeyword(e.target.value)}
-                    />
-                    <button type="submit">検索</button>
-                </form>
+                                    <Burst fxKey={logoFx.fxKey} spread={42} size={5} />
+                                </>
+                            )}
+                            <p>MIEコミュニティサイト</p>
+                            <h1 className="fx-foreground">AGORA</h1>
+                        </hgroup>
+                    </div>
 
-                <div onClick={handleNotificationClick}>
-                    通知
-                    {/* 通知数表示 */}
-                    {unreadCount > 0 && (
-                        <span>
-                            {unreadCount}
-                        </span>
-                    )}
-                </div>
 
-                <div className="icon" onClick={toggleMenu}>
-                    <UserProfile user={user} />
+                    {/* 検索フォーム */}
+                    <form className="header-search" onSubmit={handleSearch}>
+                      <input
+                          type="text"
+                          placeholder="検索"
+                          value={keyword}
+                          onChange={(e) => setKeyword(e.target.value)}
+                      />
+                      <button type="submit">検索</button>
+                    </form>
 
-                    {showMenu && (
-                        <div
-                            className="HeaderModal"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <Link
-                                to={`/mypage/${currentUserId}`}
-                                className="HeaderModalLink"
-                                onClick={() => setShowMenu(false)}
+
+
+                    {/* <div onClick={handleNotificationClick}>
+                        <Bell className="icon-m" />
+                        通知数表示
+                        {unreadCount > 0 && (
+                            <span>
+                                {unreadCount}
+                            </span>
+                        )}
+                    </div> */}
+                    {isAuthed ? (
+                        <div className="flex2">
+                            <button
+                                className="fxBtn bellBtn"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    bellFx.triggerFx(600);
+                                    setTimeout(() => handleNotificationClick(e), 80);
+                                }}
+                                type="button"
                             >
-                                マイページ
-                            </Link>
-                            <LogoutButton />
-                            <Link
-                                to="/about"
-                                className="HeaderModalLink"
-                                onClick={() => setShowMenu(false)}
-                            >
-                                このサイトについて
-                            </Link>
+                                {bellFx.showFx && (
+                                    <>
+                                        <Ripple fxKey={bellFx.fxKey} />
+                                    </>
+                                )}
+
+                                <Bell className="icon-s fx-foreground" />
+
+                                {unreadCount > 0 && (
+                                    <span className="bellBadge">{unreadCount}</span>
+                                )}
+                            </button>
+
+                            <div className="icon-s" onClick={toggleMenu}>
+                                <UserProfile user={user} />
+
+                                {showMenu && (
+                                    <div
+                                        className="HeaderModal"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <Link
+                                            to={`/mypage/${currentUserId}`}
+                                            className="HeaderModalLink"
+                                            onClick={() => setShowMenu(false)}
+                                        >
+                                            マイページ
+                                        </Link>
+                                        <LogoutButton />
+                                        <Link
+                                           to="/about"
+                                           className="HeaderModalLink"
+                                           onClick={() => setShowMenu(false)}
+                                         >
+                                            このサイトについて
+                                         </Link>   
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    )}
-                </div>
-            </div>
+  
 
             <HeaderOka className="header-oka" preserveAspectRatio="none" />
         </header>

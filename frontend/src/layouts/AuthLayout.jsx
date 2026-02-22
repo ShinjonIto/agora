@@ -1,14 +1,12 @@
 import { Outlet, useLocation } from "react-router-dom";
 import "./AuthLayout.css";
 import Header from "@/components/Header/Header";
-import LoginHeader from "@/components/Header/LoginHeader";
-
-
+import { useAuth } from "@/contexts/AuthContext";
 import Sakaki from "@/assets/images/account/sakaki.png";
 
 export default function AuthLayout() {
     const location = useLocation();
-
+    const { user } = useAuth();
     const getTitle = () => {
         switch (location.pathname) {
             case "/login":
@@ -26,7 +24,9 @@ export default function AuthLayout() {
     }
     return (
         <div className="Authlayout">
-            <LoginHeader className="loginHeader" />
+            <div className="header">
+                <Header user={user} />
+            </div>
             <div className="authShell">
                 <h2>{getTitle()}</h2>
                 <div className="authCard">
@@ -34,7 +34,7 @@ export default function AuthLayout() {
                 </div>
             </div>
 
-            <img src={Sakaki} className="sakaki" />
+            {/* <img src={Sakaki} className="sakaki" /> */}
         </div >
 
     );

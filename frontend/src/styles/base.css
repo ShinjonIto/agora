@@ -1,5 +1,6 @@
 HTML {
     font-size: clamp(14px, 1vw, 30px);
+
 }
 
 /* @supports (scrollbar-gutter: stable) {
@@ -11,15 +12,23 @@ HTML {
 
 * {
     letter-spacing: 0.1rem;
-    transition: 0.3s;
 }
 
 
 body {
     font-family: var(--font-body);
     font-weight: var(--font-body-weight);
-    background-color: var(--base-color);
+
     color: var(--main-text);
+    background-image:
+        linear-gradient(rgb(from var(--base-color) r g b / var(--toumei)),
+            rgb(from var(--base-color) r g b / var(--toumei))),
+        url("/paper.jpg");
+
+    background-repeat: repeat;
+    background-size: 600px auto;
+
+
 }
 
 
@@ -46,7 +55,7 @@ select {
     border: 2px solid rgba(0, 0, 0, 0.18);
     border-radius: 18px;
 
-    padding: 10px 38px 10px 14px;
+    padding: 10px 14px 10px 14px;
     /* 右に矢印分の余白 */
     cursor: pointer;
 
@@ -55,10 +64,13 @@ select {
 }
 
 .click_button {
-    width: 50px;
+    width: var(--icon-m);
+    height: var(--icon-m);
+    padding: var(--space-s);
     aspect-ratio: 1/1;
+    flex: 0 0 var(--icon-m);
     border-radius: 100%;
-
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,12 +81,63 @@ select {
     border-radius: 10px;
 }
 
+/* .click_button:hover {
+    background-color: rgba(157, 157, 157, 0.251);
+} */
+
 .click_button:hover {
+    transform: scale(1.09);
+    filter: brightness(1.09);
     background-color: rgba(157, 157, 157, 0.251);
 }
 
 .click_area:hover {
     background-color: rgb(246, 246, 246);
+}
+
+.icon {
+    width: var(--icon-ss);
+    height: var(--icon-ss);
+    flex: 0 0 var(--icon-ss);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-s {
+    width: var(--icon-s);
+    height: var(--icon-s);
+    flex: 0 0 var(--icon-s);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-m {
+    width: var(--icon-m);
+    height: var(--icon-m);
+    flex: 0 0 var(--icon-m);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-l {
+    width: var(--icon-l);
+    height: var(--icon-l);
+    flex: 0 0 var(--icon-l);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon>svg,
+.icon-s>svg,
+.icon-m>svg,
+.icon-l>svg {
+    inline-size: 100%;
+    block-size: 100%;
+    display: block;
 }
 
 /* フォーカス時の「黒い線」を置き換える */
@@ -110,9 +173,11 @@ select {
     opacity: 0.7;
 } */
 
+
 ::-webkit-scrollbar {
-    width: 12px;
-    /* 横幅 */
+    width: var(--scrollbar);
+    height: var(--scrollbar);
+    /* ★追加：横スクロールバーの高さも統一 */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -124,4 +189,108 @@ select {
 ::-webkit-scrollbar-track {
     background: #ffffff5b;
     /* 背景色 */
+}
+
+
+/* エフェクトの設定 */
+
+/* 波紋の共通ベース */
+.fx-ripple {
+    position: absolute;
+    inset: var(--ripple-inset-y, -10px) var(--ripple-inset-x, -10px);
+    /* サイズ調整ポイント① */
+    border-radius: 999px;
+    pointer-events: none;
+    z-index: 1;
+
+    background: currentColor;
+    /* ボタンの color に連動 */
+    opacity: 0;
+    transform: scale(0.2);
+    animation: fx-ripple 420ms ease-out;
+}
+
+/* 波紋アニメ */
+@keyframes fx-ripple {
+    0% {
+        opacity: var(--ripple-opacity, 0.22);
+        transform: scale(0.25);
+    }
+
+    70% {
+        opacity: calc(var(--ripple-opacity, 0.22) * 0.45);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(var(--ripple-scale, 1.2));
+    }
+
+    /* サイズ調整ポイント② */
+}
+
+/* ハートなど“前面”にしたいアイコン用（必要なら） */
+.fx-foreground {
+    position: relative;
+    z-index: 2;
+}
+
+/* 粒のコンテナ（ボタン内で absolute される想定） */
+.fx-burst {
+    position: absolute;
+    inset: 0;
+    /* ボタンの範囲に合わせる */
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 粒1つ */
+.fx-dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--ds, 4px);
+    height: var(--ds, 4px);
+    border-radius: 999px;
+
+    background: currentColor;
+    /* ハートが赤なら粒も赤 */
+    opacity: 0;
+
+    transform: translate(-50%, -50%) scale(0.6);
+    animation: fx-dot var(--fx-duration, 520ms) ease-out forwards;
+    animation-delay: var(--dd, 0ms);
+
+    /* グローバル transition の影響を切る */
+    transition: none !important;
+}
+
+/* 粒アニメーション：中心→外へ */
+@keyframes fx-dot {
+    0% {
+        opacity: 0.95;
+        transform: translate(-50%, -50%) scale(0.7);
+        filter: blur(0px);
+    }
+
+    70% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.9);
+        filter: blur(0.4px);
+    }
+}
+
+/* 前面にしたいアイコン用（既にあるならOK） */
+.fx-foreground {
+    position: relative;
+    z-index: 2;
+}
+
+.likeBtn {
+    position: relative;
+    overflow: visible;
 }
