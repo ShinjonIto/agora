@@ -1,3 +1,5 @@
+
+/* デフォルト */
 :root {
     /* カラー */
     /* --main-color: #FFF7E4;
@@ -13,7 +15,7 @@
     --button-color: #c1c1c182; */
 
 
-    /* --main-color: #efefef;
+    --main-color: #efefef;
     --main-sub-color: #efefef;
     --base-color: #efefef;
     --accent-color: #6295CC;
@@ -22,18 +24,9 @@
     --main-white: #ffffff;
     --main-text: #537293;
     --main-shadow: #6295CC;
-    --button-color: #537293; */
+    --button-color: #537293;
 
-    --main-color: #A3C8DB;
-    --main-sub-color: #A3C8DB;
-    --base-color: #FFF7E4;
-    --accent-color: #027ACA;
-    --accent-sub-color: #FF7272;
-    --main-black: #000000;
-    --main-white: #ffffff;
-    --main-text: #537293;
-    --main-shadow: #A3C8DB;
-    --button-color: #e4e4e4;
+
 
 
 
@@ -45,12 +38,9 @@
     --login-accent-sub-color: #6295CC; */
 
 
-    /* --login-base-color: #efefef;
+    --login-base-color: #efefef;
     --login-accent-color: #efefef;
-    --login-accent-sub-color: #6295CC; */
-
-    --login-base-color: #FFF7E4;
-    --login-accent-color: #A3C8DB;
+    --login-accent-sub-color: #6295CC;
 
 
     /* --login-base-color: #FCF2EB;
@@ -82,4 +72,24 @@
     --login-padding: 8%;
     --media-m: 700px;
     --media-s: 300px
+}
+
+
+/* 夏 */
+/* ThemeChangeの名前と一致させる */
+[data-theme="summer"] {
+    --main-color: #A3C8DB;
+    --main-sub-color: #A3C8DB;
+    --base-color: #FFF7E4;
+    --accent-color: #027ACA;
+    --accent-sub-color: #FF7272;
+    --main-black: #000000;
+    --main-white: #ffffff;
+    --main-text: #537293;
+    --main-shadow: #A3C8DB;
+    --button-color: #e4e4e4;
+
+
+    --login-base-color: #FFF7E4;
+    --login-accent-color: #A3C8DB;
 }

@@ -17,32 +17,36 @@ class SignupSerializer(serializers.ModelSerializer):
                     "password", "confirm_password"]
 
     def validate(self, data):
+        student_number = data["student_number"]
+        email = data["email"]
+
         # パスワード確認
         if data["password"] != data["confirm_password"]:
-            raise serializers.ValidationError("パスワードが一致しません")
+            raise serializers.ValidationError({"confirm_password": "パスワードが一致しません"})
         
-        student_number = data["student_number"]
+        # 学生番号管理テーブルに存在しているか、削除されていないか確認
+        if not Student_management.objects.filter(student_number=student_number, is_deleted=False).exists():
+            raise serializers.ValidationError({"student_number": "この学生番号は登録できません"})
 
-        # 学生番号管理テーブルに存在しているか、削除されていないか
-        student = Student_management.objects.filter(
-            student_number=student_number, is_deleted=False
-        ).first()
-        if not student:
-            raise serializers.ValidationError("この学生番号は登録できません")
+        # 学生番号が既に登録されていないか
+        if User.objects.filter(student_number=student_number, is_deleted=False).exists():
+            raise serializers.ValidationError({"student_number": "この学生番号は登録できません"})
 
-        # すでに User に登録されていないか、停止中でないか
-        existing_user = User.objects.filter(student_number=student_number, is_deleted=False).first()
-        if existing_user:
-            if existing_user.is_stopped:
-                raise serializers.ValidationError("この学生番号は停止中のため登録できません")
-            else:
-                raise serializers.ValidationError("この学生番号はすでに登録済みです")
-        
+        # メールアドレスが既に登録されていないか
+        if User.objects.filter(email=email, is_deleted=False).exists():
+            raise serializers.ValidationError({"email": "このメールアドレスは登録できません"})
+
+        # パスワード強度チェック
+        try:
+            password_validation.validate_password(data["password"])
+        except Exception as e:
+            raise serializers.ValidationError({"password": list(e.messages)})
+
         return data
 
     def create(self, validated_data):
         validated_data.pop("confirm_password")
-        
+
         user = User.objects.create_user(
             username=str(validated_data["student_number"]),
             student_number=validated_data["student_number"],
@@ -51,7 +55,6 @@ class SignupSerializer(serializers.ModelSerializer):
             password=validated_data["password"],
         )
         return user
-    
     
 
 
@@ -270,6 +273,8 @@ class AdminAddSerializer(serializers.ModelSerializer):
             is_deleted=False
         ).exists():
             raise serializers.ValidationError("この学生番号は既に登録されています")
+        if not str(value).isdigit() or len(str(value)) <= 5:
+            raise serializers.ValidationError("学生番号は5桁以上の数字である必要があります")
         return value
 
     def create(self, validated_data):

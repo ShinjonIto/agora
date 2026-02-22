@@ -23,10 +23,19 @@ import NotificationList from "./pages/NotificationList"
 import DeleteAccount from "./pages/DeleteAccount"
 import SearchResult from "./components/SearchResult";
 import About from "./pages/About";
+import { useEffect } from "react";
+import { loadTheme } from "./theme/theme";
+import ThemeChange from "./pages/ThemeChange";
 
 
 
 function App() {
+
+  // モード維持
+  useEffect(() => {
+    loadTheme();
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -64,6 +73,9 @@ function App() {
           {/* 検索 */}
           <Route path="search" element={<SearchResult />} />
 
+          {/* テーマ変更 */}
+          <Route path="/theme_change" element={<ThemeChange />} />
+
           {/* 記事詳細 */}
           <Route path="posts/:postId" element={<PostDetail />} />
 
@@ -81,8 +93,6 @@ function App() {
 
           {/* パスワード変更 */}
           <Route path="/settings/:userId/password" element={<PasswordChange />} />
-
-
 
           {/* 管理画面 */}
           <Route path="/managements" element={<AdminDashboard />}>

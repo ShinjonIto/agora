@@ -7,6 +7,7 @@ import "./Sidebar.css";
 import { useEffect, useState } from "react";
 import axiosPrivate from "@/api/axiosPrivate";
 
+
 const Sidebar = () => {
     const [user, setUser] = useState(null);
 
@@ -69,6 +70,15 @@ const Sidebar = () => {
             >
                 <Bike className="aside_icon" />
                 <span>スポーツバイシクル学科</span>
+            </NavLink>
+
+            <NavLink
+                to="/theme_change"
+                className={({ isActive }) =>
+                    `aside_button ${isActive ? "active" : ""}`
+                }
+            >
+                <span>テーマ変更</span>
             </NavLink>
 
 

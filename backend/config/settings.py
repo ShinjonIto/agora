@@ -126,6 +126,15 @@ DATABASES = {
 }
 
 
+
+# 正しいクライアントIPを取得する
+USE_X_FORWARDED_HOST = True
+AXES_META_PRECEDENCE_ORDER = [
+    'HTTP_X_FORWARDED_FOR',
+    'REMOTE_ADDR',
+]
+
+
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
