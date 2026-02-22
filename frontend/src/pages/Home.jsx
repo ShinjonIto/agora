@@ -8,11 +8,6 @@ import Flower from "@/assets/images/deco/flower.svg?react";
 // import usePostAction from "@/hooks/usePostActions";
 
 const Home = () => {
-    // const { dept } = useParams();
-
-    // ⭐ ページごとにscroll保存
-    // const usePostActions = useScrollRestoration(`home:${dept || "all"}`);
-
     return (
         <MainLayout>
 

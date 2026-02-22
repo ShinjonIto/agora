@@ -40,6 +40,9 @@ const StudentNumberDelete = () => {
 
         <h3>学生番号一括削除</h3>
 
+        <p>削除したい学生番号の範囲を入力してください。<br />
+            登録された範囲の学生は会員登録・ログインができなくなります。</p>
+
         <div style={{ marginBottom: "10px" }}>
             <label>
             開始番号:{" "}

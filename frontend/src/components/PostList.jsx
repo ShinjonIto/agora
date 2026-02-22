@@ -18,7 +18,7 @@ const PostList = () => {
     const [loading, setLoading] = useState(true);
     const { dept } = useParams();
     const [sortType, setSortType] = useState("new");
-    const [error, setError] = useState(null);
+    const [error, setError] = useState("");
     const currentUserId = localStorage.getItem("userId");
 
     // フックからロジック取得
@@ -114,6 +114,7 @@ const PostList = () => {
                     />
                 ))}
             </div>
+            {error && <p className="error">{error}</p>}
         </div>
     );
 };

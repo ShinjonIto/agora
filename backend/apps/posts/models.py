@@ -40,6 +40,6 @@ class PostLike(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
-        unique_together = ('post_id', 'user_id')    # 同じ記事にいいねは一回しかできないように
+        unique_together = ('post', 'user')    # 同じ記事にいいねは一回しかできないように
     
     

@@ -24,13 +24,27 @@ import NotificationList from "./pages/NotificationList"
 import DeleteAccount from "./pages/DeleteAccount"
 import { useOffline } from "@/state/OfflineContext";
 import OfflineGameOverlay from "@/components/OfflineGameOverlay";
+import SearchResult from "./components/SearchResult";
+import About from "./pages/About";
+import { useEffect } from "react";
+import { loadTheme } from "./theme/theme";
+import ThemeChange from "./pages/ThemeChange";
+
 
 
 function App() {
+  
   const { offlineOpen, closeOffline } = useOffline();
   const retry = () => {
     window.location.reload();
   };
+
+  // モード維持
+  useEffect(() => {
+    loadTheme();
+  }, []);
+
+
   return (
     <>
       <BrowserRouter>
@@ -46,7 +60,16 @@ function App() {
             <Route path="/password" element={<Password />} />
           </Route>
 
+        {/* {ログイン前} */}
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<Login />} />
+          {/* 会員登録 */}
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/password" element={<Password />} />
 
+          {/* このサイトについて */}
+          <Route path="/about" element={<About />} />
+        </Route>
 
           {/* ログイン後の処理 */}
           <Route
@@ -63,19 +86,23 @@ function App() {
             {/* 学科別一覧 */}
             <Route path="department/:dept" element={<PostList />} />
 
-            {/* 記事詳細 */}
-            <Route path="posts/:postId" element={<PostDetail />} />
-
             {/* 記事作成 */}
             <Route path="posts/create" element={<CreatePost />} />
+              
+            {/* 検索 */}
+            <Route path="search" element={<SearchResult />} />
+
+            {/* テーマ変更 */}
+            <Route path="/theme_change" element={<ThemeChange />} />
+
+            {/* 記事詳細 */}
+            <Route path="posts/:postId" element={<PostDetail />} />
 
             {/* 記事編集 */}
             <Route path="posts/edit/:post_id" element={<EditPost />} />
 
             {/* マイページ */}
             <Route path="mypage/:userId" element={<MyPage />} />
-
-
 
 
 
@@ -97,12 +124,6 @@ function App() {
               <Route path="admin" element={<AdminList />} />
               <Route path="admin/add" element={<AdminAdd />} />
             </Route>
-
-
-
-
-
-
 
 
           </Route>

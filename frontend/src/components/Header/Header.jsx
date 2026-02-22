@@ -22,6 +22,10 @@ const Header = ({ user }) => {
     const [unreadCount, setUnreadCount] = useState(0);
     const logoFx = useFxKey();
     const bellFx = useFxKey();
+    const [unreadCount, setUnreadCount] = useState(0); 
+    const [keyword, setKeyword] = useState("");
+
+
     // ロゴ
     const handleLogoClick = (e) => {
         e.stopPropagation();
@@ -43,6 +47,13 @@ const Header = ({ user }) => {
     }, []);
 
 
+    // 検索
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!keyword.trim()) return;
+
+        navigate(`/search?keyword=${encodeURIComponent(keyword)}`);
+    };
 
 
     // 未読通知
@@ -58,8 +69,8 @@ const Header = ({ user }) => {
         };
         fetchUnread(); // 初回読み込み時
 
-        // 5秒ごとに通知があるか確認
-        const interval = setInterval(fetchUnread, 5000);
+        // 30秒ごとに通知があるか確認
+        const interval = setInterval(fetchUnread, 30000);
         // ページを離れたらタイマーを止める
         return () => clearInterval(interval);
     }, [isAuthed]);
@@ -91,6 +102,18 @@ const Header = ({ user }) => {
                             <h1 className="fx-foreground">AGORA</h1>
                         </hgroup>
                     </div>
+
+
+                    {/* 検索フォーム */}
+                    <form className="header-search" onSubmit={handleSearch}>
+                      <input
+                          type="text"
+                          placeholder="検索"
+                          value={keyword}
+                          onChange={(e) => setKeyword(e.target.value)}
+                      />
+                      <button type="submit">検索</button>
+                    </form>
 
 
 
@@ -143,18 +166,18 @@ const Header = ({ user }) => {
                                             マイページ
                                         </Link>
                                         <LogoutButton />
-                                        <Link>このサイトについて</Link>
+                                        <Link
+                                           to="/about"
+                                           className="HeaderModalLink"
+                                           onClick={() => setShowMenu(false)}
+                                         >
+                                            このサイトについて
+                                         </Link>   
                                     </div>
                                 )}
                             </div>
                         </div>
-                    ) : (
-                        <div className="flex2">
-                            <Link to="#">このサイトについて</Link>
-                        </div>
-                    )}
-                </div>
-            </div>
+  
 
             <HeaderOka className="header-oka" preserveAspectRatio="none" />
         </header>

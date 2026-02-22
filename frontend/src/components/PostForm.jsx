@@ -90,7 +90,6 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
                 res = await axiosPrivate.post("/api/posts/create/", postData);
             }
 
-            console.log(isEdit ? "更新成功:" : "投稿成功:", res.data);
 
             // 成功時、新規投稿ならリセット（編集ならリセットしなくてOK）
             if (!isEdit) {
@@ -103,9 +102,8 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
 
 
         } catch (err) {
-            console.error("投稿エラーの詳細:", err.response?.data || err.message);
             // サーバーからの具体的なエラーメッセージがあれば表示
-            const serverMsg = err.response?.data?.detail || "投稿に失敗しました";
+            const serverMsg = err.response?.data?.error || err.response?.data?.detail || "投稿に失敗しました";
             setError(serverMsg);
         } finally {
             setLoading(false);
