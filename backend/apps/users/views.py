@@ -31,7 +31,7 @@ class LoginAPIView(ObtainAuthToken):
         # 停止中または削除済みのユーザーはログイン不可
         if getattr(user, "is_stopped", False) or getattr(user, "is_deleted", False):
             return Response(
-                {"detail": "このアカウントは停止中または削除済みのためログインできません"},
+                {"detail": "ユーザー名またはパスワードが正しくありません"},
                 status=status.HTTP_403_FORBIDDEN
             )
 

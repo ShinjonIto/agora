@@ -36,6 +36,7 @@ const Login = () => {
 
 
     
+    // ログイン処理
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitErrors("");
@@ -63,11 +64,11 @@ const Login = () => {
         } catch (err) {
             console.error(err);
 
-            // ここを変更：バックエンドからの detail メッセージを表示
+            // バックエンドからの detail メッセージを表示
             if (err.response && err.response.data && err.response.data.detail) {
                 setSubmitErrors(err.response.data.detail);
             } else {
-                setSubmitErrors("ログインに失敗しました");
+                setSubmitErrors("ユーザー名またはパスワードが正しくありません");
             }
         }
     };
