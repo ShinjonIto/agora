@@ -11,7 +11,7 @@ from apps.users.models import User
 
 
 class CommentAPIView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, post_id):
         # 記事取得
@@ -62,6 +62,12 @@ class CommentLikeAPIView(APIView):
         })
         
         
+
+# ModerationAPIでバリデーションチェック
+import requests
+from django.conf import settings
+from django.core.cache import cache
+import hashlib        
 # コメント作成
 class CommentCreateAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -80,6 +86,48 @@ class CommentCreateAPIView(APIView):
         if not content:
             return Response({"error" : "コメントを入力してください"}, status=status.HTTP_400_BAD_REQUEST)
         
+        # ここからModerationAPIバリデーション
+        # キャッシュキー作成
+        cache_key = "moderation_comment_" + hashlib.sha256(
+            content.encode()
+        ).hexdigest()
+
+        cached_flag = cache.get(cache_key)
+
+        if cached_flag is not None:
+            flagged = cached_flag
+        else:
+            flagged = False
+            try:
+                response = requests.post(
+                    "https://api.openai.com/v1/moderations",
+                    headers={
+                        "Authorization": f"Bearer {settings.OPENAI_API_KEY}"
+                    },
+                    json={
+                        "model": "omni-moderation-latest",
+                        "input": content
+                    },
+                    timeout=5
+                )
+
+                response.raise_for_status()
+                moderation_result = response.json()
+                flagged = moderation_result["results"][0]["flagged"]
+
+                # 5分キャッシュ
+                cache.set(cache_key, flagged, timeout=60 * 5)
+
+            except Exception:
+                flagged = False
+
+        if flagged:
+            return Response(
+                {"error": "AIチェックの結果：不適切な内容が含まれているため投稿できません。"},
+                status=400
+            )
+
+        
         # 親コメントある場合取得
         parent_comment = None
         if parent_comment_id:
@@ -92,6 +140,9 @@ class CommentCreateAPIView(APIView):
         
         serializer = CommentSerializer(comment, context={"request": request})
         return Response(serializer.data, status=201)
+    
+    
+    
     
     
 # 削除
