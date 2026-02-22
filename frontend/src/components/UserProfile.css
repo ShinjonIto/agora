@@ -1,12 +1,18 @@
-.UserProfile .Profile_img {
-    border-radius: 50%;
+.UserProfile {
+    width: 100%;
     height: 100%;
+    cursor: pointer;
 
-    aspect-ratio: 1/1;
-    margin: auto;
-    display: block;
+    border-radius: 50%;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
 }
 
-.UserProfile {
-    height: 80%;
+.UserProfile .Profile_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 中身を切り抜いて正方形にフィット */
+    display: block;
 }

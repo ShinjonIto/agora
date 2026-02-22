@@ -5,10 +5,13 @@
     min-height: 0;
     height: 100%;
     gap: 10px;
-
 }
 
-
+.postArea {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
 
 

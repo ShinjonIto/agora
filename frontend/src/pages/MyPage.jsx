@@ -21,19 +21,19 @@ const MyPage = () => {
 
     useEffect(() => {
         setActiveTab("myposts");
-    }, [pageUserId]);  
+    }, [pageUserId]);
 
 
     // フォロー・フォロワーユーザー表示
     const renderUserList = (users) => (
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {users && users.length > 0 ? users.map(user => (
-                <div 
-                    key={user.id} 
+                <div
+                    key={user.id}
                     onClick={() => navigate(`/mypage/${user.id}`)}
-                    style={{ 
-                        display: "flex", alignItems: "center", gap: "15px", 
-                        padding: "10px", border: "1px solid #eee", borderRadius: "8px", cursor: "pointer" 
+                    style={{
+                        display: "flex", alignItems: "center", gap: "15px",
+                        padding: "10px", border: "1px solid #eee", borderRadius: "8px", cursor: "pointer"
                     }}
                 >
                     <img src={user.icon_image} alt="" style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover" }} />
@@ -52,7 +52,7 @@ const MyPage = () => {
             try {
                 if (activeTab === "mycomments") {
                     // pageUserId をクエリパラメータとして送る
-                    const res = await axiosPrivate.get(`/api/comments/mycomments/?user_id=${pageUserId}`); 
+                    const res = await axiosPrivate.get(`/api/comments/mycomments/?user_id=${pageUserId}`);
                     setPosts(res.data);
                 }
             } catch (err) {
@@ -60,7 +60,7 @@ const MyPage = () => {
             }
         };
         fetchData();
-    }, [activeTab, pageUserId]); 
+    }, [activeTab, pageUserId]);
 
 
 
@@ -82,34 +82,34 @@ const MyPage = () => {
 
 
     return (
-            <div className="mypage">
-
-                <main>
-                    {/* ログインユーザー情報 */}
-                    <MyPageInformation key={pageUserId} userId={pageUserId} />
-                    
-                    {/* タブボタン */}
-                    <div className="mypage_link">
-                        <button className="click_area" onClick={() => setActiveTab("myposts")}>投稿</button>
-                        <button className="click_area" onClick={() => setActiveTab("mylikes")}>いいね</button>
-                        <button className="click_area" onClick={() => setActiveTab("mycomments")}>コメント</button>
-                        <butto className="click_area"n onClick={() => setActiveTab("following")}>フォロー</button>
-                        <button className="click_area" onClick={() => setActiveTab("followers")}>フォロワー</button>
-                    </div>
+        < div className="mypage" >
 
 
-                    {/* フォロー・フォロワー表示切替 / 自分の記事・いいねした記事切替 */}
-                    {activeTab === "following" ? (
-                        <div key={`follow-${pageUserId}`}>{renderUserList(followData.following)}</div>
-                    ) : activeTab === "followers" ? (
-                        <div key={`follower-${pageUserId}`}>{renderUserList(followData.followers)}</div>
-                    ) : (
-                        <MyPostList key={`${pageUserId}-${activeTab}`} fetchType={activeTab} pageUserId={pageUserId} />
-                    )}
+            {/* ログインユーザー情報 */}
+            <MyPageInformation key={pageUserId} userId={pageUserId} />
 
-                    
-                </main>
+            {/* タブボタン */}
+            <div className="mypage_link">
+                <button className="click_area" onClick={() => setActiveTab("myposts")}>投稿</button>
+                <button className="click_area" onClick={() => setActiveTab("mylikes")}>いいね</button>
+                <button className="click_area" onClick={() => setActiveTab("mycomments")}>コメント</button>
+                <button className="click_area" onClick={() => setActiveTab("following")}>フォロー</button>
+                <button className="click_area" onClick={() => setActiveTab("followers")}>フォロワー</button>
             </div>
+
+
+            {/* フォロー・フォロワー表示切替 / 自分の記事・いいねした記事切替 */}
+            {activeTab === "following" ? (
+                <div key={`follow-${pageUserId}`}>{renderUserList(followData.following)}</div>
+            ) : activeTab === "followers" ? (
+                <div key={`follower-${pageUserId}`}>{renderUserList(followData.followers)}</div>
+            ) : (
+                <MyPostList key={`${pageUserId}-${activeTab}`} fetchType={activeTab} pageUserId={pageUserId} />
+            )}
+
+
+
+
             <div>
                 {/* fetchTypeを渡して、これ1つでいいねした記事・自分の記事を表示する */}
                 <MyPostList fetchType={activeTab} pageUserId={pageUserId} />
@@ -117,7 +117,7 @@ const MyPage = () => {
 
 
 
-        </div>
+        </div >
 
 
     )

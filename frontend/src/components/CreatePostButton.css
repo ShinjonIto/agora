@@ -1,4 +1,4 @@
-.create {
+.createPostButton {
     position: fixed;
     /* ← これが一番重要 */
     right: 24px;
@@ -6,12 +6,18 @@
     bottom: 24px;
     /* 下から */
     z-index: 100;
-    /* 前面に */
+}
 
+.create {
     width: var(--icon-l);
     height: var(--icon-l);
     color: var(--main-white);
     background-color: var(--main-text);
-    padding: 5px;
+    padding: var(--space-s);
     border-radius: 100%;
+}
+
+.create:hover {
+    transform: scale(1.08);
+    filter: brightness(1.08);
 }

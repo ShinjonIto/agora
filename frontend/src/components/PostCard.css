@@ -1,4 +1,4 @@
-.post {
+.postCard {
     background-color: var(--main-white);
     flex: 1;
 
@@ -7,31 +7,38 @@
     justify-content: space-between;
 
     padding: 5%;
-    margin: 0 auto 20px auto;
     border-radius: var(--radius);
     /* border: 1px solid black; */
 }
 
-
-
-
-.post .honbun {
-    margin: 10px 30px;
-    line-height: 2.5rem;
+.post {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 
 
-.titleBlock {
+
+.postCard .honbun {
+    margin: 10px 5px 20px 5px;
+    line-height: 2rem;
+
+}
+
+
+
+.postCard .titleBlock {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    margin: 10px 0 0 0;
     /* タイトル内だけ詰める */
 }
 
 
 
-.dept {
+.postCard .dept {
     opacity: 0.7;
 }
 
@@ -45,7 +52,7 @@
 }
 
 /* 共通: 長い英数字対策 */
-.post .editor {
+.postCard .editor {
     overflow-wrap: anywhere;
     word-break: break-word;
 }
@@ -86,7 +93,7 @@
 }
 
 
-.post .editor pre {
+.postCard .editor pre {
     white-space: pre;
     overflow-x: auto;
     max-width: 100%;
@@ -133,7 +140,7 @@
 
 
 
-.post .dai_flex {
+.postCard .dai_flex {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -141,14 +148,14 @@
 
 
 
-.post .syo_flex {
+.postCard .syo_flex {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
 }
 
-.post .full {
+.postCard .full {
     overflow: visible;
 }
 
@@ -156,21 +163,23 @@
     gap: 10px;
 }
 
-.post .titleBlock {
+.postCard .titleBlock {
 
     flex: 1;
     /* ← 右の「…ボタン」に押されて縮む */
 
 }
 
-.post .titleBlock h3,
-.post .titleBlock .title {
+.postCard .titleBlock h3,
+.postCard .titleBlock .title {
     word-break: break-word;
 }
 
-.post .comment_flex {
+.postCard .comment_flex {
     display: flex;
+    flex: 1;
     gap: 15px;
+    min-height: 10px;
 }
 
 .icon_flex {
@@ -180,6 +189,7 @@
     display: flex;
     align-items: center;
     gap: 5px;
+
     background-color: var(--button-color);
     padding: 5px 10px;
     border-radius: 20px;

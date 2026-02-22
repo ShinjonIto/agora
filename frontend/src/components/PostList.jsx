@@ -9,6 +9,7 @@ import { usePostActions } from "@/hooks/usePostActions";
 
 
 
+
 const deptMap = { mch: 0, cyc: 1, sys: 2 };
 
 const PostList = () => {
@@ -17,7 +18,7 @@ const PostList = () => {
     const [loading, setLoading] = useState(true);
     const { dept } = useParams();
     const [sortType, setSortType] = useState("new");
-
+    const [error, setError] = useState(null);
     const currentUserId = localStorage.getItem("userId");
 
     // フックからロジック取得
@@ -97,7 +98,7 @@ const PostList = () => {
                 </select>
             </div>
 
-            <div>
+            <div className="postArea">
                 {sortedPosts.map((post) => (
                     <PostCard
                         key={post.post_id}

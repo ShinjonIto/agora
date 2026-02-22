@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import axiosPrivate from "@/api/axiosPrivate";
 import { useAuth } from "@/contexts/AuthContext";
 import { useParams, useNavigate } from "react-router-dom";
+import "./authPages.css";
 
 const ProfileSettings = () => {
     const { userId } = useParams();
@@ -56,14 +57,14 @@ const ProfileSettings = () => {
 
                 setIconPreview(res.data.icon_image + "?t=" + Date.now());
                 setOriginalIcon(user.icon_image);
-                } catch (err) {
+            } catch (err) {
                 console.error("設定取得失敗", err);
                 alert("設定情報を取得できません");
                 navigate("/login");
-                }
-            };
-            fetchUser();
-        }, [userId, navigate]);
+            }
+        };
+        fetchUser();
+    }, [userId, navigate]);
 
 
     // 画像選択
@@ -103,7 +104,7 @@ const ProfileSettings = () => {
                 icon_image: newIcon,
             }));
 
-            setIconFile(null); 
+            setIconFile(null);
             setIsIconEditing(false);
             alert("写真を更新しました");
         } catch (err) {
@@ -128,7 +129,7 @@ const ProfileSettings = () => {
     };
 
 
-    
+
     // 変更を保存ボタン処理
     const handleProfileSave = async () => {
         if (!profileForm.email.includes("@")) {
@@ -153,7 +154,7 @@ const ProfileSettings = () => {
             alert("更新に失敗しました");
         }
     };
-    
+
 
 
 
@@ -215,7 +216,7 @@ const ProfileSettings = () => {
                         self_introduction: e.target.value,
                     })
                 }
-            />  
+            />
 
             {/* メールアドレス */}
             メールアドレス：

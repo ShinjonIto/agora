@@ -23,6 +23,7 @@ const Home = () => {
                 {/* {ホーム内の表示が切り替わる部分} */}
                 <div className="main_contents">
                     <div className="PostListBody">
+                        <div className="homeMenu"></div>
                         <div className="postListScroll">
                             <Outlet />
                         </div>

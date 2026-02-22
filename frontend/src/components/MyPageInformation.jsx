@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 import axiosPrivate from "@/api/axiosPrivate";
 import UserProfile from "./UserProfile";
 import { useFollow } from "@/hooks/useFollow";
+
+// 画像
+import Config from "@/assets/images/icon/config.svg?react"
+
 import "./MyPageInformation.css";
 
 const MyPageInformation = ({ userId }) => {
@@ -44,12 +48,14 @@ const MyPageInformation = ({ userId }) => {
     return (
         <div className="MyPageInfo">
             {/* アイコン */}
-            <UserProfile
-                user={user}
-                onClick={() => {
-                    navigate(`/mypage/${user.id}`);
-                }}
-            />
+            <div className="icon-l">
+                <UserProfile
+                    user={user}
+                    onClick={() => {
+                        navigate(`/mypage/${user.id}`);
+                    }}
+                />
+            </div>
             {/* 名前 */}
             {user.user_name}
 
@@ -85,7 +91,9 @@ const MyPageInformation = ({ userId }) => {
 
             {/* 設定 */}
             {user.id === currentUserId && (
-                <button className="config mypage_button" onClick={() => navigate(`/settings/${currentUserId}`)}>設定</button>
+                <button className="button config mypage_button" onClick={() => navigate(`/settings/${currentUserId}`)}>
+                    <Config />
+                </button>
             )}
 
 

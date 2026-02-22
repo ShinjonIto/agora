@@ -40,8 +40,7 @@ const PasswordChange = () => {
     };
 
     return (
-        <div>
-            <h2>パスワード変更</h2>
+        <div className="AuthPages">
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>現在のパスワード</label>

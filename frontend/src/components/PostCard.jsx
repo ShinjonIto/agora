@@ -5,6 +5,11 @@ import CommentIcon from "@/assets/images/icon/comment.svg?react";
 import View from "@/assets/images/icon/view.svg?react";
 import Share from "@/assets/images/icon/share.svg?react";
 
+// エフェクト
+import { useFxKey } from "@/hooks/useFxKey";
+import Ripple from "@/components/effects/Ripple";
+import Burst from "@/components/effects/Burst";
+
 import RichContent from "./RichContent";
 import "./PostCard.css";
 import MenuButton from "./MenuButton";
@@ -29,9 +34,10 @@ const PostCard = ({
         post.post_user &&
         Number(post.post_user) === Number(currentUserId);
 
+    const { fxKey, showFx, triggerFx } = useFxKey();
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const isDetail = variant === "detail";
-
     // ポストリストのみ画像の一番最初のものを取り出す
     const getFirstImageSrc = (html) => {
         if (!html) return null;
@@ -44,7 +50,7 @@ const PostCard = ({
 
     return (
         <div
-            className={`post click_area ${isDetail ? "isDetail" : ""}`}
+            className={`postCard click_area ${isDetail ? "isDetail" : ""}`}
             onClick={
                 isDetail
                     ? undefined
@@ -54,7 +60,7 @@ const PostCard = ({
                     }
             }
         >
-            <div className={isDetail ? "full" : "preview"}>
+            <div className={`post ${isDetail ? "full" : "preview"}`}>
                 <div className="dai_flex">
                     <div className="syo_flex">
                         {isDetail && (<div className="none">
@@ -64,16 +70,18 @@ const PostCard = ({
 
 
                         {/* アイコン */}
-                        <UserProfile
-                            user={{
-                                icon_image: post.author_icon,
-                                id: post.post_user_id
-                            }}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                navigate(`/mypage/${post.post_user_id}`);
-                            }}
-                        />
+                        <div className="icon-m">
+                            <UserProfile
+                                user={{
+                                    icon_image: post.author_icon,
+                                    id: post.post_user_id
+                                }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/mypage/${post.post_user_id}`);
+                                }}
+                            />
+                        </div>
                         <p>{post.author_name}</p>
                         <p>{formatPostDate(post.created_at)}</p>
                     </div>
@@ -97,36 +105,64 @@ const PostCard = ({
                     </div>
                 </div>
 
-                <div className="honbun">
-                    <div className="titleBlock">
-                        <h3>{post.title}</h3>
-                        {post.department_name && (
-                            <span className="dept">{post.department_name}</span>
-                        )}
-                    </div>
 
+                <div className="titleBlock">
+                    <h3>{post.title}</h3>
+                    {post.department_name && (
+                        <span className="dept">{post.department_name}</span>
+                    )}
+                </div>
+                <div className="honbun">
+                    {/* 1枚目だけ表示（あれば） */}
+                    {!isDetail && firstImg && (
+                        <img className="postThumb" src={firstImg} alt="" loading="lazy" />
+                    )}
                     <RichContent html={post.content} stopClickPropagation />
                 </div>
-                {/* 1枚目だけ表示（あれば） */}
-                {!isDetail && firstImg && (
-                    <img className="postThumb" src={firstImg} alt="" loading="lazy" />
-                )}
+
                 <div className="comment_flex">
+
                     <button
-                        onClick={(e) => { e.stopPropagation(); handleLike(post.post_id); }}
-                        className={`icon_flex ${post.liked ? "red" : "gray"}`}
+                        onClick={(e) => {
+                            e.stopPropagation();
+
+                            // 未いいね → いいね の時だけ発火
+                            if (!post.liked) triggerFx(450);
+
+                            handleLike(post.post_id);
+                        }}
+                        className={`icon_flex likeBtn ${post.liked ? "red" : "gray"}`}
+                        style={{
+                            "--ripple-inset": "-12px",
+                            "--ripple-scale": 1.4,
+                            "--ripple-opacity": 0.20,
+                        }}
                     >
-                        <Heart />
+                        {showFx && (
+                            <>
+                                <Ripple fxKey={fxKey} />
+                                <Burst
+                                    fxKey={fxKey}
+                                    spread={34}
+                                    size={4}
+                                    duration={520}
+                                />
+                            </>
+                        )}
+
+                        <Heart className="fx-foreground icon" />
                         {post.like_count}
                     </button>
+
+
                     <div
                         className="icon_flex"
                     >
-                        <CommentIcon />
+                        <CommentIcon className="icon" />
                         {post.comment_count}
                     </div>
                     <div className="icon_flex">
-                        <View />
+                        <View className="icon" />
                         {post.total_views}
                     </div>
                     {/* <button onClick={(e) => e.stopPropagation()} style={{ background: "none", border: "none", cursor: "pointer" }}>

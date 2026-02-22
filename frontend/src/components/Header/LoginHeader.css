@@ -33,10 +33,3 @@
     align-items: center;
     justify-content: space-between;
 }
-
-.Authlayout header .icon {
-    position: relative;
-    display: flex;
-    align-items: center;
-    height: 100%;
-}

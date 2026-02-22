@@ -2,17 +2,21 @@
 .sidebar {
     display: flex;
     flex-direction: column;
+
     gap: 12px;
+    position: static;
 }
 
 /* 通常状態（リンクだけどボタン風） */
 .aside_button {
+    box-sizing: border-box;
+
     width: 100%;
     display: flex;
     align-items: center;
     gap: 10px;
 
-    padding: 10px 12px;
+    padding: var(--space-m);
     border-radius: 12px;
 
     text-decoration: none;
@@ -60,9 +64,9 @@
 
 /* アイコン */
 .aside_icon {
-    width: 22px;
-    height: 22px;
-    flex: 0 0 22px;
+    width: var(--icon-ss);
+    height: var(--icon-ss);
+    flex: 0 0 var(--icon-ss);
 }
 
 /* SVGの色を文字色に追従 */
@@ -77,7 +81,7 @@
 }
 
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 768px) {
     .sidebar span {
         display: none;
     }

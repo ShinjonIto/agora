@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import Santen from "@/assets/images/icon/santen.svg?react"
 
 // メニュー内のボタン共通スタイル
 const btnStyle = {
@@ -51,8 +52,10 @@ const MenuButton = ({
     };
 
     return (
-        <div className="click_button" style={{ position: "relative" }} ref={menuRef}>
+        <div style={{ position: "relative" }} ref={menuRef}>
             <button
+                className="click_button"
+                aria-label="メニュー"
                 onClick={(e) => {
                     e.stopPropagation();
                     setIsOpen(prev => {
@@ -63,9 +66,8 @@ const MenuButton = ({
                         return next;
                     });
                 }}
-
             >
-                ...
+                <Santen />
             </button>
 
             {isOpen && (
