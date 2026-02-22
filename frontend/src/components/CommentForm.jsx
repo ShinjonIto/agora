@@ -104,7 +104,13 @@ const CommentForm = ({ postId, parentCommentId = null, replyTargetName = null, s
 
         } catch (err) {
             console.error("投稿エラー:", err);
-            setError("コメントの投稿に失敗しました");
+
+            if (err.response) {
+                // サーバーからレスポンスが返ってきた場合
+                setError(err.response.data.error || "コメントの投稿に失敗しました");
+            } else {
+                setError("コメントの投稿に失敗しました");
+            }
         } finally {
             setLoading(false); // 成功しても失敗しても、ここで送信中を解除
         }

@@ -145,8 +145,7 @@ class CreatePostAPIView(APIView):
                     cache.set(cache_key, flagged, timeout=60 * 5)
 
                 # 制限越えた場合通す
-                except Exception as e:
-                    print("Moderation failed:", e)
+                except Exception:
                     flagged = False
                 
                 # 制限越えた場合通さない
@@ -158,9 +157,6 @@ class CreatePostAPIView(APIView):
                 #         )
                 #     else:
                 #         flagged = False
-            # あとでけす
-            print("STATUS:", response.status_code)
-            print("RAW:", response.text)
 
             if flagged:
                 return Response(

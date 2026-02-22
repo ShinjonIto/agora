@@ -1,7 +1,6 @@
-// src/pages/Config.jsx
 import { Outlet } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
-import AuthFrame from "@/layouts/AuthFrame"; // AuthLayout.css流用してたやつ
+// import AuthLayout from "@/layouts/AuthLayout"; // AuthLayout.css流用してたやつ
 
 const ConfigLayout = () => {
     return (
