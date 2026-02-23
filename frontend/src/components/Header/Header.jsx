@@ -6,7 +6,6 @@ import axiosPrivate from "@/api/axiosPrivate";
 import "./Header.css";
 import HeaderOka from "@/assets/images/header/header_oka.svg?react";
 import Bell from "@/assets/images/icon/bell.svg?react";
-
 import { useFxKey } from "@/hooks/useFxKey";
 import Ripple from "@/components/effects/Ripple";
 import Burst from "@/components/effects/Burst";
@@ -18,6 +17,9 @@ const Header = ({ user }) => {
 
     const [showMenu, setShowMenu] = useState(false);
     const [unreadCount, setUnreadCount] = useState(0);
+
+//   ここ確認
+    const [keyword, setKeyword] = useState("");
 
     const logoFx = useFxKey();
     const bellFx = useFxKey();
@@ -42,23 +44,36 @@ const Header = ({ user }) => {
         return () => window.removeEventListener("click", closeMenu);
     }, []);
 
+
+    // 検索　ここ
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (!keyword.trim()) return;
+        navigate(`/search?keyword=${encodeURIComponent(keyword)}`);
+    };
+
+
     // 未読通知取得
     useEffect(() => {
         if (!isAuthed) return;
 
         const fetchUnread = async () => {
-            try {
-                const res = await axiosPrivate.get("/api/notifications/unread/");
-                setUnreadCount(res.data.count);
-            } catch (err) {
-                console.error("未読取得エラー:", err);
-            }
+        try {
+            const res = await axiosPrivate.get("/api/notifications/unread/");
+            setUnreadCount(res.data.count);
+        } catch (err) {
+            console.error("未読取得エラー:", err);
+        }
         };
 
-        fetchUnread();
-        const interval = setInterval(fetchUnread, 30000);
+
+
+
+        fetchUnread(); // 初回取得
+        const interval = setInterval(fetchUnread, 30000); // 30秒ごと
         return () => clearInterval(interval);
     }, [isAuthed]);
+
 
     // 通知クリック
     const handleNotificationClick = (e) => {
