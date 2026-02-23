@@ -60,6 +60,11 @@ const PostCard = ({
                     }
             }
         >
+            {/* 学科 */}
+            {post.department_name && (
+                <span className="dept">{post.department_name}学科</span>
+            )}
+
             <div className={`post ${isDetail ? "full" : "preview"}`}>
                 <div className="dai_flex">
                     <div className="syo_flex">
@@ -67,6 +72,7 @@ const PostCard = ({
                             <Back_button />
                         </div>
                         )}
+
 
 
                         {/* アイコン */}
@@ -108,9 +114,6 @@ const PostCard = ({
 
                 <div className="titleBlock">
                     <h3>{post.title}</h3>
-                    {post.department_name && (
-                        <span className="dept">{post.department_name}</span>
-                    )}
                 </div>
                 <div className="honbun">
                     {/* 1枚目だけ表示（あれば） */}
