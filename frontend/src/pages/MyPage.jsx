@@ -1,58 +1,74 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosPrivate from "@/api/axiosPrivate";
 import MainLayout from "../layouts/MainLayout";
 import Sidebar from "../components/Sidebar";
 import MyPostList from "../components/MyPostList";
 import MyPageInformation from "../components/MyPageInformation";
-
-import "./Mypage.css"
-
+import "./Mypage.css";
 
 const MyPage = () => {
     const [activeTab, setActiveTab] = useState("myposts"); // 初期値をAPIのパス
     const [posts, setPosts] = useState([]);
+
     const { userId } = useParams();
     const currentUserId = localStorage.getItem("userId");
     const pageUserId = userId ? Number(userId) : Number(currentUserId);
-    const navigate = useNavigate();
-    const [followData, setFollowData] = useState({ following: [], followers: [] });
 
+    const navigate = useNavigate();
+    const [followData, setFollowData] = useState({
+        following: [],
+        followers: [],
+    });
+
+    const { userId: userId2, tab } = useParams();
 
     useEffect(() => {
         setActiveTab("myposts");
 
         // 他の人のマイページに飛んだら、スクロール上に戻る
         window.scrollTo(0, 0);
-    }, [pageUserId]);  
-
+    }, [pageUserId]);
 
     // フォロー・フォロワーユーザー表示
     const renderUserList = (users) => (
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            {users && users.length > 0 ? users.map(user => (
-                <div
-                    key={user.id}
-                    onClick={() => navigate(`/mypage/${user.id}`)}
-                    style={{ display: "flex", alignItems: "center"}}
-                >
-                    <img src={user.icon_image} alt="" style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover" }} />
-                    <div>
-                        <div style={{ fontWeight: "bold" }}>{user.user_name}</div>
+            {users && users.length > 0 ? (
+                users.map((user) => (
+                    <div
+                        key={user.id}
+                        onClick={() => navigate(`/mypage/${user.id}`)}
+                        style={{ display: "flex", alignItems: "center" }}
+                    >
+                        <img
+                            src={user.icon_image}
+                            alt=""
+                            style={{
+                                width: "40px",
+                                height: "40px",
+                                borderRadius: "50%",
+                                objectFit: "cover",
+                            }}
+                        />
+                        <div>
+                            <div style={{ fontWeight: "bold" }}>{user.user_name}</div>
+                        </div>
                     </div>
-                </div>
-            )) : <p>ユーザーがいません</p>}
+                ))
+            ) : (
+                <p>ユーザーがいません</p>
+            )}
         </div>
     );
-
-
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (activeTab === "mycomments") {
                     // pageUserId をクエリパラメータとして送る
-                    const res = await axiosPrivate.get(`/api/comments/mycomments/?user_id=${pageUserId}`);
+                    const res = await axiosPrivate.get(
+                        `/api/comments/mycomments/?user_id=${pageUserId}`
+                    );
                     setPosts(res.data);
                 }
             } catch (err) {
@@ -62,14 +78,14 @@ const MyPage = () => {
         fetchData();
     }, [activeTab, pageUserId]);
 
-
-
     // フォロー・フォロワータブ
     useEffect(() => {
         const fetchFollows = async () => {
             if (activeTab === "following" || activeTab === "followers") {
                 try {
-                    const res = await axiosPrivate.get(`/api/follows/${pageUserId}/follow_list/`);
+                    const res = await axiosPrivate.get(
+                        `/api/follows/${pageUserId}/follow_list/`
+                    );
                     setFollowData(res.data);
                 } catch (err) {
                     console.error(err);
@@ -79,36 +95,68 @@ const MyPage = () => {
         fetchFollows();
     }, [activeTab, pageUserId]);
 
-
-
     return (
-            <div className="mypage">
+        <div className="mypage">
+            {/* ログインユーザー情報 */}
+            <MyPageInformation key={pageUserId} userId={pageUserId} />
 
-                  {/* ログインユーザー情報 */}
-                  <MyPageInformation key={pageUserId} userId={pageUserId} />
+            {/* タブボタン */}
+            <div className="mypage_link">
+                <button
+                    className="click_area"
+                    onClick={() => setActiveTab("myposts")}
+                >
+                    投稿
+                </button>
 
-                  {/* タブボタン */}
-                  <div className="mypage_link">
-                      <button className="click_area" onClick={() => setActiveTab("myposts")}>投稿</button>
-                      <button className="click_area" onClick={() => setActiveTab("mylikes")}>いいね</button>
-                      <button className="click_area" onClick={() => setActiveTab("mycomments")}>コメント</button>
-                      <button className="click_area" onClick={() => setActiveTab("following")}>フォロー</button>
-                      <button className="click_area" onClick={() => setActiveTab("followers")}>フォロワー</button>
-                  </div>
+                <button
+                    className="click_area"
+                    onClick={() => setActiveTab("mylikes")}
+                >
+                    いいね
+                </button>
 
+                <button
+                    className="click_area"
+                    onClick={() => setActiveTab("mycomments")}
+                >
+                    コメント
+                </button>
 
-                  {/* フォロー・フォロワー表示切替 / 自分の記事・いいねした記事切替 */}
-                  {activeTab === "following" ? (
-                      <div key={`follow-${pageUserId}`}>{renderUserList(followData.following)}</div>
-                  ) : activeTab === "followers" ? (
-                      <div key={`follower-${pageUserId}`}>{renderUserList(followData.followers)}</div>
-                  ) : (   // 自分の投稿・いいねした記事
-                      <MyPostList key={`${pageUserId}-${activeTab}`} fetchType={activeTab} pageUserId={pageUserId} />
-                  )}
-        </div >
+                <button
+                    className="click_area"
+                    onClick={() => setActiveTab("following")}
+                >
+                    フォロー
+                </button>
 
+                <button
+                    className="click_area"
+                    onClick={() => setActiveTab("followers")}
+                >
+                    フォロワー
+                </button>
+            </div>
 
-    )
+            {/* フォロー・フォロワー表示切替 / 自分の記事・いいねした記事切替 */}
+            {activeTab === "following" ? (
+                <div key={`follow-${pageUserId}`}>
+                    {renderUserList(followData.following)}
+                </div>
+            ) : activeTab === "followers" ? (
+                <div key={`follower-${pageUserId}`}>
+                    {renderUserList(followData.followers)}
+                </div>
+            ) : (
+                // 自分の投稿・いいねした記事
+                <MyPostList
+                    key={`${pageUserId}-${activeTab}`}
+                    fetchType={activeTab}
+                    pageUserId={pageUserId}
+                />
+            )}
+        </div>
+    );
 };
 
 export default MyPage;

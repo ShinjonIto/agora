@@ -1,0 +1,19 @@
+/* preを相対配置にして、ボタンを絶対配置 */
+.codeblock-pre {
+    position: relative;
+    padding-top: 36px;
+    /* ボタン分の余白 */
+}
+
+/* コピーボタン */
+.codeblock-copy {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgb(from var(--main-text) r g b / 0.18);
+    background: rgb(from var(--base-color) r g b / 0.6);
+    cursor: pointer;
+    font: inherit;
+}

@@ -4,6 +4,7 @@ import axiosPrivate from "@/api/axiosPrivate";
 import FormInput from "../components/form/FormInput";
 import { validateField, validateAll } from "../utils/validation";
 import { getFormStatus } from "../utils/formState";
+import "./StudentNumberList.css";
 
 const AdminAdd = () => {
     const navigate = useNavigate();
@@ -66,51 +67,69 @@ const AdminAdd = () => {
     };
 
     return (
-        <div>
-            <h3>管理者追加</h3>
-            <p>以下の情報を入力して、管理者を追加してください。</p>
+        <div className="adminCard">
+            <div className="adminCard__head">
+                <h3 className="adminCard__title">管理者追加</h3>
+                <p className="adminCard__desc">以下の情報を入力して、管理者を追加してください。</p>
+            </div>
 
-            <form onSubmit={handleSubmit}>
-                <FormInput
-                    name="user_name"
-                    value={form.user_name}
-                    error={errors.user_name}
-                    onChange={handleChange}
-                />
+            <form onSubmit={handleSubmit} className="adminForm">
+                {/* ここは “行” としてまとめておく（あなたのCSSに adminForm__row がある） */}
+                <div className="adminForm__row">
+                    <FormInput
+                        name="user_name"
+                        value={form.user_name}
+                        error={errors.user_name}
+                        className="adminInput"
+                        onChange={handleChange}
+                    />
+                </div>
 
-                <FormInput
-                    name="student_number"
-                    value={form.student_number}
-                    error={errors.student_number}
-                    onChange={handleChange}
-                />
+                <div className="adminForm__row">
+                    <FormInput
+                        name="student_number"
+                        value={form.student_number}
+                        error={errors.student_number}
+                        className="adminInput"
+                        onChange={handleChange}
+                    />
+                </div>
 
-                <FormInput
-                    name="email"
-                    value={form.email}
-                    error={errors.email}
-                    onChange={handleChange}
-                />
+                <div className="adminForm__row">
+                    <FormInput
+                        name="email"
+                        value={form.email}
+                        error={errors.email}
+                        className="adminInput"
+                        onChange={handleChange}
+                    />
+                </div>
 
-                <FormInput
-                    name="password"
-                    value={form.password}
-                    error={errors.password}
-                    onChange={handleChange}
-                    required
-                />
+                <div className="adminForm__row">
+                    <FormInput
+                        name="password"
+                        value={form.password}
+                        error={errors.password}
+                        onChange={handleChange}
+                        className="adminInput"
+                        required
+                    />
+                </div>
 
-                <FormInput
-                    name="confirm_password"
-                    value={form.confirm_password}
-                    error={errors.confirm_password}
-                    onChange={handleChange}
-                    required
-                />
+                <div className="adminForm__row">
+                    <FormInput
+                        name="confirm_password"
+                        value={form.confirm_password}
+                        error={errors.confirm_password}
+                        onChange={handleChange}
+                        className="adminInput"
+                        required
+                    />
+                </div>
 
                 {submitErrors && <p className="error">{submitErrors}</p>}
 
-                <button disabled={!canSubmit}>
+                <button className="adminButton" disabled={!canSubmit}>
                     管理者を追加
                 </button>
             </form>

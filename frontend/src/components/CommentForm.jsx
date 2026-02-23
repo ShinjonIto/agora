@@ -136,12 +136,15 @@ const CommentForm = ({ postId, parentCommentId = null, replyTargetName = null, s
                 <button
                     type="submit"
                     disabled={loading}
+                    className="link_button"
+                    style={{ margin: "10px 0" }}
+
 
                 >
                     {loading ? "送信中..." : parentCommentId ? "返信する" : "コメントする"}
                 </button>
             </form>
-        </div>
+        </div >
     );
 };
 

@@ -7,8 +7,9 @@
     justify-content: space-between;
 
     padding: 5%;
+    margin: 10px 0;
     border-radius: var(--radius);
-    /* border: 1px solid black; */
+    gap: 10px;
 }
 
 .post {

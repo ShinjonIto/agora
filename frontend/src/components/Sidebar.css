@@ -5,6 +5,7 @@
 
     gap: 12px;
     position: static;
+    overflow-y: auto;
 }
 
 /* 通常状態（リンクだけどボタン風） */

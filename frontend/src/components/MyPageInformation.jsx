@@ -36,7 +36,7 @@ const MyPageInformation = ({ userId }) => {
 
 
 
-    
+
     // フォロー処理
     const handleFollowClick = async () => {
         const newFollowed = await toggleFollow(user.id);
@@ -62,11 +62,12 @@ const MyPageInformation = ({ userId }) => {
                 />
             </div>
             {/* 名前 */}
-            {user.user_name}
+            <h2 className="userName">{user.user_name}</h2>
 
 
             {/* 自己紹介文 */}
-            <p>自己紹介文：{user.self_introduction}</p>
+            <h3>自己紹介文</h3>
+            <p>{user.self_introduction}</p>
 
 
 
@@ -96,8 +97,8 @@ const MyPageInformation = ({ userId }) => {
 
             {/* 設定 */}
             {user.id === currentUserId && (
-                <button className="button config mypage_button" onClick={() => navigate(`/settings/${currentUserId}`)}>
-                    <Config />
+                <button className="mypage_button" onClick={() => navigate(`/settings/${currentUserId}`)}>
+                    <Config className="icon-m" />
                 </button>
             )}
 

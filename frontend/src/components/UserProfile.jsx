@@ -6,9 +6,9 @@ const UserProfile = ({ user, onClick }) => {
     if (!user) return null;
 
     return (
-        <div className="UserProfile" onClick={onClick}>
+        <div className="UserProfile icon-ss" onClick={onClick}>
             <img
-                className="Profile_img"
+                className="Profile_img "
                 src={user.icon_image}
                 alt="user"
 

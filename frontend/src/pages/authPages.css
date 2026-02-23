@@ -27,7 +27,10 @@
 }
 
 .authPages form,
+.authInput,
+.authPages input,
 .authPages .form,
+.authpages textarea,
 .authPages .authInput,
 .authPages .button,
 .authPages .links,
@@ -53,7 +56,7 @@
 
 
 .authPages .authInput {
-    border-bottom: 2px solid var(--accent-color);
+
     width: 100%;
     border-radius: var(--radius) var(--radius) 0 0;
     background-color: var(--login-base-color);
@@ -93,8 +96,6 @@
 
 /* フォーカス中は全体を囲む */
 .authPages .authInput:focus {
-    outline: none;
-    background-color: color-mix(in srgb, var(--accent-color) 18%, white);
     border-color: var(--accent-color);
     transition: 0.2s ease;
     border-bottom: 2px solid transparent;
@@ -102,13 +103,13 @@
 
 /* invalid のときはフォーカス枠もエラー色 */
 .authPages .authInput.isInvalid:focus {
-    border-color: var(--accent-sub-color);
+    border-bottom: var(--accent-sub-color);
 
 }
 
 /* valid のときはフォーカス枠もアクセント色（同じでOKならそのまま） */
 .authPages .authInput.isValid:focus {
-    border-color: var(--accent-color);
+    border-bottom: var(--accent-color);
 }
 
 
@@ -172,6 +173,27 @@
 .link {
     color: rgb(55, 55, 169);
     text-align: right;
+}
+
+/* 削除ページ用 */
+.delete_text {
+    text-align: center;
+    line-height: 1.6;
+}
+
+.delete_text.small {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* 危険ボタン */
+.danger_button {
+    background: var(--accent-sub-color);
+    color: white;
+}
+
+.danger_button:hover {
+    opacity: 0.85;
 }
 
 

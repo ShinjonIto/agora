@@ -159,79 +159,108 @@ const ProfileSettings = () => {
 
 
     return (
-        <div>
-            <h2>設定</h2>
+        <div className="authPages">
+            {/* ✕ボタン（戻る or マイページ） */}
+            <div className="batu">
+                <button
+                    type="button"
+                    onClick={() => navigate(-1)}
+                    aria-label="閉じる"
+                    className="batu"
+                >
+                    ×
+                </button>
+            </div>
 
-            {/* アイコン表示 */}
-            {iconPreview && (
-                <img
-                    src={iconPreview}
-                    alt="icon"
-                    style={{ width: 80, borderRadius: "50%" }}
+            {/* いつもの authPages の型に合わせて form で包む */}
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    handleProfileSave();
+                }}
+            >
+                {/* アイコン表示 */}
+                {iconPreview && (
+                    <img
+                        src={iconPreview}
+                        alt="icon"
+                        className="authIcon" // 任意（なければstyleでもOK）
+                        style={{ width: 80, borderRadius: "50%" }}
+                    />
+                )}
+
+                <div className="links">
+                    <button type="button" onClick={handleIconEditClick} className="button ok_button">
+                        写真を変更
+                    </button>
+                </div>
+
+                <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    onChange={handleIconChange}
                 />
-            )}
 
-            <button onClick={handleIconEditClick}>
-                写真を変更
-            </button>
-
-            <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                style={{ display: "none" }}
-                onChange={handleIconChange}
-            />
-
-            {isIconEditing && (
-                <div>
-                    <button onClick={handleIconSave}>写真を保存</button>
-
-                    {isIconEditing && (
-                        <button onClick={handleIconCancel}>
+                {isIconEditing && (
+                    <div className="links">
+                        <button type="button" onClick={handleIconSave} className="button ok_button">
+                            写真を保存
+                        </button>
+                        <button type="button" onClick={handleIconCancel} className="button no_button">
                             キャンセル
                         </button>
-                    )}
+                    </div>
+                )}
+
+                {/* ユーザーネーム */}
+                <label className="label">
+                    ユーザーネーム<br />
+                    <input
+                        className="authInput"
+                        value={profileForm.user_name}
+                        onChange={(e) => setProfileForm({ ...profileForm, user_name: e.target.value })}
+                    />
+                </label>
+
+                {/* 自己紹介文 */}
+                <label className="label">
+                    自己紹介文<br />
+                    <textarea
+                        value={profileForm.self_introduction}
+                        onChange={(e) =>
+                            setProfileForm({ ...profileForm, self_introduction: e.target.value })
+                        }
+                    />
+                </label>
+
+                {/* メールアドレス */}
+                <label className="label">
+                    メールアドレス：<br />
+                    <input
+                        className="form authInput"
+                        value={profileForm.email}
+                        onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
+                    />
+                </label>
+
+                {/* いつもの links に寄せる */}
+                <div className="links">
+                    <button type="submit" className="button ok_button">
+                        変更を保存
+                    </button>
+
+
+
+                    <button type="button " onClick={DeleteAccount} className="button no_button">
+                        アカウント削除
+                    </button>
+                    <button type="button" onClick={handlePasswordChange} className="button">
+                        パスワード変更
+                    </button>
                 </div>
-            )}
-
-
-
-            {/* ユーザー名 */}
-            ユーザーネーム：
-            <input
-                value={profileForm.user_name}
-                onChange={(e) =>
-                    setProfileForm({ ...profileForm, user_name: e.target.value })
-                }
-            />
-
-            {/* 自己紹介文 */}
-            自己紹介文：
-            <textarea
-                value={profileForm.self_introduction}
-                onChange={(e) =>
-                    setProfileForm({
-                        ...profileForm,
-                        self_introduction: e.target.value,
-                    })
-                }
-            />
-
-            {/* メールアドレス */}
-            メールアドレス：
-            <input value={profileForm.email}
-                onChange={(e) =>
-                    setProfileForm({ ...profileForm, email: e.target.value })
-                }
-            />
-
-            <button onClick={handleProfileSave}>変更を保存</button>
-
-            <button onClick={handlePasswordChange}>パスワード変更はこちら</button>
-
-            <button onClick={DeleteAccount}>アカウントの削除</button>
-
+            </form>
         </div>
     );
 };

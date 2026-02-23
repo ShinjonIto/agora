@@ -3,6 +3,8 @@ import CommentItem from "./CommentItem";
 import UserProfile from "./UserProfile";
 import MenuButton from "./MenuButton";
 import { useCommentActions } from "@/hooks/useCommentActions";
+import "./MyCommentList.css"
+
 
 const MyCommentList = ({
     posts,
@@ -67,10 +69,10 @@ const CommentPost = ({
     });
 
     return (
-        <div>
-            {/* 投稿情報 */}
-            <div>
-                <div>
+        <section className="MyCommentPost">
+            {/* 投稿ヘッダー */}
+            <div className="MyCommentPost__head">
+                <div className="MyCommentPost__author">
                     <UserProfile
                         user={{ icon_image: post.author_icon }}
                         onClick={(e) => {
@@ -78,60 +80,56 @@ const CommentPost = ({
                             navigate(`/mypage/${post.post_user}`);
                         }}
                     />
-                    <div>
-                        <div style={{ fontWeight: "bold", color: "white" }}>
-                            {post.author_name}
-                        </div>
+                    <div className="MyCommentPost__meta">
+                        <div className="MyCommentPost__name">{post.author_name}</div>
                     </div>
                 </div>
 
-                <MenuButton
-                    type="post"
-                    targetId={post.post_id}
-                    ownerId={post.post_user}
-                    currentUserId={currentUserId}
-                    handlers={{
-                        onEdit: (id) => navigate(`/posts/edit/${id}`),
-                        onDelete: handleDelete,
-                        onReport: (id) => openReportModal(id, "post"),
-                        onFollow: handleFollow,
-                        isFollowed: post.is_followed,
-                        isReported: post.is_reported
-                    }}
-                />
+                <div className="MyCommentPost__menu">
+                    <MenuButton
+                        type="post"
+                        targetId={post.post_id}
+                        ownerId={post.post_user}
+                        currentUserId={currentUserId}
+                        handlers={{
+                            onEdit: (id) => navigate(`/posts/edit/${id}`),
+                            onDelete: handleDelete,
+                            onReport: (id) => openReportModal(id, "post"),
+                            onFollow: handleFollow,
+                            isFollowed: post.is_followed,
+                            isReported: post.is_reported,
+                        }}
+                    />
+                </div>
             </div>
 
             {/* 投稿タイトル */}
-            <div style={{ color: "white", fontSize: "1rem", marginBottom: "5px" }}>
-                {post.title}
-            </div>
+            <div className="MyCommentPost__title">{post.title}</div>
 
             {/* コメント一覧 */}
-            {sortedComments.map(c => (
-                <CommentItem
-                    key={c.comment_id}
-                    comment={c}
-                    currentUserId={currentUserId}
-                    navigate={navigate}
-                    handleDelete={() => handleCommentDelete(c.comment_id)}
-                    handleLike={() => handleLike(c.comment_id)}
-                    handleFollow={() => handleFollow(c.user)}
-                    openReportModal={() =>
-                        openReportModal(c.comment_id, "comment")
-                    }
-                    updateComment={(updated) => {
-                        setComments(prev =>
-                            prev.map(com =>
-                                com.comment_id === updated.comment_id
-                                    ? updated
-                                    : com
-                            )
-                        );
-                    }}
-                    onReplyClick={() => {}}
-                />
-            ))}
-        </div>
+            <div className="MyCommentPost__comments">
+                {sortedComments.map((c) => (
+                    <CommentItem
+                        key={c.comment_id}
+                        comment={c}
+                        currentUserId={currentUserId}
+                        navigate={navigate}
+                        handleDelete={() => handleCommentDelete(c.comment_id)}
+                        handleLike={() => handleLike(c.comment_id)}
+                        handleFollow={() => handleFollow(c.user)}
+                        openReportModal={() => openReportModal(c.comment_id, "comment")}
+                        updateComment={(updated) => {
+                            setComments((prev) =>
+                                prev.map((com) =>
+                                    com.comment_id === updated.comment_id ? updated : com
+                                )
+                            );
+                        }}
+                        onReplyClick={() => { }}
+                    />
+                ))}
+            </div>
+        </section>
     );
 };
 

@@ -1,0 +1,56 @@
+.notification-container {
+    width: min(800px, 100%);
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.notification-title {
+    margin-bottom: 16px;
+}
+
+.notification-empty {
+    text-align: center;
+    opacity: 0.7;
+    padding: 20px;
+}
+
+/* ===== 通知カード ===== */
+.notification-item {
+    padding: 14px 16px;
+    border-radius: 14px;
+    margin-bottom: 10px;
+
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+
+    transition: 0.2s;
+}
+
+.notification-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* 未読だけちょっと強調 */
+.notification-item.unread {
+    border-color: var(--accent-color);
+    background: rgba(254, 79, 136, 0.06);
+}
+
+/* ===== 中身 ===== */
+.notification-text {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.notification-unread {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.notification-date {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    opacity: 0.7;
+}

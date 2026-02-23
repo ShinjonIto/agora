@@ -90,7 +90,9 @@ const PostList = () => {
                 <label htmlFor="sortType">並び替え：</label>
                 <select
                     value={sortType}
-                    onChange={(e) => setSortType(e.target.value)}
+                    onChange={(e) => {
+                        setSortType(e.target.value);
+                    }}
                     id="sortType">
                     <option value="new">新着順</option>
                     <option value="like">いいね順</option>
