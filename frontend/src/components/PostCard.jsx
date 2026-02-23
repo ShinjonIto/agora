@@ -83,7 +83,7 @@ const PostCard = ({
                             />
                         </div>
                         <p>{post.author_name}</p>
-                        <p>{formatPostDate(post.created_at)}</p>
+                        <p className="postDate">{formatPostDate(post.created_at)}</p>
                     </div>
 
                     <div onClick={(e) => e.stopPropagation()}>

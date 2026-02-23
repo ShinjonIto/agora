@@ -113,14 +113,21 @@ class CommentCreateAPIView(APIView):
 
                 response.raise_for_status()
                 moderation_result = response.json()
-                flagged = moderation_result["results"][0]["flagged"]
+
+                flagged = False
+
+                if "results" in moderation_result and len(moderation_result["results"]) > 0:
+                    flagged = moderation_result["results"][0].get("flagged", False)
 
                 # 5分キャッシュ
                 cache.set(cache_key, flagged, timeout=60 * 5)
 
-            except Exception:
-                flagged = False
-
+            except Exception as e:
+                return Response(
+                    {"error": "AIチェックに失敗しました。しばらくしてから再度お試しください。"},
+                    status=500
+                )
+                
         if flagged:
             return Response(
                 {"error": "AIチェックの結果：不適切な内容が含まれているため投稿できません。"},

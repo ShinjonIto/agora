@@ -55,7 +55,6 @@ const CommentForm = ({ postId, parentCommentId = null, replyTargetName = null, s
 
 
     // コメント投稿
-    // コメント投稿
     const handleSubmit = async (e) => {
         e.preventDefault(); // フォームのデフォルト動作を阻止
 

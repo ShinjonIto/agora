@@ -190,6 +190,8 @@
     display: flex;
     align-items: center;
     gap: 5px;
+    min-width: 40px; 
+    justify-content: center;
 
     background-color: var(--button-color);
     padding: 5px 10px;
@@ -198,4 +200,29 @@
 
 .red {
     color: var(--accent-sub-color);
+}
+
+
+/* ハートなどのアイコンサイズ */
+.icon_flex svg {
+    width: 18px;
+    height: 18px;
+}
+
+.likeBtn {
+    padding: 8px 13px;   /* 余白増やす */
+}
+
+
+/* 日付 */
+.postDate {
+    font-size: 0.85rem;
+    color: rgba(0, 0, 0, 0.5);
+    margin-left: 10px;
+}
+
+/* 目のアイコンだけ小さく */
+.comment_flex .icon_flex:nth-child(3) svg {
+    width: 14px;
+    height: 14px;
 }
