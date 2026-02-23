@@ -132,7 +132,7 @@ const CommentItem = ({
                     <p>{comment.comment_author_name}</p>
 
                     {/* 作成日時 */}
-                    <p>{formatCommentDate(comment.created_at)}</p>
+                    <p className="date">{formatCommentDate(comment.created_at)}</p>
 
                 </div>
 

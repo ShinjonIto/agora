@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useRef } from "react";
+import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import axiosPrivate from "../api/axiosPrivate";
@@ -13,6 +13,8 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const quillRef = useRef(null);
+    const [showAiModal, setShowAiModal] = useState(false);
+    const [aiMessage, setAiMessage] = useState("");
 
     // 画像アップロード処理
     const imageHandler = () => {
@@ -103,12 +105,30 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
 
         } catch (err) {
             // サーバーからの具体的なエラーメッセージがあれば表示
-            const serverMsg = err.response?.data?.error || err.response?.data?.detail || "投稿に失敗しました";
-            setError(serverMsg);
+            const serverMsg =
+                err.response?.data?.error ||
+                err.response?.data?.detail ||
+                "投稿に失敗しました";
+
+            if (serverMsg.includes("AI")) {
+                setAiMessage(serverMsg);
+                setShowAiModal(true);
+            } else {
+                setError(serverMsg);
+            }
         } finally {
             setLoading(false);
         }
     };
+
+    // CSS関連
+    useEffect(() => {
+        if (showAiModal) {
+            document.body.classList.add("modal-open");
+        } else {
+            document.body.classList.remove("modal-open");
+        }
+    }, [showAiModal]);
 
 
     return (
@@ -145,6 +165,12 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
                         theme="snow"
                         value={content}
                         onChange={setContent}
+                        onKeyDown={(e) => {
+                            if (e.key === "Tab") {
+                                e.preventDefault();
+                                quillRef.current?.focus();
+                            }
+                        }}
                         modules={modules}
                         placeholder="本文を入力してください..."
                     />
@@ -156,6 +182,19 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
                     {loading ? "投稿中..." : "記事を公開する"}
                 </button>
             </form>
+
+            {/* AIモーダル */}
+            {showAiModal && (
+                <div className="ai_modal_overlay">
+                    <div className="ai_modal">
+                        <h3>投稿失敗</h3>
+                        <p>{aiMessage}</p>
+                        <button onClick={() => setShowAiModal(false)}>
+                            閉じる
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

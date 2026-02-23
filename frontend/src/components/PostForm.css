@@ -47,3 +47,68 @@
     height: 50%;
 
 }
+
+.postForm input[type="text"] {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.15);
+    font-size: 16px;
+}
+
+.postForm .link_button:hover {
+    background-color: rgb(from var(--accent-color) r g b / 0.85);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+
+
+/* AIモーダル */
+.ai_modal_overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.ai_modal {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    animation: fadeIn 0.2s ease;
+}
+
+.ai_modal h3 {
+    margin-bottom: 15px;
+}
+
+.ai_modal button {
+    margin-top: 20px;
+    padding: 8px 20px;
+    border-radius: 999px;
+    border: none;
+    background: var(--accent-color);
+    color: white;
+    cursor: pointer;
+}
+
+.ai_modal button:hover {
+    opacity: 0.85;
+}
+
+@keyframes fadeIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+body.modal-open .HeaderRoot {
+    filter: brightness(0.9);
+}

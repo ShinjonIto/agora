@@ -6,11 +6,11 @@ import "./ThemeChange.css";
 const ThemeChange = () => {
     const themes = useMemo(
         () => [
-            { key: "normal", label: "ノーマル", desc: "基本の落ち着いた配色" },
+            // { key: "normal", label: "ノーマル", desc: "基本の落ち着いた配色" },
             { key: "spring", label: "春", desc: "やわらかく明るい雰囲気" },
             { key: "summer", label: "夏", desc: "涼しげで元気な雰囲気" },
-            { key: "autumn", label: "秋", desc: "落ち葉のようなあたたかい色" },
-            { key: "winter", label: "冬", desc: "静かで透明感のある色合い" },
+            // { key: "autumn", label: "秋", desc: "落ち葉のようなあたたかい色" },
+            // { key: "winter", label: "冬", desc: "静かで透明感のある色合い" },
         ],
         []
     );
