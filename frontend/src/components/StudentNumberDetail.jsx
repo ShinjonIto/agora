@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosPrivate from "@/api/axiosPrivate";
+import "./StudentNumberList.css";
+import "./StudentNumberList.css";
 
 const StudentNumberDetail = () => {
     const { studentNumber } = useParams();
@@ -50,23 +52,38 @@ const StudentNumberDetail = () => {
     };
 
     return (
-        <div>
-            <h3>学生番号編集</h3>
-            <p>学生番号：{studentNumber}</p>
+        <div className="adminCard">
 
-            <select
-                value={status || ""} 
-                onChange={e => setStatus(e.target.value)}
-                disabled={loadingStatus}  // GET が終わるまでだけ disable
-            >
-                <option value="利用中">利用中</option>
-                <option value="停止中">停止中</option>
-            </select>
+            <div className="adminCard__head">
+                <h3 className="adminCard__title">学生番号編集</h3>
+                <p className="adminCard__desc">
+                    学生番号：{studentNumber}
+                </p>
+            </div>
 
-            <br />
-            <button onClick={handleSave} disabled={loading || loadingStatus}>
-                保存
-            </button>
+            <div className="adminForm">
+
+                <div className="adminForm__row">
+                    <select
+                        className="adminSelect"
+                        value={status || ""}
+                        onChange={e => setStatus(e.target.value)}
+                        disabled={loadingStatus}
+                    >
+                        <option value="利用中">利用中</option>
+                        <option value="停止中">停止中</option>
+                    </select>
+                </div>
+
+                <button
+                    className="adminButton"
+                    onClick={handleSave}
+                    disabled={loading || loadingStatus}
+                >
+                    {loading ? "保存中..." : "保存"}
+                </button>
+
+            </div>
         </div>
     );
 };

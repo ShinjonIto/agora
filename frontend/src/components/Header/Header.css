@@ -184,12 +184,13 @@ header .icon {
 
 /* Header.css */
 header .HeaderModal {
+    /* 場所の設定 */
     position: absolute;
     top: 100%;
+    right: 30px;
     transform: translateY(-3px);
-    /* アイコンの下に出す */
-    right: 0;
-    min-width: 200px;
+
+    min-width: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -197,11 +198,12 @@ header .HeaderModal {
     gap: 20px;
 
 
-    background: var(--accent-color);
-    color: var(--main-white);
-    border-radius: 16px;
+    background: var(--main-white);
+    color: var(--main-text);
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
     padding: 20px;
-
     z-index: 1000;
 }
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axiosPrivate from "@/api/axiosPrivate";
-
+import "./StudentNumberList.css";
 const StudentNumberAdd = () => {
     const [startNumber, setStartNumber] = useState("");
     const [endNumber, setEndNumber] = useState("");
@@ -16,83 +16,98 @@ const StudentNumberAdd = () => {
         setResult(null);
 
         try {
-        const res = await axiosPrivate.post("/api/users/student_number/add/", {
-            start_number: Number(startNumber),
-            end_number: Number(endNumber),
-        });
+            const res = await axiosPrivate.post("/api/users/student_number/add/", {
+                start_number: Number(startNumber),
+                end_number: Number(endNumber),
+            });
 
-        setResult(res.data);
-        setStartNumber("");
-        setEndNumber("");
+            setResult(res.data);
+            setStartNumber("");
+            setEndNumber("");
         } catch (err) {
-        console.error(err);
-        alert("登録に失敗しました");
+            console.error(err);
+            alert("登録に失敗しました");
         }
 
         setLoading(false);
     };
 
     return (
-        <div>
-        <h3>学生番号登録</h3>
+        <div className="adminCard">
 
-        <p>登録してもいい学生番号の範囲を入力してください。<br />
-            登録された範囲の学生は会員登録・ログインができるようになります。</p>
+            <div className="adminCard__head">
+                <h3 className="adminCard__title">学生番号登録</h3>
 
-        <form onSubmit={handleSubmit}>
-            <input
-            type="number"
-            placeholder="開始番号"
-            value={startNumber}
-            onChange={(e) => setStartNumber(e.target.value)}
-            required
-            />
-            <input
-            type="number"
-            placeholder="終了番号"
-            value={endNumber}
-            onChange={(e) => setEndNumber(e.target.value)}
-            required
-            />
-            <button disabled={loading}>登録</button>
-        </form>
-
-        {result && (
-            <div style={{ marginTop: "16px" }}>
-            {result.created.length > 0 && (
-                <div>
-                <h4>新規登録</h4>
-                <ul>
-                    {result.created.map((n) => (
-                    <li key={n}>{n}</li>
-                    ))}
-                </ul>
-                </div>
-            )}
-
-            {result.restored.length > 0 && (
-                <div>
-                <h4>復活</h4>
-                <ul>
-                    {result.restored.map((n) => (
-                    <li key={n}>{n}</li>
-                    ))}
-                </ul>
-                </div>
-            )}
-
-            {result.already_exists.length > 0 && (
-                <div>
-                <h4>既に存在</h4>
-                <ul>
-                    {result.already_exists.map((n) => (
-                    <li key={n}>{n}</li>
-                    ))}
-                </ul>
-                </div>
-            )}
+                <p className="adminCard__desc">
+                    登録してもいい学生番号の範囲を入力してください。<br />
+                    登録された範囲の学生は会員登録・ログインができるようになります。
+                </p>
             </div>
-        )}
+
+            <form onSubmit={handleSubmit} className="adminForm">
+                <div className="adminForm__row">
+                    <input
+                        className="adminInput"
+                        type="number"
+                        placeholder="開始番号"
+                        value={startNumber}
+                        onChange={(e) => setStartNumber(e.target.value)}
+                        required
+                    />
+
+                    <input
+                        className="adminInput"
+                        type="number"
+                        placeholder="終了番号"
+                        value={endNumber}
+                        onChange={(e) => setEndNumber(e.target.value)}
+                        required
+                    />
+                </div>
+
+                <button className="adminButton" disabled={loading}>
+                    {loading ? "登録中..." : "登録"}
+                </button>
+            </form>
+
+            {result && (
+                <div className="adminResult">
+
+                    {result.created.length > 0 && (
+                        <div className="adminResult__section">
+                            <h4 className="adminResult__title">新規登録</h4>
+                            <ul className="adminResult__list">
+                                {result.created.map((n) => (
+                                    <li key={n}>{n}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {result.restored.length > 0 && (
+                        <div className="adminResult__section">
+                            <h4 className="adminResult__title">復活</h4>
+                            <ul className="adminResult__list">
+                                {result.restored.map((n) => (
+                                    <li key={n}>{n}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {result.already_exists.length > 0 && (
+                        <div className="adminResult__section">
+                            <h4 className="adminResult__title">既に存在</h4>
+                            <ul className="adminResult__list">
+                                {result.already_exists.map((n) => (
+                                    <li key={n}>{n}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                </div>
+            )}
         </div>
     );
 };

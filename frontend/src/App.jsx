@@ -1,12 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import ConfigLayout from "./pages/ConfigLayout";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Password from "./pages/password";
 import PostDetail from "./pages/PostDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AuthLayout from "./layouts/AuthLayout";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 import MyPage from "./pages/MyPage";
@@ -25,15 +23,17 @@ import DeleteAccount from "./pages/DeleteAccount"
 import { useOffline } from "@/state/OfflineContext";
 import OfflineGameOverlay from "@/components/OfflineGameOverlay";
 import SearchResult from "./components/SearchResult";
-import About from "./pages/About";
 import { useEffect } from "react";
 import { loadTheme } from "./theme/theme";
 import ThemeChange from "./pages/ThemeChange";
 
+import AuthShellLayout from "@/layouts/AuthShellLayout";
+import AuthShellWithUser from "@/layouts/AuthShellWithUser";
+
 
 
 function App() {
-  
+
   const { offlineOpen, closeOffline } = useOffline();
   const retry = () => {
     window.location.reload();
@@ -53,23 +53,26 @@ function App() {
 
 
           {/* {ログイン前} */}
-          <Route element={<AuthLayout />}>
+          <Route element={<AuthShellLayout headerUser={null} />}>
             <Route path="/login" element={<Login />} />
             {/* 会員登録 */}
             <Route path="/signup" element={<Signup />} />
             <Route path="/password" element={<Password />} />
           </Route>
+          <Route
+            path="/settings/:userId"
+            element={
+              <ProtectedRoute>
+                <AuthShellWithUser />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<ProfileSettings />} />
+            <Route path="password" element={<PasswordChange />} />
+            <Route path="delete_acount" element={<DeleteAccount />} />
+          </Route>
 
-        {/* {ログイン前} */}
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<Login />} />
-          {/* 会員登録 */}
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/password" element={<Password />} />
 
-          {/* このサイトについて */}
-          <Route path="/about" element={<About />} />
-        </Route>
 
           {/* ログイン後の処理 */}
           <Route
@@ -88,12 +91,12 @@ function App() {
 
             {/* 記事作成 */}
             <Route path="posts/create" element={<CreatePost />} />
-              
+
             {/* 検索 */}
             <Route path="search" element={<SearchResult />} />
 
             {/* テーマ変更 */}
-            <Route path="/theme_change" element={<ThemeChange />} />
+            <Route path="theme_change" element={<ThemeChange />} />
 
             {/* 記事詳細 */}
             <Route path="posts/:postId" element={<PostDetail />} />
@@ -126,27 +129,6 @@ function App() {
             </Route>
 
 
-          </Route>
-          <Route
-            path="/settings/:userId"
-            element={
-              <ProtectedRoute>
-                <ConfigLayout />
-              </ProtectedRoute>
-            }
-          >
-
-            {/* 設定 */}
-            {/* /settings/:userId */}
-            <Route index element={<ProfileSettings />} />
-
-            {/* パスワード変更 */}
-            {/* /settings/:userId/password */}
-            <Route path="password" element={<PasswordChange />} />
-
-            {/* /settings/:userId/delete_acount */}
-            {/* アカウント削除 */}
-            <Route path="delete_acount" element={<DeleteAccount />} />
           </Route>
         </Routes>
       </BrowserRouter>

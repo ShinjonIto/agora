@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosPrivate from "@/api/axiosPrivate";
-
+import "./StudentNumberList.css";
 const StudentNumberList = () => {
     const [list, setList] = useState([]);
     const navigate = useNavigate();
@@ -22,53 +22,60 @@ const StudentNumberList = () => {
 
 
     return (
-        <div>
-        <h3>学生番号一覧</h3>
-        <p>現在利用中、停止中のユーザーが表示されます。<br />
-        （削除された学生は表示されません。）</p>
+        <div className="adminCard">
 
-        <table>
-            <thead>
-            <tr>
-                <th>学生番号</th>
-                <th>利用状況</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            {list.map(item => (
-                <tr key={item.student_number}>
-                    {/* 学生番号をクリックするとマイページへ（user_id がある場合のみ） */}
-                    <td
-                        style={{
-                            cursor: item.user_id ? "pointer" : "default",       // user_id がない場合はクリック不可
-                            color: item.user_id ? "blue" : "black",             // 未登録は青にしない
-                            textDecoration: item.user_id ? "underline" : "none" // 未登録は下線なし
-                        }}
-                        onClick={() => {
-                            if (item.user_id) {
-                                navigate(`/mypage/${item.user_id}`);
-                            }
-                        }}
-                    >
-                        {item.student_number}
-                    </td>
+            <div className="adminCard__head">
+                <h3 className="adminCard__title">学生番号一覧</h3>
+                <p className="adminCard__desc">
+                    現在利用中、停止中のユーザーが表示されます。<br />
+                    （削除された学生は表示されません。）
+                </p>
+            </div>
 
-                    {/* 利用状況 */}
-                    <td>{item.status}</td>
+            <div className="adminTableWrap">
+                <table className="adminTable">
+                    <thead className="adminTable__head">
+                        <tr className="adminTable__row adminTable__row--head">
+                            <th className="adminTable__th">学生番号</th>
+                            <th className="adminTable__th">利用状況</th>
+                            <th className="adminTable__th adminTable__th--action"></th>
+                        </tr>
+                    </thead>
 
-                    {/* 未登録の学生は「変更」を表示しない */}
-                    <td>
-                        {item.user_id && (                                    // user_id がある場合のみリンク表示
-                            <Link to={`/managements/student_number/${item.student_number}`}>
-                                変更
-                            </Link>
-                        )}
-                    </td>
-                    </tr>
-            ))}
-            </tbody>
-        </table>
+                    <tbody className="adminTable__body">
+                        {list.map((item) => (
+                            <tr key={item.student_number} className="adminTable__row">
+                                <td
+                                    className={`adminTable__td adminTable__student ${item.user_id ? "isLink" : "isDisabled"}`}
+                                    onClick={() => {
+                                        if (item.user_id) {
+                                            navigate(`/mypage/${item.user_id}`);
+                                        }
+                                    }}
+                                >
+                                    {item.student_number}
+                                </td>
+
+                                <td className="adminTable__td adminTable__status">
+                                    {item.status}
+                                </td>
+
+                                <td className="adminTable__td adminTable__action">
+                                    {item.user_id && (
+                                        <Link
+                                            to={`/managements/student_number/${item.student_number}`}
+                                            className="adminActionLink"
+                                        >
+                                            変更
+                                        </Link>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     );
 };

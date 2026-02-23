@@ -1,7 +1,114 @@
-.postDetail {
-    background-color: var(--main-white);
+/* ===== コメント全体 ===== */
+.PostDetailComments {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.commentFlex {
+/* 見出し行（ヘッダー要素じゃなくdivで） */
+.PostDetailComments__head {
     display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.PostDetailComments__title {
+    margin: 0;
+}
+
+.PostDetailComments__count {
+    font-weight: 800;
+    opacity: 0.75;
+}
+
+.PostDetailComments__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.PostDetailComments__empty {
+    opacity: 0.75;
+}
+
+/* 新規コメントフォーム（下） */
+.PostDetailComments__new {
+    border-radius: 14px;
+    padding: 12px;
+    background: rgb(from var(--base-color) r g b / 0.28);
+    border: 1px solid rgb(from var(--main-color) r g b / 0.14);
+}
+
+/* ===== コメントノード（root/child） ===== */
+.CommentNode {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* コメント本体の“外枠” */
+.CommentNode__item {
+    border-radius: 14px;
+    background: rgb(from var(--base-color) r g b / 0.20);
+    border: 1px solid rgb(from var(--main-color) r g b / 0.10);
+    padding: 10px;
+}
+
+/* 子コメントの領域 */
+.CommentNode__children {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 10px;
+    /* 子ブロック全体の軽い寄せ */
+}
+
+/* 子コメント：浅いインデントにする */
+.CommentNode.is-child {
+    margin-left: var(--indent, 14px);
+    position: relative;
+}
+
+/* 子コメントに細いガイド線（薄め） */
+.CommentNode.is-child::before {
+    content: "";
+    position: absolute;
+    left: calc(var(--indent, 14px) * -1 + 6px);
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    border-radius: 99px;
+    background: rgb(from var(--main-color) r g b / 0.12);
+}
+
+/* ===== 返信フォーム箱 ===== */
+.CommentNode__replyBox {
+    margin-left: 8px;
+    border-radius: 14px;
+    padding: 10px;
+    background: rgb(from var(--accent-color) r g b / 0.06);
+    border: 1px solid rgb(from var(--accent-color) r g b / 0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.CommentNode__replyActions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.CommentNode__cancelBtn {
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgb(from var(--main-color) r g b / 0.18);
+    background: rgb(from var(--base-color) r g b / 0.30);
+}
+
+/* 念のため */
+.PostDetailComments,
+.PostDetailComments * {
+    box-sizing: border-box;
 }

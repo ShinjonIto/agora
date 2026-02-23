@@ -54,44 +54,59 @@ const AdminList = () => {
     if (loading) return <p>読み込み中...</p>;
 
     return (
-        <div>
-            <h3>管理者一覧</h3>
+        <div className="adminCard">
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>学生番号</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {admins.length > 0 ? (
-                        admins.map(admin => (
-                            <tr key={admin.id}>
-                                <td>{admin.student_number}</td>
-                                <td>
-                                    <button
-                                        onClick={() =>
-                                            handleDelete(
-                                                admin.id,
-                                                admin.student_number
-                                            )
-                                        }
-                                    >
-                                        削除
-                                    </button>
+            <div className="adminCard__head">
+                <h3 className="adminCard__title">管理者一覧</h3>
+            </div>
+
+            <div className="adminTableWrap">
+                <table className="adminTable">
+                    <thead className="adminTable__head">
+                        <tr className="adminTable__row adminTable__row--head">
+                            <th className="adminTable__th">学生番号</th>
+                            <th className="adminTable__th adminTable__th--action">操作</th>
+                        </tr>
+                    </thead>
+
+                    <tbody className="adminTable__body">
+                        {admins.length > 0 ? (
+                            admins.map(admin => (
+                                <tr key={admin.id} className="adminTable__row">
+                                    <td className="adminTable__td">
+                                        {admin.student_number}
+                                    </td>
+                                    <td className="adminTable__td adminTable__action">
+                                        <button
+                                            className="adminButton adminButton--danger"
+                                            onClick={() =>
+                                                handleDelete(
+                                                    admin.id,
+                                                    admin.student_number
+                                                )
+                                            }
+                                        >
+                                            削除
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr className="adminTable__row">
+                                <td className="adminTable__td adminEmpty" colSpan="2">
+                                    管理者がいません
                                 </td>
                             </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="2">管理者がいません</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+                        )}
+                    </tbody>
+                </table>
+            </div>
 
-            <Link to="/managements/admin/add">管理者を追加</Link>
+            <div className="adminFoot">
+                <Link to="/managements/admin/add" className="adminActionLink">
+                    管理者を追加
+                </Link>
+            </div>
         </div>
     );
 };

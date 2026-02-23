@@ -133,6 +133,7 @@ const PostForm = ({ onSuccess, initialData = null, isEdit = false }) => {
                         type="text"
                         placeholder="タイトルを入力"
                         value={title}
+                        className="button"
                         onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>

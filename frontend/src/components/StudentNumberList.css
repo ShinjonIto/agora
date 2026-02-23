@@ -1,0 +1,180 @@
+/* ===== wrapper card ===== */
+.adminCard {
+    width: 100%;
+    padding: 2% 3%;
+    box-sizing: border-box;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #ffffff67;
+}
+
+/* header */
+.adminCard__head {
+    width: 100%;
+    margin-bottom: 2%;
+}
+
+.adminCard__title {
+    margin: 0 0 0.6em;
+}
+
+.adminCard__desc {
+    margin: 0;
+    opacity: 0.75;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* ===== table wrap ===== */
+.adminTableWrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* ===== table ===== */
+.adminTable {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.adminTable__th,
+.adminTable__td {
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+/* head row */
+.adminTable__row--head .adminTable__th {
+    background: rgb(217, 217, 217);
+    font-weight: bold;
+}
+
+/* body rows */
+.adminTable__row .adminTable__td {
+    border-bottom: 1px solid #eee;
+}
+
+.adminTable__row:hover .adminTable__td {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+/* action col */
+.adminTable__th--action {
+    width: 10%;
+}
+
+.adminTable__action {
+    white-space: nowrap;
+}
+
+/* student number clickable */
+.adminTable__student.isLink {
+    cursor: pointer;
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+.adminTable__student.isDisabled {
+    cursor: default;
+    color: var(--main-text);
+    text-decoration: none;
+}
+
+/* action link */
+.adminActionLink {
+    display: inline-block;
+    padding: 0.35em 0.9em;
+    border-radius: 5px;
+    text-decoration: none;
+
+    background: rgb(217, 217, 217);
+    color: var(--main-text);
+
+    transition: 0.2s;
+}
+
+.adminActionLink:hover {
+    transform: translateY(-2%);
+}
+
+.adminActionLink:active {
+    transform: translateY(0);
+}
+
+
+
+/* ===== admin button ===== */
+.adminButton {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 6px;
+    margin: 10px 0;
+    border: none;
+    cursor: pointer;
+
+    background: var(--accent-color);
+    color: white;
+
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    transition: 0.15s ease;
+}
+
+/* hover */
+.adminButton:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+}
+
+.adminForm__row {
+    padding: 0 5px;
+}
+
+/* ===== admin input ===== */
+.adminInput {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: white;
+    font-size: 0.9rem;
+
+    transition: 0.15s ease;
+}
+
+/* active */
+.adminButton:active {
+    transform: translateY(0);
+}
+
+/* disabled */
+.adminButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ===== admin list ===== */
+.adminCard ul {
+    margin: 0.5em 0 1em;
+    padding-left: 1.4em;
+}
+
+.adminCard li {
+    display: inline;
+    overflow-wrap: anywhere;
+    padding: 4px;
+    text-align: center;
+    font-size: 0.9rem;
+
+
+}
+
+.adiminFlex {
+    display: flex;
+}

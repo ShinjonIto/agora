@@ -2,7 +2,7 @@
     display: flex;
     flex: 1;
     position: relative;
-    height: 100%;
+    height: 70vh;
     width: 100%;
     min-height: 0;
     align-items: stretch;
@@ -14,18 +14,23 @@
 .homeLayout .sidebar {
     width: 300px;
 
-    /* margin: 60px 0px 60px 20px; */
+    margin: 30px 0px 0 20px;
     flex-shrink: 0;
+    overflow-x: hidden;
 }
 
 .homeLayout .main_contents {
     flex: 1;
+    position: fixed;
+    bottom: 0;
+    right: 0;
     min-height: 0;
     min-width: 0;
-
+    height: 100%;
+    width: 75%;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    /* overflow: hidden; */
 
     justify-content: flex-end;
 
@@ -41,7 +46,7 @@
     flex: 0 0 auto;
     min-height: 0;
     width: 75%;
-    height: 75vh;
+    height: 75%;
     margin: 0 auto;
     /* border: 10px solid var(--main-sub-color); */
     background-color: var(--main-sub-color);
@@ -78,18 +83,38 @@
     /* background-color: red; */
 }
 
-/* .homeLayout .postListScroll> :last-child {
-    margin-bottom: 0 !important;
+
+.home_title {
+
+    margin: 10px 22% 10px auto;
 }
 
-.homeLayout .postListScroll>* {
-    min-height: 0;
-} */
+input {
+    border: 2px solid var(--main-text);
+    padding: 2px 10px;
+    border-radius: 10px;
+}
+
+.searchBox {
+    position: relative;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+}
+
+.searchBox input {
+    padding-left: 36px;
+}
 
 
-/* .postListScroll:hover {
-    overflow-y: scroll;
-} */
 
 @media screen and (max-width: 768px) {
     .homeLayout .sidebar {
@@ -117,6 +142,78 @@
     top: 100px;
     right: 5px;
     transform: rotate(-80deg);
+}
+
+/* ===== 検索全体の位置 ===== */
+.header-search {
+    width: 100%;
+    max-width: 520px;
+    margin: 5px auto 5px auto;
+    /* 中央＋余白 */
+}
+
+/* ===== 検索ボックス ===== */
+.searchBox {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--main-white);
+
+    padding: 4px 6px 4px 38px;
+    transition: border 0.15s ease;
+}
+
+.searchBox {
+    border: 3px solid var(--main-text);
+}
+
+/* フォーカス時だけアクセント */
+.searchBox:focus-within {
+    border-color: var(--accent-color);
+}
+
+/* ===== アイコン ===== */
+.searchIcon {
+    position: absolute;
+    left: 12px;
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* ===== input ===== */
+.searchBox input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.95rem;
+    padding: 8px 6px;
+}
+
+/* ===== ボタン ===== */
+.searchBtn {
+    border: none;
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+
+    background: var(--accent-color);
+    color: white;
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.searchBtn:hover {
+    filter: brightness(1.05);
+}
+
+.searchBtn:active {
+    transform: scale(0.96);
 }
 
 

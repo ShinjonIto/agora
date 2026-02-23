@@ -1,0 +1,71 @@
+.MyCommentListRoot {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+/* 投稿（カード） */
+.MyCommentPost {
+    border-radius: 14px;
+    padding: 14px;
+    background: rgb(from var(--base-color) r g b / 0.35);
+    border: 1px solid rgb(from var(--main-color) r g b / 0.18);
+    margin: 10px;
+}
+
+/* ヘッダー */
+.MyCommentPost__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.MyCommentPost__author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.MyCommentPost__meta {
+    min-width: 0;
+}
+
+.MyCommentPost__name {
+    font-weight: 800;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.MyCommentPost__menu {
+    flex: 0 0 auto;
+}
+
+/* タイトル */
+.MyCommentPost__title {
+    margin-top: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.4;
+    padding: 10px 12px;
+    margin: 10px 0;
+    border-radius: 12px;
+    background: rgb(from var(--main-color) r g b / 0.08);
+    border: 1px solid rgb(from var(--main-color) r g b / 0.12);
+}
+
+/* コメント一覧 */
+.MyCommentPost__comments {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* もし CommentItem が横にはみ出す時の保険 */
+.MyCommentPost,
+.MyCommentPost * {
+    box-sizing: border-box;
+}

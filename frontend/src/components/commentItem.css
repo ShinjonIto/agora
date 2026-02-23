@@ -8,9 +8,16 @@
     padding: 2%;
     /* margin: 0 auto 20px auto; */
     border-radius: var(--radius);
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
+.aaa {
+    width: var(icon-ss);
+}
+
+.aaa img {
+    width: 30px !important;
+}
 
 
 

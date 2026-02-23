@@ -1,0 +1,48 @@
+/* ===== Admin Layout ===== */
+.admin {
+    width: 100%;
+    padding: 2% 3%;
+    box-sizing: border-box;
+}
+
+/* ===== Tabs ===== */
+.admin-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 2%;
+}
+
+/* タブ */
+.admin-tab {
+    padding: 0.6em 1.2em;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: var(--main-text);
+
+    background: rgb(217, 217, 217);
+
+
+    transition: 0.2s;
+
+}
+
+/* hover */
+.admin-tab:hover {
+    transform: translateY(-2%);
+}
+
+/* active */
+.admin-tab.active {
+    font-weight: bold;
+    color: white;
+    background: var(--accent-color);
+    border-color: var(--main-color);
+}
+
+/* ===== Content ===== */
+.admin-content {
+    width: 100%;
+    padding-top: 1%;
+}

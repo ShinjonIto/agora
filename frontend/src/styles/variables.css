@@ -1,4 +1,3 @@
-
 /* デフォルト */
 :root {
     /* カラー */
@@ -121,6 +120,24 @@
 }
 
 
+[data-theme="spring"] {
+    --main-color: #FFF7E4;
+    --header-color: #FF7272;
+    --main-sub-color: #F4ECCF;
+    --base-color: #B6D586;
+    --accent-color: #9FC3D1;
+    --accent-sub-color: #FF7272;
+    --main-black: #000000;
+    --main-white: #ffffff;
+    --main-text: #544F4A;
+    --main-shadow: #9CC095;
+    --button-color: #c1c1c182;
+
+    --login-base-color: #FCF2EB;
+    --login-accent-color: #F9E8D9;
+    --login-accent-sub-color: #F9E8D9;
+}
+
 /* 夏 */
 /* ThemeChangeの名前と一致させる */
 [data-theme="summer"] {
@@ -138,4 +155,5 @@
 
     --login-base-color: #FFF7E4;
     --login-accent-color: #A3C8DB;
+    --login-accent-sub-color: #A3C8DB;
 }

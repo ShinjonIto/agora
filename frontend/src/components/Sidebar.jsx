@@ -3,6 +3,8 @@ import Home from "@/assets/images/icon/home.svg?react";
 import Zyouhou from "@/assets/images/icon/zyouhou.svg?react";
 import Car from "@/assets/images/icon/car.svg?react";
 import Bike from "@/assets/images/icon/bike.svg?react";
+import Pallet from "@/assets/images/icon/pallet.svg?react";
+import Spanner from "@/assets/images/icon/spanner.svg?react";
 import "./Sidebar.css";
 import { useEffect, useState } from "react";
 import axiosPrivate from "@/api/axiosPrivate";
@@ -70,7 +72,7 @@ const Sidebar = () => {
                 <span>スポーツバイシクル学科</span>
             </NavLink>
 
-            <NavLink
+            {/* <NavLink
                 to="/theme_change"
                 className={({ isActive }) =>
                     `aside_button ${isActive ? "active" : ""}`
@@ -82,7 +84,7 @@ const Sidebar = () => {
 
 
 
-            {/* 管理画面 */}
+            管理画面
             {user?.permission === 0 && (
                 <NavLink
                     to="/managements/student_number"
@@ -90,9 +92,10 @@ const Sidebar = () => {
                         `aside_button ${isActive ? "active" : ""}`
                     }
                 >
+                    <Spanner className="aside_icon" />
                     <span>管理者画面</span>
                 </NavLink>
-            )}
+            )} */}
         </aside>
     );
 };

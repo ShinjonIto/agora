@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosPrivate from "@/api/axiosPrivate";
+import "./authPages.css";
+
 
 const PasswordChange = () => {
     const navigate = useNavigate();
@@ -40,10 +42,21 @@ const PasswordChange = () => {
     };
 
     return (
-        <div className="AuthPages">
+        <div className="authPages">
+            {/* ✕ボタン */}
+            <div className="batu">
+                <button
+                    type="button"
+                    onClick={() => navigate(-1)}
+                    aria-label="閉じる"
+                >
+                    ×
+                </button>
+            </div>
+
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>現在のパスワード</label>
+                <label className="label">
+                    現在のパスワード<br />
                     <input
                         type="password"
                         value={currentPassword}
@@ -51,9 +64,10 @@ const PasswordChange = () => {
                         autoComplete="current-password"
                         required
                     />
-                </div>
-                <div>
-                    <label>新しいパスワード</label>
+                </label>
+
+                <label className="label">
+                    新しいパスワード<br />
                     <input
                         type="password"
                         value={newPassword}
@@ -61,9 +75,10 @@ const PasswordChange = () => {
                         autoComplete="new-password"
                         required
                     />
-                </div>
-                <div>
-                    <label>新しいパスワード（確認）</label>
+                </label>
+
+                <label className="label">
+                    新しいパスワード（確認<br />
                     <input
                         type="password"
                         value={confirmPassword}
@@ -71,10 +86,21 @@ const PasswordChange = () => {
                         autoComplete="new-password"
                         required
                     />
+                </label>
+
+                <div className="links">
+                    <button type="submit" className="button ok_button">
+                        変更する
+                    </button>
+
+                    <button
+                        type="button"
+                        className="button"
+                        onClick={() => navigate(`/settings/${currentUserId}`)}
+                    >
+                        戻る
+                    </button>
                 </div>
-                <button type="submit">
-                    変更する
-                </button>
             </form>
         </div>
     );

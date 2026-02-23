@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react"; // useRefを追加
 import axiosPrivate from "@/api/axiosPrivate";
-
+import "./NotificationList.css"
 const NotificationList = () => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -16,7 +16,7 @@ const NotificationList = () => {
                 const res = await axiosPrivate.get("/api/notifications/list/");
                 if (isMounted) {
                     setNotifications(res.data);
-                    
+
                     // 既読にする
                     setTimeout(async () => {
                         if (isMounted) {
@@ -71,19 +71,30 @@ const NotificationList = () => {
 
     return (
         <div className="notification-container">
-            <h2>通知</h2>
-            {notifications.length === 0 && <p>通知はありません</p>}
+            <h2 className="notification-title">通知</h2>
+
+            {notifications.length === 0 && (
+                <p className="notification-empty">通知はありません</p>
+            )}
+
             {notifications.map((n) => (
-                <div key={n.notification_id}>
-                    <p>
+                <div
+                    key={n.notification_id}
+                    className={`notification-item ${n.is_read ? "read" : "unread"}`}
+                >
+                    <p className="notification-text">
                         {renderText(n)}
-                        {/* is_readが真(true)でなければ表示 */}
-                        {!n.is_read && <span style={{ color: "red", fontWeight: "bold" }}>＊ </span>}
+
+                        {!n.is_read && (
+                            <span className="notification-unread">＊ </span>
+                        )}
                     </p>
-                    <small>{formatDate(n.created_at)}</small>
+
+                    <small className="notification-date">
+                        {formatDate(n.created_at)}
+                    </small>
                 </div>
             ))}
-
         </div>
     );
 };

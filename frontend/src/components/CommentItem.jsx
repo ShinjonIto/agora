@@ -115,7 +115,7 @@ const CommentItem = ({
             <div className="dai_flex">
                 <div className="syo_flex">
                     {/* コメントアイコン */}
-                    <div className="icon-ss">
+                    <div className="aaa">
                         <UserProfile
                             user={{
                                 icon_image: comment.comment_author_icon,
@@ -223,7 +223,7 @@ const CommentItem = ({
                 {comment.parent_comment === null && (
                     <button
                         onClick={(e) => { e.stopPropagation(); onReplyClick(comment); }}
-                        className="icon_flex icon"
+                        className="icon_flex"
 
                     >
                         <CommentIcon className="icon" />
