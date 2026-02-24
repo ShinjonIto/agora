@@ -14,11 +14,13 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # .env読み込み
-load_dotenv(os.path.join(BASE_DIR.parent, '.env'))
+load_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -33,13 +35,13 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 # DEBUG = True
 DEBUG = os.getenv("DJANGO_DEBUG") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['57.183.31.221']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "corsheaders",  
+    "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -53,13 +55,12 @@ INSTALLED_APPS = [
     "apps.reports",
     # 通知
     "apps.notifications.apps.NotificationsConfig",
-    
+
     # DRF とトークン認証
     'rest_framework',
     'rest_framework.authtoken',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -79,6 +80,14 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+
+CORS_ALLOW_ALL_ORIGINS = False
+# もしくは、特定のオリジンを許可
+CORS_ALLOWED_ORIGINS = [
+    "http://57.183.31.221",  # ここにフロントエンドのURLを指定
+    "http://localhost:3000",  # ローカル開発用
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -172,7 +181,7 @@ USE_TZ = True
 STATIC_URL = "/assets/"
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "..", "frontend", "dist", "assets"),
+    os.path.join(BASE_DIR, "frontend", "dist", "assets"),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
@@ -180,8 +189,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 AUTH_USER_MODEL = 'users.User'
